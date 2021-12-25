@@ -89,8 +89,8 @@ void ghost_red_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 				ghost->status = GO_OUT;
 			break;
 		case FREEDOM:
-			ghost_move_script_FLEE(ghost, M, pacman);
-			//ghost_red_move_script_FREEDOM(ghost, M);
+			//ghost_move_script_FLEE(ghost, M, pacman);
+			ghost_red_move_script_FREEDOM(ghost, M);
 			break;
 		case GO_OUT:
 			ghost_move_script_GO_OUT(ghost, M);

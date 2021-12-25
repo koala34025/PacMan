@@ -369,7 +369,7 @@ void ghost_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman) {
 	// Then we choose other available direction rather than direction K.
 	// In this way, ghost will escape from pacman.
 
-	static Directions proba[200]; // possible movement
+	static Directions proba[400]; // possible movement
 	int cnt = 0;
 	static Directions chosen_direction = 0;
 	/*UP = 1,

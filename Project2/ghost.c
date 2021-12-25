@@ -70,6 +70,11 @@ void ghost_destory(Ghost* ghost) {
 		...
 		free(ghost);
 	*/
+	al_destroy_bitmap(ghost->dead_sprite);
+	al_destroy_bitmap(ghost->flee_sprite);
+	al_destroy_bitmap(ghost->move_sprite);
+	free(ghost);
+	game_log("ghost_destory");
 }
 void ghost_draw(Ghost* ghost) {
 	// getDrawArea return the drawing RecArea defined by objData and GAME_TICK_CD

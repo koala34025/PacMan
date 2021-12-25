@@ -17,13 +17,35 @@ static void ghost_red_move_script_FREEDOM(Ghost* ghost, Map* M) {
 	// [HACKATHON 2-4]
 	// Uncomment the following code and finish pacman picking random direction.
 
-	
-	static Directions proba[4]; // possible movement
+	static Directions proba[300]; // possible movement
 	int cnt = 0;
-	for (Directions i = 1; i <= 4; i++)
-		if (ghost_movable(ghost, M, i, true)) 	proba[cnt++] = i;
-	ghost_NextMove(ghost, proba[generateRandomNumber(0,cnt-1)]);
-	
+	static Directions chosen_direction = 0;
+	/*UP = 1,
+	LEFT = 2,
+	RIGHT = 3,
+	DOWN = 4,*/
+
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i == chosen_direction) {
+				for (int j = 0; j < 100; j++) {
+					proba[cnt++] = i;
+				}
+			}
+			if ((chosen_direction == 1 && i != 4) || 
+ 				(chosen_direction == 2 && i != 3) || 
+				(chosen_direction == 3 && i != 2) || 
+				(chosen_direction == 4 && i != 1)) {
+				for (int j = 0; j < 50; j++) {
+					proba[cnt++] = i;
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
 
 	// [TODO] (Not in Hackathon) 
 	// Description:
@@ -67,7 +89,8 @@ void ghost_red_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 				ghost->status = GO_OUT;
 			break;
 		case FREEDOM:
-			ghost_red_move_script_FREEDOM(ghost, M);
+			ghost_move_script_FLEE(ghost, M, pacman);
+			//ghost_red_move_script_FREEDOM(ghost, M);
 			break;
 		case GO_OUT:
 			ghost_move_script_GO_OUT(ghost, M);

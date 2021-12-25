@@ -321,6 +321,19 @@ void ghost_toggle_FLEE(Ghost* ghost, bool setFLEE) {
 				..
 		}
 	*/
+	if (setFLEE) {
+		if (ghost->status == FREEDOM) {
+			ghost->status = FLEE;
+			ghost->speed = 1;
+			game_log("ghost_toggle_flee is true");
+		}
+	}
+	else {
+		if (ghost->status == FLEE)
+			ghost->status = FREEDOM;
+			ghost->speed = basic_speed;
+			game_log("ghost_toggle_flee is false");
+	}
 }
 
 void ghost_collided(Ghost* ghost) {
@@ -356,5 +369,30 @@ void ghost_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman) {
 	// Then we choose other available direction rather than direction K.
 	// In this way, ghost will escape from pacman.
 
-}
+	static Directions proba[200]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+	/*UP = 1,
+	LEFT = 2,
+	RIGHT = 3,
+	DOWN = 4,*/
 
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i != shortestDirection) {
+				if ((chosen_direction == 1 && i != 4) ||
+					(chosen_direction == 2 && i != 3) ||
+					(chosen_direction == 3 && i != 2) ||
+					(chosen_direction == 4 && i != 1)) {
+					for (int j = 0; j < 100; j++) {
+						proba[cnt++] = i;
+					}
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}

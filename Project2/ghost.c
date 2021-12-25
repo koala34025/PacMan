@@ -70,17 +70,23 @@ void ghost_destory(Ghost* ghost) {
 		...
 		free(ghost);
 	*/
+	al_destroy_bitmap(ghost->dead_sprite);
+	al_destroy_bitmap(ghost->flee_sprite);
+	al_destroy_bitmap(ghost->move_sprite);
+	free(ghost);
+	game_log("ghost_destory");
 }
 void ghost_draw(Ghost* ghost) {
 	// getDrawArea return the drawing RecArea defined by objData and GAME_TICK_CD
 	RecArea drawArea = getDrawArea(ghost->objData, GAME_TICK_CD);
 
 	//Draw default image
-	al_draw_scaled_bitmap(ghost->move_sprite, 0, 0,
-		16, 16,
-		drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
-		draw_region, draw_region, 0
-	);
+	if (ghost->objData.moveCD > GAME_TICK_CD) {
+		al_draw_scaled_bitmap(ghost->move_sprite, 0, 0, 16, 16,
+			drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+			draw_region, draw_region, 0
+		);
+	}
 
 	/*
 		[TODO]
@@ -98,21 +104,61 @@ void ghost_draw(Ghost* ghost) {
 
 			since modulo operation is expensive, better avoid using it.
 	*/
-
+	//printf("%u%c", ghost->objData.moveCD, ghost->objData.moveCD%16==0 ? '\n': ' ');
+	
 	int bitmap_x_offset = 0;
 	// [TODO] below is for animation usage, change the sprite you want to use.
-	if (ghost->status == FLEE) {
+	if (ghost->status == FLEE) {//ghost->status == FLEE
 		/*
 			al_draw_scaled_bitmap(...)
 		*/
+		if (ghost->objData.moveCD > 32) {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 0, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 16, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
 	}
-	else if (ghost->status == GO_IN) {
+	else if (ghost->status == GO_IN) {//ghost->status == GO_IN
 		/*
 		switch (ghost->objData.facing)
 		{
 		case LEFT:
 			...
 		*/
+		switch (ghost->objData.facing)
+		{
+		case UP:
+			al_draw_scaled_bitmap(ghost->dead_sprite, 32, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+			break;
+		case LEFT:
+			al_draw_scaled_bitmap(ghost->dead_sprite, 16, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+			break;
+		case DOWN:
+			al_draw_scaled_bitmap(ghost->dead_sprite, 48, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+			break;
+		case RIGHT:
+			al_draw_scaled_bitmap(ghost->dead_sprite, 0, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+			break;
+		}
 	}
 	else {
 		/*
@@ -122,6 +168,65 @@ void ghost_draw(Ghost* ghost) {
 			...
 		}
 		*/
+		switch (ghost->objData.facing)
+		{
+		case UP:
+			if (ghost->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(ghost->move_sprite, 64, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(ghost->move_sprite, 80, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case LEFT:
+			if (ghost->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(ghost->move_sprite, 32, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(ghost->move_sprite, 48, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case DOWN:
+			if (ghost->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(ghost->move_sprite, 96, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(ghost->move_sprite, 112, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case RIGHT:
+			if (ghost->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(ghost->move_sprite, 0, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(ghost->move_sprite, 16, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		}
 	}
 
 }

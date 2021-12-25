@@ -112,8 +112,8 @@ void pacman_destory(Pacman* pman) {
 	/*
 		[TODO]
 		free pacman resource
-		al_destory_bitmap(pman->...);
-		al_destro_timer(pman->...);
+		al_destroy_bitmap(pman->...);
+		al_destroy_timer(pman->...);
 		...
 		free(pman);
 	*/

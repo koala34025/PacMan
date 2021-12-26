@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <string.h>
@@ -147,7 +149,9 @@ static void status_update(void) {
 			break;
 		}
 		*/
-		if (cheat_mode)//!cheat_mode /* && collision of pacman and ghost */
+		RecArea RA = getDrawArea(pman->objData, GAME_TICK_CD);
+		RecArea RB = getDrawArea(ghosts[i]->objData, GAME_TICK_CD);
+		if (!cheat_mode && RecAreaOverlap(RA, RB))
 		{
 			game_log("collide with ghost\n");
 			al_rest(1.0);
@@ -192,6 +196,17 @@ static void draw(void) {
 	/*
 		al_draw_text(...);
 	*/
+	char score[100];
+	sprintf_s(score, sizeof(score), "SCORE: %d", (basic_map->beansNum)-(basic_map->beansCount));
+	
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2,
+		SCREEN_H - 100,
+		ALLEGRO_ALIGN_CENTER,
+		score
+	);
 
 	draw_map(basic_map);
 

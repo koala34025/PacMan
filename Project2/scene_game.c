@@ -257,6 +257,9 @@ static void destroy(void) {
 		[TODO]
 		free map array, Pacman and ghosts
 	*/
+	free(basic_map);
+	free(pman);
+	free(ghosts);
 }
 
 static void on_key_down(int key_code) {

@@ -15,7 +15,7 @@
 
 // [HACKATHON 2-0]
 // Just modify the GHOST_NUM to 1
-#define GHOST_NUM 1 
+#define GHOST_NUM 1
 /* global variables*/
 extern const uint32_t GAME_TICK_CD;
 extern uint32_t GAME_TICK;

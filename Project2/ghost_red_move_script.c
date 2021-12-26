@@ -17,14 +17,14 @@ static void ghost_red_move_script_FREEDOM(Ghost* ghost, Map* M) {
 	// [HACKATHON 2-4]
 	// Uncomment the following code and finish pacman picking random direction.
 
-	static Directions proba[300]; // possible movement
+	static Directions proba[400]; // possible movement
 	int cnt = 0;
 	static Directions chosen_direction = 0;
 	/*UP = 1,
 	LEFT = 2,
 	RIGHT = 3,
 	DOWN = 4,*/
-
+	
 	for (Directions i = 1; i <= 4; i++) {
 		if (ghost_movable(ghost, M, i, true)) {
 			if (i == chosen_direction) {
@@ -79,17 +79,17 @@ static void ghost_red_move_script_BLOCKED(Ghost* ghost, Map* M) {
 }
 
 void ghost_red_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
+	//printGhostStatus(ghost->status);
 	if (!movetime(ghost->speed))
 		return;
 		switch (ghost->status)
 		{
 		case BLOCKED:
 			ghost_red_move_script_BLOCKED(ghost, M);
-			if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME)
+			if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME/4*0)
 				ghost->status = GO_OUT;
 			break;
 		case FREEDOM:
-			//ghost_move_script_FLEE(ghost, M, pacman);
 			ghost_red_move_script_FREEDOM(ghost, M);
 			break;
 		case GO_OUT:

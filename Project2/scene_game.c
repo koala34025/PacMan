@@ -15,7 +15,7 @@
 
 // [HACKATHON 2-0]
 // Just modify the GHOST_NUM to 1
-#define GHOST_NUM 1
+#define GHOST_NUM 4
 /* global variables*/
 extern const uint32_t GAME_TICK_CD;
 extern uint32_t GAME_TICK;
@@ -119,6 +119,12 @@ static void checkItem(void) {
 		basic_map->beansCount--;
 		pacman_eatItem(pman, '.');
 		break;
+	case 'P':
+		for (int i = 0;i < GHOST_NUM;i++) {
+			ghost_toggle_FLEE(ghosts[i], true);
+		}
+		pacman_eatItem(pman, 'P');
+		break;
 	default:
 		break;
 	}
@@ -162,13 +168,19 @@ static void status_update(void) {
 
 		RecArea RA = getDrawArea(pman->objData, GAME_TICK_CD);
 		RecArea RB = getDrawArea(ghosts[i]->objData, GAME_TICK_CD);
-		if (!cheat_mode && RecAreaOverlap(RA, RB))
-		{
-			game_log("collide with ghost\n");
-			al_rest(1.0);
-			pacman_die();
-			game_over = true;
-			break;
+		
+		if (!cheat_mode && RecAreaOverlap(RA, RB)){
+			if (ghosts[i]->status == FREEDOM) {
+				game_log("collide with ghost %d and die\n",i);
+				al_rest(1.0);
+				pacman_die();
+				game_over = true;
+				break;
+			}
+			else if (ghosts[i]->status == FLEE) {
+				game_log("collide with ghost %d and eat it\n", i);
+				ghost_collided(ghosts[i]);
+			}
 		}
 	}
 }

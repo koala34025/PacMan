@@ -263,6 +263,8 @@ void pacman_eatItem(Pacman* pacman, const char Item) {
 		stop_bgm(PACMAN_MOVESOUND_ID);
 		PACMAN_MOVESOUND_ID = play_audio(PACMAN_MOVESOUND, effect_volume);
 		break;
+	case 'P':
+		break;
 	default:
 		break;
 	}

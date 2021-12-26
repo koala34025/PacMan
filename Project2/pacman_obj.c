@@ -23,7 +23,6 @@ extern uint32_t GAME_TICK_CD;
 extern bool game_over;
 extern float effect_volume;
 
-
 /* Declare static function */
 static bool pacman_movable(Pacman* pacman, Map* M, Directions targetDirec) {
 	// [HACKATHON 1-2]
@@ -261,7 +260,6 @@ void pacman_eatItem(Pacman* pacman, const char Item) {
 	switch (Item)
 	{
 	case '.':
-		
 		stop_bgm(PACMAN_MOVESOUND_ID);
 		PACMAN_MOVESOUND_ID = play_audio(PACMAN_MOVESOUND, effect_volume);
 		break;

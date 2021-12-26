@@ -114,6 +114,7 @@ static void checkItem(void) {
 	switch (basic_map->map[Grid_y][Grid_x])
 	{
 	case '.':
+		basic_map->beansCount--;
 		pacman_eatItem(pman, '.');
 		break;
 	default:
@@ -197,14 +198,14 @@ static void draw(void) {
 		al_draw_text(...);
 	*/
 	char score[100];
-	sprintf_s(score, sizeof(score), "SCORE: %d", (basic_map->beansNum)-(basic_map->beansCount));
+	sprintf_s(score, sizeof(score), "SCORE:%4d", (basic_map->beansNum) - (basic_map->beansCount));
 	
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
-		SCREEN_W / 2,
+		SCREEN_W / 2 - 75,
 		SCREEN_H - 100,
-		ALLEGRO_ALIGN_CENTER,
+		ALLEGRO_ALIGN_LEFT,
 		score
 	);
 
@@ -318,6 +319,14 @@ static void render_init_screen(void) {
 		400, 400,
 		ALLEGRO_ALIGN_CENTER,
 		"READY!"
+	);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2 - 75,
+		SCREEN_H - 100,
+		ALLEGRO_ALIGN_LEFT,
+		"SCORE: "
 	);
 
 	al_flip_display();

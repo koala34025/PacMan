@@ -129,17 +129,24 @@ void pacman_draw(Pacman* pman) {
 	RecArea drawArea = getDrawArea(pman->objData, GAME_TICK_CD);
 
 	//Draw default image
-	al_draw_scaled_bitmap(pman->move_sprite, 0, 0,
-		16, 16,
-		drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
-		draw_region, draw_region, 0
-	);
-	
+	if (pman->objData.moveCD > GAME_TICK_CD) {
+		al_draw_scaled_bitmap(pman->move_sprite, 0, 0,
+			16, 16,
+			drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+			draw_region, draw_region, 0
+		);
+	}
+
 	int offset = 0;
 	if (game_over) {
 		/*
 			hint: instead of using pman->objData.moveCD, use Pacman's death_anim_counter to create animation
 		*/
+		al_draw_scaled_bitmap(pman->die_sprite, 0, 0, 16, 16,
+			drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+			draw_region, draw_region, 0
+		);
+		
 	}
 	else {
 		/*
@@ -149,6 +156,65 @@ void pacman_draw(Pacman* pman) {
 				...
 			}
 		*/
+		switch (pman->objData.facing)
+		{
+		case UP:
+			if (pman->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(pman->move_sprite, 64, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(pman->move_sprite, 80, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case LEFT:
+			if (pman->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(pman->move_sprite, 32, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(pman->move_sprite, 48, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case DOWN:
+			if (pman->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(pman->move_sprite, 96, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(pman->move_sprite, 112, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case RIGHT:
+			if (pman->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(pman->move_sprite, 0, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(pman->move_sprite, 16, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		}
 	}
 }
 void pacman_move(Pacman* pacman, Map* M) {

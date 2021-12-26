@@ -141,6 +141,7 @@ static void allegro5_init(void) {
 	al_register_event_source(game_event_queue, al_get_timer_event_source(game_update_timer));
 	al_register_event_source(game_event_queue, al_get_keyboard_event_source());
 	al_register_event_source(game_event_queue, al_get_mouse_event_source());
+
 	// TODO: Register other event sources such as timer, video, ...
 
 	// Start the timer to update and draw the game.

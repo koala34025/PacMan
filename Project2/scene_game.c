@@ -22,6 +22,7 @@ extern uint32_t GAME_TICK;
 extern ALLEGRO_TIMER* game_tick_timer;
 int game_main_Score = 0;
 bool game_over = false;
+bool game_win = false;
 
 /* Internal variables*/
 static ALLEGRO_TIMER* power_up_timer;
@@ -48,6 +49,7 @@ static void draw_hitboxes(void);
 
 static void init(void) {
 	game_over = false;
+	game_win = false;
 	game_main_Score = 0;
 	// create map
 	basic_map = create_map("Assets/map_nthu.txt");
@@ -150,6 +152,14 @@ static void status_update(void) {
 			break;
 		}
 		*/
+
+		if (basic_map->beansCount == 0) {
+			game_log("beansCount=0\n");
+			al_rest(1.0);
+			game_win = true;
+			break;
+		}
+
 		RecArea RA = getDrawArea(pman->objData, GAME_TICK_CD);
 		RecArea RB = getDrawArea(ghosts[i]->objData, GAME_TICK_CD);
 		if (!cheat_mode && RecAreaOverlap(RA, RB))
@@ -164,6 +174,10 @@ static void status_update(void) {
 }
 
 static void update(void) {
+	if (game_win) {
+		game_change_scene(scene_menu_create());
+		return;
+	}
 
 	if (game_over) {
 		/*
@@ -212,8 +226,8 @@ static void draw(void) {
 	draw_map(basic_map);
 
 	pacman_draw(pman);
-	if (game_over)
-		return;
+	if (game_win) return;
+	if (game_over) return;
 	// no drawing below when game over
 	for (int i = 0; i < GHOST_NUM; i++)
 		ghost_draw(ghosts[i]);

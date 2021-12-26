@@ -147,7 +147,7 @@ static void status_update(void) {
 			break;
 		}
 		*/
-		if (0)//!cheat_mode /* && collision of pacman and ghost */
+		if (cheat_mode)//!cheat_mode /* && collision of pacman and ghost */
 		{
 			game_log("collide with ghost\n");
 			al_rest(1.0);
@@ -166,8 +166,11 @@ static void update(void) {
 			start pman->death_anim_counter and schedule a game-over event (e.g change scene to menu) after Pacman's death animation finished
 			game_change_scene(...);
 		*/
-		//al_start_timer(pman->death_anim_counter);
+		al_start_timer(pman->death_anim_counter);
 
+		//write a thorough game_over_event() functiono;
+		if(al_get_timer_count(pman->death_anim_counter)>192) game_change_scene(scene_menu_create());
+		
 		return;
 	}
 

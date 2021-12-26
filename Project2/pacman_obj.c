@@ -142,11 +142,10 @@ void pacman_draw(Pacman* pman) {
 		/*
 			hint: instead of using pman->objData.moveCD, use Pacman's death_anim_counter to create animation
 		*/
-		al_draw_scaled_bitmap(pman->die_sprite, 0, 0, 16, 16,
+		al_draw_scaled_bitmap(pman->die_sprite, 0+al_get_timer_count(pman->death_anim_counter)/16*16, 0, 16, 16,
 			drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
 			draw_region, draw_region, 0
 		);
-		
 	}
 	else {
 		/*

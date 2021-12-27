@@ -138,11 +138,7 @@ static void checkItem(void) {
 	*/
 	basic_map->map[Grid_y][Grid_x]=' ';
 }
-static void status_update(void) {
-	for (int i = 0; i < GHOST_NUM; i++) {		
-		if (ghosts[i]->status == GO_IN)
-			continue;
-		// [TODO]
+// [TODO]
 		// use `getDrawArea(..., GAME_TICK_CD)` and `RecAreaOverlap(..., GAME_TICK_CD)` functions to detect
 		// if pacman and ghosts collide with each other.
 		// And perform corresponding operations.
@@ -159,6 +155,26 @@ static void status_update(void) {
 			break;
 		}
 		*/
+static void status_update(void) {
+	if (al_get_timer_count(power_up_timer) >= power_up_duration - 2 && al_get_timer_count(power_up_timer) < power_up_duration) {
+		for (int i = 0;i < GHOST_NUM;i++) {
+			if (ghosts[i]->status == FLEE) {
+				ghosts[i]->status = preFREEDOM;
+			}
+		}
+	}
+
+	if (al_get_timer_count(power_up_timer) >= power_up_duration ) {
+		for (int i = 0;i < GHOST_NUM;i++) {
+			ghost_toggle_FLEE(ghosts[i], false);
+		}
+		al_stop_timer(power_up_timer);
+		al_set_timer_count(power_up_timer, 0);
+	}
+
+	for (int i = 0; i < GHOST_NUM; i++) {		
+		if (ghosts[i]->status == GO_IN)
+			continue;
 
 		if (basic_map->beansCount == 0) {
 			game_log("beansCount=0\n");
@@ -166,7 +182,7 @@ static void status_update(void) {
 			game_win = true;
 			break;
 		}
-
+		
 		RecArea RA = getDrawArea(pman->objData, GAME_TICK_CD);
 		RecArea RB = getDrawArea(ghosts[i]->objData, GAME_TICK_CD);
 		
@@ -226,7 +242,7 @@ static void draw(void) {
 		al_draw_text(...);
 	*/
 	char score[100];
-	sprintf_s(score, sizeof(score), "SCORE:%4d", (basic_map->beansNum) - (basic_map->beansCount));
+	sprintf_s(score, sizeof(score), "SCORE:%4d", (basic_map->beansNum) - (basic_map->beansCount));//GAME_MAIN_SCORE is availible
 	
 	al_draw_text(
 		menuFont,

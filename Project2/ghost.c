@@ -90,6 +90,24 @@ void ghost_destory(Ghost* ghost) {
 	free(ghost);
 	game_log("ghost_destory");
 }
+/*
+	[TODO]
+	Draw ghost according to its status
+	hint : use ghost->objData.moveCD value to determine which frame of the animation to draw.
+
+		A not so good way is:
+
+		if(ghost->objData.moveCD % 16 == 0){
+			al_draw_scaled_bitmap(...);
+		}
+		else if(ghost->objData.moveCD % 16 == 1){
+			al_draw_scaled_bitmap(...);
+		}...
+
+		since modulo operation is expensive, better avoid using it.
+*/
+//printf("%u%c", ghost->objData.moveCD, ghost->objData.moveCD%16==0 ? '\n': ' ');
+
 void ghost_draw(Ghost* ghost) {
 	// getDrawArea return the drawing RecArea defined by objData and GAME_TICK_CD
 	RecArea drawArea = getDrawArea(ghost->objData, GAME_TICK_CD);
@@ -102,30 +120,9 @@ void ghost_draw(Ghost* ghost) {
 		);
 	}
 
-	/*
-		[TODO]
-		Draw ghost according to its status
-		hint : use ghost->objData.moveCD value to determine which frame of the animation to draw.
-
-			A not so good way is:
-
-			if(ghost->objData.moveCD % 16 == 0){
-				al_draw_scaled_bitmap(...);
-			}
-			else if(ghost->objData.moveCD % 16 == 1){
-				al_draw_scaled_bitmap(...);
-			}...
-
-			since modulo operation is expensive, better avoid using it.
-	*/
-	//printf("%u%c", ghost->objData.moveCD, ghost->objData.moveCD%16==0 ? '\n': ' ');
-	
 	int bitmap_x_offset = 0;
 	// [TODO] below is for animation usage, change the sprite you want to use.
 	if (ghost->status == FLEE) {//ghost->status == FLEE
-		/*
-			al_draw_scaled_bitmap(...)
-		*/
 		if (ghost->objData.moveCD > 32) {
 			al_draw_scaled_bitmap(ghost->flee_sprite, 0, 0, 16, 16,
 				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
@@ -139,13 +136,33 @@ void ghost_draw(Ghost* ghost) {
 			);
 		}
 	}
+	else if (ghost->status == preFREEDOM) {
+		if (ghost->objData.moveCD > 48) {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 0, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if(ghost->objData.moveCD > 32) {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 48, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if (ghost->objData.moveCD > 16) {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 16, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 32, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+	}
 	else if (ghost->status == GO_IN) {//ghost->status == GO_IN
-		/*
-		switch (ghost->objData.facing)
-		{
-		case LEFT:
-			...
-		*/
 		switch (ghost->objData.facing)
 		{
 		case UP:
@@ -175,13 +192,6 @@ void ghost_draw(Ghost* ghost) {
 		}
 	}
 	else {
-		/*
-		switch (ghost->objData.facing)
-		{
-		case LEFT:
-			...
-		}
-		*/
 		switch (ghost->objData.facing)
 		{
 		case UP:
@@ -266,6 +276,9 @@ void printGhostStatus(GhostStatus S) {
 	case FLEE:
 		game_log("FLEE");
 		break;
+	case preFREEDOM:
+		game_log("preFREEDOM");
+		break;
 	default:
 		game_log("status error");
 		break;
@@ -343,7 +356,7 @@ void ghost_toggle_FLEE(Ghost* ghost, bool setFLEE) {
 		}
 	}
 	else {
-		if (ghost->status == FLEE)
+		if (ghost->status == FLEE || ghost->status == preFREEDOM)
 			ghost->status = FREEDOM;
 			ghost->speed = basic_speed;
 			game_log("ghost_toggle_flee is false");

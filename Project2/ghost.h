@@ -19,7 +19,8 @@ typedef enum {
 	GO_OUT,							 // going out the ghost room
 	FREEDOM,					     // free at the map
 	GO_IN,							 // going back to the ghost room 
-	FLEE							 // pacman powered up
+	FLEE,							 // pacman powered up
+	preFREEDOM						 // shrink
 } GhostStatus;
 
 typedef enum {

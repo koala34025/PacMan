@@ -52,7 +52,7 @@ static void init(void) {
 	game_win = false;
 	game_main_Score = 0;
 	// create map
-	basic_map = create_map("Assets/map_nthu.txt");
+	basic_map = create_map("Assets/test.txt");
 	// [TODO]
 	// Create map from .txt file and design your own map !!
 	// basic_map = create_map("Assets/map_nthu.txt");

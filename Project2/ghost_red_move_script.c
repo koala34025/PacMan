@@ -4,6 +4,10 @@
 #include "map.h"
 /* Shared variables */
 #define GO_OUT_TIME 256
+#define BIGVALUE 100
+#define MIDVALUE 50
+#define LOWVALUE 1
+
 extern uint32_t GAME_TICK_CD;
 extern uint32_t GAME_TICK;
 extern ALLEGRO_TIMER* game_tick_timer;
@@ -35,7 +39,7 @@ static void ghost_red_move_script_FREEDOM(Ghost* ghost, Map* M) {
 	for (Directions i = 1; i <= 4; i++) {
 		if (ghost_movable(ghost, M, i, true)) {
 			if (i == chosen_direction) {
-				for (int j = 0; j < 100; j++) {
+				for (int j = 0; j < BIGVALUE; j++) {
 					proba[cnt++] = i;
 				}
 			}
@@ -43,7 +47,7 @@ static void ghost_red_move_script_FREEDOM(Ghost* ghost, Map* M) {
  				(chosen_direction == 2 && i != 3) || 
 				(chosen_direction == 3 && i != 2) || 
 				(chosen_direction == 4 && i != 1)) {
-				for (int j = 0; j < 50; j++) {
+				for (int j = 0; j < MIDVALUE; j++) {
 					proba[cnt++] = i;
 				}
 			}
@@ -69,13 +73,13 @@ static void ghost_pink_move_script_FREEDOM(Ghost* ghost, Map* M) {
 	for (Directions i = 1; i <= 4; i++) {
 		if (ghost_movable(ghost, M, i, true)) {
 			if (i == chosen_direction) {
-				for (int j = 0; j < 100; j++) {
+				for (int j = 0; j < BIGVALUE; j++) {
 					proba[cnt++] = i;
 				}
 			}
 			if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) || 
 				(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
-				for (int j = 0; j < 50; j++) {
+				for (int j = 0; j < MIDVALUE; j++) {
 					proba[cnt++] = i;
 				}
 			}
@@ -92,13 +96,13 @@ static void ghost_blue_move_script_FREEDOM(Ghost* ghost, Map* M) {
 	for (Directions i = 1; i <= 4; i++) {
 		if (ghost_movable(ghost, M, i, true)) {
 			if (i == chosen_direction) {
-				for (int j = 0; j < 100; j++) {
+				for (int j = 0; j < BIGVALUE; j++) {
 					proba[cnt++] = i;
 				}
 			}
 			if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
 				(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
-				for (int j = 0; j < 50; j++) {
+				for (int j = 0; j < MIDVALUE; j++) {
 					proba[cnt++] = i;
 				}
 			}
@@ -115,13 +119,13 @@ static void ghost_orange_move_script_FREEDOM(Ghost* ghost, Map* M) {
 	for (Directions i = 1; i <= 4; i++) {
 		if (ghost_movable(ghost, M, i, true)) {
 			if (i == chosen_direction) {
-				for (int j = 0; j < 100; j++) {
+				for (int j = 0; j < BIGVALUE; j++) {
 					proba[cnt++] = i;
 				}
 			}
 			if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
 				(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
-				for (int j = 0; j < 50; j++) {
+				for (int j = 0; j < MIDVALUE; j++) {
 					proba[cnt++] = i;
 				}
 			}
@@ -225,7 +229,7 @@ void ghost_red_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		{
 		case BLOCKED:
 			ghost_red_move_script_BLOCKED(ghost, M);
-			if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME/4*0)
+			if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME * ghost->typeFlag)
 				ghost->status = GO_OUT;
 			break;
 		case FREEDOM:
@@ -282,7 +286,7 @@ void ghost_pink_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		{
 		case BLOCKED:
 			ghost_pink_move_script_BLOCKED(ghost, M);
-			if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME/4*0)
+			if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME * ghost->typeFlag)
 				ghost->status = GO_OUT;
 			break;
 		case FREEDOM:
@@ -338,7 +342,7 @@ void ghost_blue_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 	{
 	case BLOCKED:
 		ghost_blue_move_script_BLOCKED(ghost, M);
-		if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME / 4 * 0)
+		if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME * ghost->typeFlag)
 			ghost->status = GO_OUT;
 		break;
 	case FREEDOM:
@@ -395,7 +399,7 @@ void ghost_orange_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 	{
 	case BLOCKED:
 		ghost_orange_move_script_BLOCKED(ghost, M);
-		if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME / 4 * 0)
+		if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME * ghost->typeFlag)
 			ghost->status = GO_OUT;
 		break;
 	case FREEDOM:

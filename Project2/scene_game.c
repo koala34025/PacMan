@@ -120,7 +120,7 @@ static void checkItem(void) {
 		pacman_eatItem(pman, '.');
 		break;
 	case 'P':
-		for (int i = 0;i < GHOST_NUM;i++) {
+		for (int i = 0;i < GHOST_NUM; i++) {
 			ghost_toggle_FLEE(ghosts[i], true);
 		}
 		pacman_eatItem(pman, 'P');

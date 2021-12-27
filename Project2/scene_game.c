@@ -217,7 +217,11 @@ static void update(void) {
 		al_start_timer(pman->death_anim_counter);
 
 		//write a thorough game_over_event() functiono;
-		if(al_get_timer_count(pman->death_anim_counter)>192) game_change_scene(scene_menu_create());
+		if (al_get_timer_count(pman->death_anim_counter) > 192) {
+			al_stop_timer(pman->death_anim_counter);
+			al_set_timer_count(pman->death_anim_counter);
+			game_change_scene(scene_menu_create());
+		}
 		
 		return;
 	}

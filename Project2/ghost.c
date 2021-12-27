@@ -374,7 +374,7 @@ void ghost_move_script_GO_OUT(Ghost* ghost, Map* M) {
 	else
 		ghost->status = FREEDOM;
 }
-void ghost_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman) {
+void ghost_red_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman) {
 	// [TODO]
 	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
 	// Description:
@@ -407,6 +407,69 @@ void ghost_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman) {
 		}
 	}
 
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}
+void ghost_pink_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman) {
+	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i != shortestDirection) {
+				if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
+					(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
+					for (int j = 0; j < 100; j++) {
+						proba[cnt++] = i;
+					}
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}
+void ghost_blue_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman) {
+	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i != shortestDirection) {
+				if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
+					(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
+					for (int j = 0; j < 100; j++) {
+						proba[cnt++] = i;
+					}
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}
+void ghost_orange_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman) {
+	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i != shortestDirection) {
+				if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
+					(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
+					for (int j = 0; j < 100; j++) {
+						proba[cnt++] = i;
+					}
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
 	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
 	ghost_NextMove(ghost, chosen_direction);
 }

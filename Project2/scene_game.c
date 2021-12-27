@@ -123,6 +123,7 @@ static void checkItem(void) {
 		for (int i = 0;i < GHOST_NUM; i++) {
 			ghost_toggle_FLEE(ghosts[i], true);
 		}
+		al_start_timer(power_up_timer);
 		pacman_eatItem(pman, 'P');
 		break;
 	default:
@@ -138,7 +139,7 @@ static void checkItem(void) {
 	basic_map->map[Grid_y][Grid_x]=' ';
 }
 static void status_update(void) {
-	for (int i = 0; i < GHOST_NUM; i++) {
+	for (int i = 0; i < GHOST_NUM; i++) {		
 		if (ghosts[i]->status == GO_IN)
 			continue;
 		// [TODO]
@@ -209,8 +210,9 @@ static void update(void) {
 	checkItem();
 	status_update();
 	pacman_move(pman, basic_map);
-	for (int i = 0; i < GHOST_NUM; i++) 
+	for (int i = 0; i < GHOST_NUM; i++) {
 		ghosts[i]->move_script(ghosts[i], basic_map, pman);
+	}
 }
 
 static void draw(void) {

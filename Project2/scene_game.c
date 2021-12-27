@@ -194,7 +194,7 @@ static void status_update(void) {
 				game_over = true;
 				break;
 			}
-			else if (ghosts[i]->status == FLEE) {
+			else if (ghosts[i]->status == FLEE || ghosts[i]->status == preFREEDOM) {
 				game_log("collide with ghost %d and eat it\n", i);
 				ghost_collided(ghosts[i]);
 			}

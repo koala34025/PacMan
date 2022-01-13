@@ -246,7 +246,8 @@ static void draw(void) {
 		al_draw_text(...);
 	*/
 	char score[100];
-	sprintf_s(score, sizeof(score), "SCORE:%4d", (basic_map->beansNum) - (basic_map->beansCount));//GAME_MAIN_SCORE is availible
+	game_main_Score = (basic_map->beansNum) - (basic_map->beansCount);
+	sprintf_s(score, sizeof(score), "SCORE:%4d", game_main_Score);//GAME_MAIN_SCORE is availible
 	
 	al_draw_text(
 		menuFont,

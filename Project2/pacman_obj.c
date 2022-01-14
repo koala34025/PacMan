@@ -121,6 +121,7 @@ void pacman_destroy(Pacman* pman) {
 	al_destroy_bitmap(pman->die_sprite);
 	al_destroy_timer(pman->death_anim_counter);
 	free(pman);
+	game_log("pacman_destroy");
 }
 
 

@@ -21,6 +21,8 @@ extern const uint32_t GAME_TICK_CD;
 extern uint32_t GAME_TICK;
 extern ALLEGRO_TIMER* game_tick_timer;
 int game_main_Score = 0;
+int game_bean_Score = 0;
+int game_ghost_Score = 0;
 bool game_over = false;
 bool game_win = false;
 
@@ -51,6 +53,8 @@ static void init(void) {
 	game_over = false;
 	game_win = false;
 	game_main_Score = 0;
+	game_bean_Score = 0;
+	game_ghost_Score = 0;
 	// create map
 	basic_map = create_map("Assets/test.txt");
 	// [TODO]
@@ -177,7 +181,7 @@ static void status_update(void) {
 			continue;
 
 		if (basic_map->beansCount == 0) {
-			game_log("beansCount=0\n");
+			game_log("no beans left\n");
 			al_rest(1.0);
 			game_win = true;
 			break;
@@ -196,6 +200,7 @@ static void status_update(void) {
 			}
 			else if (ghosts[i]->status == FLEE || ghosts[i]->status == preFREEDOM) {
 				game_log("collide with ghost %d and eat it\n", i);
+				game_ghost_Score += 3;
 				ghost_collided(ghosts[i]);
 			}
 		}
@@ -246,7 +251,10 @@ static void draw(void) {
 		al_draw_text(...);
 	*/
 	char score[100];
-	game_main_Score = (basic_map->beansNum) - (basic_map->beansCount);
+
+	game_bean_Score = (basic_map->beansNum) - (basic_map->beansCount);
+	
+	game_main_Score = game_bean_Score + game_ghost_Score;
 	sprintf_s(score, sizeof(score), "SCORE:%4d", game_main_Score);//GAME_MAIN_SCORE is availible
 	
 	al_draw_text(

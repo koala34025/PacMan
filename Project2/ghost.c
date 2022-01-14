@@ -356,10 +356,11 @@ void ghost_toggle_FLEE(Ghost* ghost, bool setFLEE) {
 		}
 	}
 	else {
-		if (ghost->status == FLEE || ghost->status == preFREEDOM)
+		if (ghost->status == FLEE || ghost->status == preFREEDOM) {
 			ghost->status = FREEDOM;
 			ghost->speed = basic_speed;
 			game_log("ghost_toggle_flee is false");
+		}
 	}
 }
 

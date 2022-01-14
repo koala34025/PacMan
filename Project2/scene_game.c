@@ -268,7 +268,7 @@ static void draw(void) {
 		ghost_draw(ghosts[i]);
 	
 	//debugging mode
-	if (debug_mode) {
+	if (debug_mode || 1) {
 		draw_hitboxes();
 	}
 

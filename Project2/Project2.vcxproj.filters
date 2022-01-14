@@ -54,6 +54,9 @@
     <ClCompile Include="utility.c">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="scene_end.c">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="utility.h">
       <Filter>來源檔案</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_end.h">
+      <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@
 #include "scene_settings.h"
 #include "scene_game.h"
 #include "scene_menu.h"
+#include "scene_end.h"
 #include "utility.h"
 #include "shared.h"
 

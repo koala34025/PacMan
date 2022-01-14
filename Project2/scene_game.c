@@ -8,6 +8,7 @@
 #include "utility.h"
 #include "scene_game.h"
 #include "scene_menu.h"
+#include "scene_end.h"
 #include "pacman_obj.h"
 #include "ghost.h"
 #include "map.h"
@@ -20,11 +21,11 @@
 extern const uint32_t GAME_TICK_CD;
 extern uint32_t GAME_TICK;
 extern ALLEGRO_TIMER* game_tick_timer;
-int game_main_Score = 0;
+extern int game_main_Score = 0;
 int game_bean_Score = 0;
 int game_ghost_Score = 0;
-bool game_over = false;
-bool game_win = false;
+extern bool game_over = false;
+extern bool game_win = false;
 extern ALLEGRO_SAMPLE* PACMAN_EATGHOST_SOUND;
 
 /* Internal variables*/
@@ -213,7 +214,8 @@ static void status_update(void) {
 
 static void update(void) {
 	if (game_win) {
-		game_change_scene(scene_menu_create());	
+		game_change_scene(scene_end_create());
+		//game_change_scene(scene_menu_create());	
 		return;
 	}
 
@@ -230,7 +232,8 @@ static void update(void) {
 		if (al_get_timer_count(pman->death_anim_counter) > 192) {
 			al_stop_timer(pman->death_anim_counter);
 			al_set_timer_count(pman->death_anim_counter, 0);
-			game_change_scene(scene_menu_create());
+			game_change_scene(scene_end_create());
+			//game_change_scene(scene_menu_create());
 		}
 		return;
 	}

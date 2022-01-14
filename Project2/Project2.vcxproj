@@ -159,6 +159,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="map.c" />
     <ClCompile Include="pacman_obj.c" />
+    <ClCompile Include="scene_end.c" />
     <ClCompile Include="scene_game.c" />
     <ClCompile Include="scene_menu.c" />
     <ClCompile Include="scene_menu_object.c" />
@@ -171,6 +172,7 @@
     <ClInclude Include="ghost.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="pacman_obj.h" />
+    <ClInclude Include="scene_end.h" />
     <ClInclude Include="scene_game.h" />
     <ClInclude Include="scene_menu.h" />
     <ClInclude Include="scene_menu_object.h" />

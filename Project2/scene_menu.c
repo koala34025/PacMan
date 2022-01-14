@@ -8,6 +8,7 @@
 #include <math.h>
 #include "scene_menu_object.h"
 #include "scene_settings.h"
+#include "scene_end.h"
 #include "scene_game.h"
 #include "scene_menu.h"
 #include "utility.h"

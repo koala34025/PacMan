@@ -119,11 +119,11 @@ static void on_key_down(int keycode) {
 Scene scene_settings_create(void) {
 	Scene scene;
 	memset(&scene, 0, sizeof(Scene));
-	btn2 = button_create(730, 20, 50, 50, "Assets/strawberry.png", "Assets/grape.png");
-	music_up = button_create(SCREEN_W / 2 + 125, SCREEN_H / 2 - 65, 50, 50, "Assets/settings.png", "Assets/settings2.png");
-	music_down = button_create(SCREEN_W / 2 - 180, SCREEN_H / 2 - 65, 50, 50, "Assets/settings.png", "Assets/settings2.png");
-	effect_up = button_create(SCREEN_W / 2 + 125, SCREEN_H / 2 + 35, 50, 50, "Assets/settings.png", "Assets/settings2.png");
-	effect_down = button_create(SCREEN_W / 2 - 180, SCREEN_H / 2 + 35, 50, 50, "Assets/settings.png", "Assets/settings2.png");
+	btn2 = button_create(730, 20, 50, 50, "Assets/x.png", "Assets/x2.png");
+	music_up = button_create(SCREEN_W / 2 + 125, SCREEN_H / 2 - 65, 50, 50, "Assets/plus.png", "Assets/plus2.png");
+	music_down = button_create(SCREEN_W / 2 - 180, SCREEN_H / 2 - 65, 50, 50, "Assets/minus.png", "Assets/minus2.png");
+	effect_up = button_create(SCREEN_W / 2 + 125, SCREEN_H / 2 + 35, 50, 50, "Assets/plus.png", "Assets/plus2.png");
+	effect_down = button_create(SCREEN_W / 2 - 180, SCREEN_H / 2 + 35, 50, 50, "Assets/minus.png", "Assets/minus2.png");
 
 	scene.name = "Settings";
 	scene.draw = &draw;

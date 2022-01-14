@@ -16,16 +16,16 @@ loaded image: Assets/title.png
 stop audio (bgm)
 played audio (bgm)
 Game start event loop
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
+loaded image: Assets/x.png
+loaded image: Assets/x2.png
+loaded image: Assets/plus.png
+loaded image: Assets/plus2.png
+loaded image: Assets/minus.png
+loaded image: Assets/minus2.png
+loaded image: Assets/plus.png
+loaded image: Assets/plus2.png
+loaded image: Assets/minus.png
+loaded image: Assets/minus2.png
 Settings scene created
 Change scene from Menu to Settings
 stop audio (bgm)
@@ -36,126 +36,18 @@ loaded image: Assets/settings2.png
 loaded image: Assets/title.png
 stop audio (bgm)
 played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
+loaded image: Assets/x.png
+loaded image: Assets/x2.png
+loaded image: Assets/plus.png
+loaded image: Assets/plus2.png
+loaded image: Assets/minus.png
+loaded image: Assets/minus2.png
+loaded image: Assets/plus.png
+loaded image: Assets/plus2.png
+loaded image: Assets/minus.png
+loaded image: Assets/minus2.png
 Settings scene created
 Change scene from Menu to Settings
 stop audio (bgm)
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
 Window close button clicked
 Game end
-stop audio (bgm)

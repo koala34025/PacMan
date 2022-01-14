@@ -307,12 +307,12 @@ static void destroy(void) {
 		[TODO]
 		free map array, Pacman and ghosts
 	*/
-	/*
+	
 	pacman_destroy(pman);
 	for (int i = 0; i < GHOST_NUM; i++) {
 		ghost_destroy(ghosts[i]);
 	}
-	*/
+	
 	free(basic_map);
 	free(ghosts);
 }

@@ -209,7 +209,12 @@ void delete_map(Map* M) {
 		free(...)
 		...
 	*/
-	if (M->map)	free(M);
+	if (M->map) {
+		for (int i = 0;i < M->row_num;i++) {
+			free(M->map[i]);
+		}
+		free(M);
+	}
 	else game_abort("failed to delete map\n");
 }
 

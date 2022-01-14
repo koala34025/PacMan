@@ -18,6 +18,9 @@ static const int basic_speed = 2;
 /* Shared variables */
 extern ALLEGRO_SAMPLE* PACMAN_MOVESOUND;
 extern ALLEGRO_SAMPLE* PACMAN_DEATH_SOUND;
+extern ALLEGRO_SAMPLE* PACMAN_FRUIT_SOUND;
+
+
 extern uint32_t GAME_TICK;
 extern uint32_t GAME_TICK_CD;
 extern bool game_over;
@@ -265,6 +268,8 @@ void pacman_eatItem(Pacman* pacman, const char Item) {
 		PACMAN_MOVESOUND_ID = play_audio(PACMAN_MOVESOUND, effect_volume);
 		break;
 	case 'P':
+		stop_bgm(PACMAN_MOVESOUND_ID);
+		PACMAN_MOVESOUND_ID = play_audio(PACMAN_FRUIT_SOUND, effect_volume);
 		break;
 	default:
 		break;

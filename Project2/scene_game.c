@@ -25,6 +25,7 @@ int game_bean_Score = 0;
 int game_ghost_Score = 0;
 bool game_over = false;
 bool game_win = false;
+extern ALLEGRO_SAMPLE* PACMAN_EATGHOST_SOUND;
 
 /* Internal variables*/
 static ALLEGRO_TIMER* power_up_timer;
@@ -34,6 +35,7 @@ static Map* basic_map;
 static Ghost** ghosts;
 bool debug_mode = false;
 bool cheat_mode = false;
+static ALLEGRO_SAMPLE_ID PACMAN_EATGHOST_SOUND_ID;
 
 /* Declare static function prototypes */
 static void init(void);
@@ -200,6 +202,8 @@ static void status_update(void) {
 			}
 			else if (ghosts[i]->status == FLEE || ghosts[i]->status == preFREEDOM) {
 				game_log("collide with ghost %d and eat it\n", i);
+				stop_bgm(PACMAN_EATGHOST_SOUND_ID);
+				PACMAN_EATGHOST_SOUND_ID = play_audio(PACMAN_EATGHOST_SOUND, effect_volume);
 				game_ghost_Score += 3;
 				ghost_collided(ghosts[i]);
 			}

@@ -5,6 +5,8 @@ loaded font: Assets/Minecraft.ttf with size 30
 loaded audio: Assets/Music/original_theme.ogg
 loaded audio: Assets/Music/pacman-chomp.ogg
 loaded audio: Assets/Music/pacman_death.ogg
+loaded audio: Assets/Music/pacman_eatfruit.ogg
+loaded audio: Assets/Music/pacman_eatghost.ogg
 Game initialized
 Menu scene created
 Change scene from (unnamed) to Menu
@@ -14,107 +16,6 @@ loaded image: Assets/title.png
 stop audio (bgm)
 played audio (bgm)
 Game start event loop
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-mute
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-unmute
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-mute
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-unmute
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-mute
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-Settings scene created
-Change scene from Menu to Settings
-stop audio (bgm)
-Menu scene created
-Change scene from Settings to Menu
-loaded image: Assets/settings.png
-loaded image: Assets/settings2.png
-loaded image: Assets/title.png
-stop audio (bgm)
-played audio (bgm)
 Key with keycode 67 down
 Start scene created
 Change scene from Menu to Start
@@ -143,10 +44,89 @@ creating ghost 3
 loaded image: Assets/ghost_flee.png
 loaded image: Assets/ghost_dead.png
 loaded image: Assets/ghost_move_orange.png
-Window close button clicked
-Game end
+Key with keycode 215 down
+Key with keycode 4 down
+Key with keycode 23 down
+Key with keycode 1 down
+Key with keycode 23 down
+ghost_toggle_flee is true
+ghost_toggle_flee is true
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+Key with keycode 4 down
+Key with keycode 19 down
+Key with keycode 1 down
+Key with keycode 19 down
+Key with keycode 19 down
+Key with keycode 19 down
+Key with keycode 19 down
+Key with keycode 23 down
+Key with keycode 1 down
+ghost_toggle_flee is true
+ghost_toggle_flee is true
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+Key with keycode 23 down
+ghost_toggle_flee is false
+ghost_toggle_flee is false
+ghost_toggle_flee is false
+ghost_toggle_flee is false
+Key with keycode 19 down
+Key with keycode 1 down
+ghost_toggle_flee is true
+ghost_toggle_flee is true
+ghost_toggle_flee is true
+ghost_toggle_flee is true
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+Key with keycode 23 down
+Key with keycode 23 down
+Key with keycode 4 down
+Key with keycode 19 down
+Key with keycode 1 down
+Key with keycode 19 down
+collide with ghost 0 and eat it
+
+stop audio (bgm)
+ghost_toggle_flee is false
+ghost_toggle_flee is false
+ghost_toggle_flee is false
+collide with ghost 1 and die
+
+stop audio (bgm)
+Menu scene created
+Change scene from Start to Menu
 pacman_destroy
 ghost_destroy
 ghost_destroy
 ghost_destroy
 ghost_destroy
+loaded image: Assets/settings.png
+loaded image: Assets/settings2.png
+loaded image: Assets/title.png
+stop audio (bgm)
+played audio (bgm)
+Key with keycode 219 down
+loaded image: Assets/strawberry.png
+loaded image: Assets/grape.png
+loaded image: Assets/strawberry.png
+loaded image: Assets/grape.png
+loaded image: Assets/strawberry.png
+loaded image: Assets/grape.png
+Settings scene created
+Change scene from Menu to Settings
+stop audio (bgm)
+mute
+Menu scene created
+Change scene from Settings to Menu
+loaded image: Assets/settings.png
+loaded image: Assets/settings2.png
+loaded image: Assets/title.png
+stop audio (bgm)
+played audio (bgm)
+Key with keycode 219 down

@@ -75,12 +75,12 @@ Ghost* ghost_create(int flag) {
 	}
 	return ghost;
 }
-void ghost_destory(Ghost* ghost) {
+void ghost_destroy(Ghost* ghost) {
 	/*
 		[TODO]
 		free ghost resource
 
-		al_destory_bitmap(...);
+		al_destroy_bitmap(...);
 		...
 		free(ghost);
 	*/
@@ -88,7 +88,7 @@ void ghost_destory(Ghost* ghost) {
 	al_destroy_bitmap(ghost->flee_sprite);
 	al_destroy_bitmap(ghost->move_sprite);
 	free(ghost);
-	game_log("ghost_destory");
+	game_log("ghost_destroy");
 }
 /*
 	[TODO]

@@ -108,7 +108,7 @@ Pacman* pacman_create() {
 
 }
 
-void pacman_destory(Pacman* pman) {
+void pacman_destroy(Pacman* pman) {
 	/*
 		[TODO]
 		free pacman resource

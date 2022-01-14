@@ -37,13 +37,14 @@ static void init() {
 	// TODO: Create button to settings
 	//	Uncomment and fill the code below
 	//btnSettings = button_create(730, 20, 50, 50, "...", "...");
+	
 	btnSettings = button_create(730, 20, 50, 50, "Assets/settings.png", "Assets/settings2.png");
 	gameTitle = load_bitmap("Assets/title.png");
 	gameTitleW = al_get_bitmap_width(gameTitle);
 	gameTitleH = al_get_bitmap_height(gameTitle);
 	stop_bgm(menuBGM);
 	menuBGM = play_bgm(themeMusic, music_volume);
-
+	
 }
 
 

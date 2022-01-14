@@ -364,7 +364,7 @@ void ghost_toggle_FLEE(Ghost* ghost, bool setFLEE) {
 }
 
 void ghost_collided(Ghost* ghost) {
-	if (ghost->status == FLEE) {
+	if (ghost->status == FLEE || ghost->status == preFREEDOM ) {
 		ghost->status = GO_IN;
 		ghost->speed = 4;
 	}

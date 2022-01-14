@@ -24,37 +24,36 @@ static void draw(void) {
 
 	char score[100];
 
-	sprintf_s(score, sizeof(score), "SCORE:%4d", game_main_Score);
+	sprintf_s(score, sizeof(score), "Your score is:%4d", game_main_Score);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2 ,
+		SCREEN_H / 2 + 50,
+		ALLEGRO_ALIGN_CENTER,
+		score
+	);
 
 	if (game_win) {
 		al_draw_text(
 			menuFont,
 			al_map_rgb(255, 255, 255),
-			SCREEN_W / 2 - 75,
-			SCREEN_H - 200,
-			ALLEGRO_ALIGN_LEFT,
-			"WIN"
+			SCREEN_W / 2 ,
+			SCREEN_H / 2 - 50,
+			ALLEGRO_ALIGN_CENTER,
+			"YOU WIN!"
 		);
 	}
 	else {
 		al_draw_text(
 			menuFont,
 			al_map_rgb(255, 255, 255),
-			SCREEN_W / 2 - 75,
-			SCREEN_H - 200,
-			ALLEGRO_ALIGN_LEFT,
-			"LOSE"
+			SCREEN_W / 2 ,
+			SCREEN_H / 2 - 50,
+			ALLEGRO_ALIGN_CENTER,
+			"YOU LOSE!"
 		);
 	}
-
-	al_draw_text(
-		menuFont,
-		al_map_rgb(255, 255, 255),
-		SCREEN_W / 2 - 75,
-		SCREEN_H - 100,
-		ALLEGRO_ALIGN_LEFT,
-		score
-	);
 
 	drawButton(okbtn);
 }

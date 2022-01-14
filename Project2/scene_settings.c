@@ -31,86 +31,75 @@
 // inside this scene. They should all have the 'static' prefix.
 
 static Button btn2;
-static Button mute;
-static Button unmute;
+static Button music_up;
+static Button music_down;
+static Button effect_up;
+static Button effect_down;
 
 static void draw(void){
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-	
-	al_draw_text(
-		menuFont,
-		al_map_rgb(255, 255, 255),
-		SCREEN_W / 2 - 175,
-		SCREEN_H / 2 - 50,
-		ALLEGRO_ALIGN_CENTER,
-		"mute"
-	);
-
-	al_draw_text(
-		menuFont,
-		al_map_rgb(255, 255, 255),
-		SCREEN_W / 2 + 170,
-		SCREEN_H / 2 - 50,
-		ALLEGRO_ALIGN_CENTER,
-		"unmute"
-	);
-
-	if (music_volume == 0) {
-		al_draw_text(
-			menuFont,
-			al_map_rgb(255, 255, 255),
-			SCREEN_W / 2 - 223,
-			SCREEN_H / 2 - 49,
-			ALLEGRO_ALIGN_CENTER,
-			">"
-		);
-	}
-	else {
-		al_draw_text(
-			menuFont,
-			al_map_rgb(255, 255, 255),
-			SCREEN_W / 2 + 105,
-			SCREEN_H / 2 - 49,
-			ALLEGRO_ALIGN_CENTER,
-			">"
-		);
-	}
 
 	drawButton(btn2);
-	drawButton(mute);
-	drawButton(unmute);
+	drawButton(music_up);
+	drawButton(music_down);
+	drawButton(effect_up);
+	drawButton(effect_down);
+
+	char m_volume[100];
+	sprintf_s(m_volume, sizeof(m_volume), "Music: %6.f%%", music_volume < 0.025 ? (double)0 : music_volume * 100 / 0.5);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2 - 100,
+		SCREEN_H / 2 - 50,
+		ALLEGRO_ALIGN_LEFT,
+		m_volume
+	);
+
+	char e_volume[100];
+	sprintf_s(e_volume, sizeof(e_volume), "Effect: %4.f%%", effect_volume < 0.025 ? (double)0 : effect_volume * 100 / 0.5);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2 - 100,
+		SCREEN_H / 2 + 50,
+		ALLEGRO_ALIGN_LEFT,
+		e_volume
+	);
 }
 
 static void on_mouse_move(int a, int mouse_x, int mouse_y, int f) {
 	btn2.hovered = buttonHover(btn2, mouse_x, mouse_y);
-	mute.hovered = buttonHover(mute, mouse_x, mouse_y);
-	unmute.hovered = buttonHover(unmute, mouse_x, mouse_y);
+	music_up.hovered = buttonHover(music_up, mouse_x, mouse_y);
+	music_down.hovered = buttonHover(music_down, mouse_x, mouse_y);
+	effect_up.hovered = buttonHover(effect_up, mouse_x, mouse_y);
+	effect_down.hovered = buttonHover(effect_down, mouse_x, mouse_y);
 }
 
 static void on_mouse_down() {
 	if (btn2.hovered)
 		game_change_scene(scene_menu_create());
-	if (mute.hovered) {
-		//mute
-		music_volume = 0;
-		effect_volume = 0;
-		game_log("mute");
-	}
-	if (unmute.hovered) {
-		//unmute
-		music_volume = 0.5;
-		effect_volume = 0.5;
-		game_log("unmute");
-	}
+	if (music_up.hovered && music_volume < 0.5)
+		music_volume += 0.025;
+	if (music_down.hovered && music_volume > 0)
+		music_volume -= 0.025;
+	if (effect_up.hovered && effect_volume < 0.5)
+		effect_volume += 0.025;
+	if (effect_down.hovered && effect_volume > 0)
+		effect_volume -= 0.025;
 }
 
 static void destroy() {
 	al_destroy_bitmap(btn2.default_img);
 	al_destroy_bitmap(btn2.hovered_img);
-	al_destroy_bitmap(mute.default_img);
-	al_destroy_bitmap(mute.hovered_img);
-	al_destroy_bitmap(unmute.default_img);
-	al_destroy_bitmap(unmute.hovered_img);
+	al_destroy_bitmap(music_up.default_img);
+	al_destroy_bitmap(music_up.hovered_img);
+	al_destroy_bitmap(music_down.default_img);
+	al_destroy_bitmap(music_down.hovered_img);
+	al_destroy_bitmap(effect_up.default_img);
+	al_destroy_bitmap(effect_up.hovered_img);
+	al_destroy_bitmap(effect_down.default_img);
+	al_destroy_bitmap(effect_down.hovered_img);
 }
 
 static void on_key_down(int keycode) {
@@ -131,8 +120,10 @@ Scene scene_settings_create(void) {
 	Scene scene;
 	memset(&scene, 0, sizeof(Scene));
 	btn2 = button_create(730, 20, 50, 50, "Assets/strawberry.png", "Assets/grape.png");
-	mute = button_create(SCREEN_W / 2 - 200, SCREEN_H / 2, 50, 50, "Assets/strawberry.png", "Assets/grape.png");
-	unmute = button_create(SCREEN_W / 2 + 145, SCREEN_H / 2, 50, 50, "Assets/strawberry.png", "Assets/grape.png");
+	music_up = button_create(SCREEN_W / 2 + 125, SCREEN_H / 2 - 65, 50, 50, "Assets/settings.png", "Assets/settings2.png");
+	music_down = button_create(SCREEN_W / 2 - 180, SCREEN_H / 2 - 65, 50, 50, "Assets/settings.png", "Assets/settings2.png");
+	effect_up = button_create(SCREEN_W / 2 + 125, SCREEN_H / 2 + 35, 50, 50, "Assets/settings.png", "Assets/settings2.png");
+	effect_down = button_create(SCREEN_W / 2 - 180, SCREEN_H / 2 + 35, 50, 50, "Assets/settings.png", "Assets/settings2.png");
 
 	scene.name = "Settings";
 	scene.draw = &draw;

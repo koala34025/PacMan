@@ -35,6 +35,8 @@ static int gameTitleH ;
 static Button btnSettings;
 static Button chooseYellow;
 static Button chooseBrown;
+static Button chosenYellow;
+static Button chosenBrown;
 
 static void init() {
 
@@ -44,9 +46,11 @@ static void init() {
 	//btnSettings = button_create(730, 20, 50, 50, "...", "...");
 	
 	btnSettings = button_create(730, 20, 50, 50, "Assets/settings.png", "Assets/settings2.png");
-	chooseYellow = button_create(SCREEN_W / 2 - 100, SCREEN_H / 2 - 100, 50, 50, "Assets/strawberry.png", "Assets/grape.png");
-	chooseBrown = button_create(SCREEN_W / 2 + 100, SCREEN_H / 2 - 100, 50, 50, "Assets/grape.png", "Assets/strawberry.png");
-	
+	chooseYellow = button_create(SCREEN_W / 2 - 100, SCREEN_H / 2 - 100, 50, 50, "Assets/o.png", "Assets/o.png");
+	chooseBrown = button_create(SCREEN_W / 2 + 100, SCREEN_H / 2 - 100, 50, 50, "Assets/o.png", "Assets/o.png");
+	chosenYellow = button_create(SCREEN_W / 2 - 100, SCREEN_H / 2 - 100, 50, 50, "Assets/dot.png", "Assets/dot.png");
+	chosenBrown = button_create(SCREEN_W / 2 + 100, SCREEN_H / 2 - 100, 50, 50, "Assets/dot.png", "Assets/dot.png");
+
 	gameTitle = load_bitmap("Assets/title.png");
 	gameTitleW = al_get_bitmap_width(gameTitle);
 	gameTitleH = al_get_bitmap_height(gameTitle);
@@ -87,6 +91,8 @@ static void draw() {
 		// Uncomment and fill the code below
 		// drawButton(...);
 	drawButton(btnSettings);
+	if(isYellow) drawButton(chosenYellow);
+	else drawButton(chosenBrown);
 	drawButton(chooseYellow);
 	drawButton(chooseBrown);
 }
@@ -99,6 +105,8 @@ static void on_mouse_move(int a, int mouse_x, int mouse_y, int f) {
 	btnSettings.hovered = buttonHover(btnSettings, mouse_x, mouse_y);
 	chooseYellow.hovered = buttonHover(chooseYellow, mouse_x, mouse_y);
 	chooseBrown.hovered = buttonHover(chooseBrown, mouse_x, mouse_y);
+	chosenYellow.hovered = buttonHover(chosenYellow, mouse_x, mouse_y);
+	chosenBrown.hovered = buttonHover(chosenBrown, mouse_x, mouse_y);
 }
 
 
@@ -141,6 +149,10 @@ static void destroy() {
 	al_destroy_bitmap(chooseYellow.hovered_img);
 	al_destroy_bitmap(chooseBrown.default_img);
 	al_destroy_bitmap(chooseBrown.hovered_img);
+	al_destroy_bitmap(chosenYellow.default_img);
+	al_destroy_bitmap(chosenYellow.hovered_img);
+	al_destroy_bitmap(chosenBrown.default_img);
+	al_destroy_bitmap(chosenBrown.hovered_img);
 }
 
 static void on_key_down(int keycode) {

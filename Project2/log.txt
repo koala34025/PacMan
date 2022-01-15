@@ -12,14 +12,27 @@ Menu scene created
 Change scene from (unnamed) to Menu
 loaded image: Assets/settings.png
 loaded image: Assets/settings2.png
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-loaded image: Assets/grape.png
-loaded image: Assets/strawberry.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
 loaded image: Assets/title.png
 stop audio (bgm)
 played audio (bgm)
 Game start event loop
+choose brown pacman
+choose red pacman
+choose brown pacman
+choose red pacman
+choose brown pacman
+choose red pacman
+choose brown pacman
+choose red pacman
+choose brown pacman
 Window close button clicked
 Game end
 stop audio (bgm)

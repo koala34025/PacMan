@@ -59,10 +59,8 @@ static void init(void) {
 	game_bean_Score = 0;
 	game_ghost_Score = 0;
 	// create map
-	basic_map = create_map("Assets/test.txt");
-	// [TODO]
-	// Create map from .txt file and design your own map !!
-	// basic_map = create_map("Assets/map_nthu.txt");
+	basic_map = create_map("Assets/test.txt");//hightlight nthu;
+
 	if (!basic_map) {
 		game_abort("error on creating map");
 	}	

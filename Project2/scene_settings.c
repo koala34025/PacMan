@@ -46,7 +46,7 @@ static void draw(void){
 	drawButton(effect_down);
 
 	char m_volume[100];
-	sprintf_s(m_volume, sizeof(m_volume), "Music: %6.f%%", music_volume < 0.025 ? (double)0 : music_volume * 100 / 0.5);
+	sprintf_s(m_volume, sizeof(m_volume), "Music:%7.f%%", music_volume < 0.025 ? (double)0 : music_volume * 100 / 0.5);
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
@@ -57,7 +57,7 @@ static void draw(void){
 	);
 
 	char e_volume[100];
-	sprintf_s(e_volume, sizeof(e_volume), "Effect: %4.f%%", effect_volume < 0.025 ? (double)0 : effect_volume * 100 / 0.5);
+	sprintf_s(e_volume, sizeof(e_volume), "Effect:%5.f%%", effect_volume < 0.025 ? (double)0 : effect_volume * 100 / 0.5);
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),

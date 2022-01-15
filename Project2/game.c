@@ -30,6 +30,10 @@ int mouse_x, mouse_y;
 uint32_t GAME_TICK = 0;
 const uint32_t GAME_TICK_CD = 64;
 ALLEGRO_TIMER* game_tick_timer;
+ALLEGRO_TIMER* red_go_out_timer;
+ALLEGRO_TIMER* pink_go_out_timer;
+ALLEGRO_TIMER* blue_go_out_timer;
+ALLEGRO_TIMER* orange_go_out_timer;
 extern bool gameDone;
 
 /* Internal variables. */
@@ -119,6 +123,10 @@ static void allegro5_init(void) {
 		game_abort("failed to create timer");
 
 	game_tick_timer = al_create_timer(1.0f / GAME_TICK_CD / 2);
+	red_go_out_timer = al_create_timer(1.0f / GAME_TICK_CD / 2);
+	pink_go_out_timer = al_create_timer(1.0f / GAME_TICK_CD / 2);
+	blue_go_out_timer = al_create_timer(1.0f / GAME_TICK_CD / 2);
+	orange_go_out_timer = al_create_timer(1.0f / GAME_TICK_CD / 2);
 	if (!game_tick_timer)
 		game_abort("faild to create tick timer");
 

@@ -12,6 +12,10 @@ extern uint32_t GAME_TICK_CD;
 extern uint32_t GAME_TICK;
 extern ALLEGRO_TIMER* game_tick_timer;
 extern const int cage_grid_x, cage_grid_y;
+extern ALLEGRO_TIMER* red_go_out_timer;
+extern ALLEGRO_TIMER* pink_go_out_timer;
+extern ALLEGRO_TIMER* blue_go_out_timer;
+extern ALLEGRO_TIMER* orange_go_out_timer;
 
 /* Declare static function prototypes */
 static void ghost_red_move_script_FREEDOM(Ghost* ghost, Map* M);
@@ -229,8 +233,12 @@ void ghost_red_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		{
 		case BLOCKED:
 			ghost_red_move_script_BLOCKED(ghost, M);
-			if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME * ghost->typeFlag)
+			al_start_timer(red_go_out_timer);
+			if (al_get_timer_count(red_go_out_timer) > GO_OUT_TIME * ghost->typeFlag) {
+				al_stop_timer(red_go_out_timer);
+				al_set_timer_count(red_go_out_timer, 0);
 				ghost->status = GO_OUT;
+			}
 			break;
 		case FREEDOM:
 			ghost_red_move_script_FREEDOM(ghost, M);
@@ -241,7 +249,7 @@ void ghost_red_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		case GO_IN:
 			ghost_move_script_GO_IN(ghost, M);
 			if (M->map[ghost->objData.Coord.y][ghost->objData.Coord.x] == 'B') {
-				ghost->status = GO_OUT;
+				ghost->status = BLOCKED;
 				ghost->speed = 2;
 			}
 			break;
@@ -286,8 +294,12 @@ void ghost_pink_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		{
 		case BLOCKED:
 			ghost_pink_move_script_BLOCKED(ghost, M);
-			if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME * ghost->typeFlag)
+			al_start_timer(pink_go_out_timer);
+			if (al_get_timer_count(pink_go_out_timer) > GO_OUT_TIME * ghost->typeFlag) {
+				al_stop_timer(pink_go_out_timer);
+				al_set_timer_count(pink_go_out_timer, 0);
 				ghost->status = GO_OUT;
+			}
 			break;
 		case FREEDOM:
 			ghost_pink_move_script_FREEDOM(ghost, M);
@@ -298,7 +310,7 @@ void ghost_pink_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		case GO_IN:
 			ghost_move_script_GO_IN(ghost, M);
 			if (M->map[ghost->objData.Coord.y][ghost->objData.Coord.x] == 'B') {
-				ghost->status = GO_OUT;
+				ghost->status = BLOCKED;
 				ghost->speed = 2;
 			}
 			break;
@@ -342,8 +354,12 @@ void ghost_blue_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 	{
 	case BLOCKED:
 		ghost_blue_move_script_BLOCKED(ghost, M);
-		if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME * ghost->typeFlag)
+		al_start_timer(blue_go_out_timer);
+		if (al_get_timer_count(blue_go_out_timer) > GO_OUT_TIME * ghost->typeFlag) {
+			al_stop_timer(blue_go_out_timer);
+			al_set_timer_count(blue_go_out_timer, 0);
 			ghost->status = GO_OUT;
+		}
 		break;
 	case FREEDOM:
 		ghost_blue_move_script_FREEDOM(ghost, M);
@@ -354,7 +370,7 @@ void ghost_blue_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 	case GO_IN:
 		ghost_move_script_GO_IN(ghost, M);
 		if (M->map[ghost->objData.Coord.y][ghost->objData.Coord.x] == 'B') {
-			ghost->status = GO_OUT;
+			ghost->status = BLOCKED;
 			ghost->speed = 2;
 		}
 		break;
@@ -399,8 +415,12 @@ void ghost_orange_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 	{
 	case BLOCKED:
 		ghost_orange_move_script_BLOCKED(ghost, M);
-		if (al_get_timer_count(game_tick_timer) > GO_OUT_TIME * ghost->typeFlag)
+		al_start_timer(orange_go_out_timer);
+		if (al_get_timer_count(orange_go_out_timer) > GO_OUT_TIME * ghost->typeFlag) {
+			al_stop_timer(orange_go_out_timer);
+			al_set_timer_count(orange_go_out_timer, 0);
 			ghost->status = GO_OUT;
+		}
 		break;
 	case FREEDOM:
 		ghost_orange_move_script_FREEDOM(ghost, M);
@@ -411,7 +431,7 @@ void ghost_orange_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 	case GO_IN:
 		ghost_move_script_GO_IN(ghost, M);
 		if (M->map[ghost->objData.Coord.y][ghost->objData.Coord.x] == 'B') {
-			ghost->status = GO_OUT;
+			ghost->status = BLOCKED;
 			ghost->speed = 2;
 		}
 		break;

@@ -182,6 +182,15 @@ static void status_update(void) {
 		}
 	}
 
+	if (cheat_mode) {
+		for (int i = 0;i < GHOST_NUM; i++) {
+			ghost_toggle_FLEE(ghosts[i], true);
+		}
+		al_start_timer(power_up_timer);
+		pacman_eatItem(pman, 'P');
+		cheat_mode = false;
+	}
+
 }
 
 static void update(void) {

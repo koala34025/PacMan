@@ -44,30 +44,10 @@ creating ghost 3
 loaded image: Assets/ghost_flee.png
 loaded image: Assets/ghost_dead.png
 loaded image: Assets/ghost_move_orange.png
-Key with keycode 215 down
-Key with keycode 4 down
-Key with keycode 4 down
-Key with keycode 19 down
-Key with keycode 1 down
-stop audio (bgm)
-stop audio (bgm)
-stop audio (bgm)
-stop audio (bgm)
-stop audio (bgm)
-stop audio (bgm)
-stop audio (bgm)
-stop audio (bgm)
-stop audio (bgm)
-no beans left
-
-loaded image: Assets/strawberry.png
-loaded image: Assets/grape.png
-End scene created
-Change scene from Start to End
+Window close button clicked
+Game end
 pacman_destroy
 ghost_destroy
 ghost_destroy
 ghost_destroy
 ghost_destroy
-Window close button clicked
-Game end

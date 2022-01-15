@@ -113,7 +113,8 @@ void ghost_destroy(Ghost* ghost) {
 void ghost_draw(Ghost* ghost) {
 	// getDrawArea return the drawing RecArea defined by objData and GAME_TICK_CD
 	RecArea drawArea = getDrawArea(ghost->objData, GAME_TICK_CD);
-
+	
+	int bitmap_x_offset = 0;
 	//Draw default image
 	if (ghost->objData.moveCD > GAME_TICK_CD) {
 		al_draw_scaled_bitmap(ghost->move_sprite, 0, 0, 16, 16,
@@ -121,10 +122,9 @@ void ghost_draw(Ghost* ghost) {
 			draw_region, draw_region, 0
 		);
 	}
-
-	int bitmap_x_offset = 0;
+	
 	// [TODO] below is for animation usage, change the sprite you want to use.
-	if (ghost->status == FLEE) {//ghost->status == FLEE
+	else if (ghost->status == FLEE) {//ghost->status == FLEE
 		if (ghost->objData.moveCD > 32) {
 			al_draw_scaled_bitmap(ghost->flee_sprite, 0, 0, 16, 16,
 				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,

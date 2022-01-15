@@ -142,6 +142,8 @@ void pacman_draw(Pacman* pman) {
 	*/
 	RecArea drawArea = getDrawArea(pman->objData, GAME_TICK_CD);
 
+	int offset = 0;
+
 	//Draw default image
 	if (pman->objData.moveCD > GAME_TICK_CD) {
 		al_draw_scaled_bitmap(pman->move_sprite, 0, 0,
@@ -151,8 +153,7 @@ void pacman_draw(Pacman* pman) {
 		);
 	}
 
-	int offset = 0;
-	if (game_over) {
+	else if (game_over) {
 		/*
 			hint: instead of using pman->objData.moveCD, use Pacman's death_anim_counter to create animation
 		*/

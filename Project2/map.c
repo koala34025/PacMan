@@ -449,21 +449,14 @@ static void draw_power_bean(Map* M, const int row, const int col) {
 }
 
 static void draw_item1(Map* M, const int row, const int col) {
-	/*al_draw_scaled_bitmap(ghost->move_sprite, 0, 0, 16, 16,
-		drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
-		draw_region, draw_region, 0
-	);*/
-	al_draw_scaled_bitmap(pic_item1, 0, 0, 21, 21,
-		col * block_width + block_width / 2.0, row * block_height + block_height / 2.0,
-		21, 21, 0
-	);
+	al_draw_circle(map_offset_x + col * block_width + block_width / 2.0, map_offset_y + row * block_height + block_height / 2.0, 6.5, al_map_rgb(234, 178, 238), 2.0);
 }
 
 static void draw_item2(Map* M, const int row, const int col) {
-	al_draw_scaled_bitmap(pic_item2, 0, 0, 21, 21,
-		col * block_width + block_width / 2.0, row * block_height + block_height / 2.0,
-		21, 21, 0
-	);
+	al_draw_filled_triangle(map_offset_x + col * block_width + block_width / 2.0, map_offset_y + row * block_height + block_height / 2.0 - 7.0,
+							map_offset_x + col * block_width + block_width / 2.0 - 6.1, map_offset_y + row * block_height + block_height / 2.0 + 3.5,
+							map_offset_x + col * block_width + block_width / 2.0 + 6.1, map_offset_y + row * block_height + block_height / 2.0 + 3.5,
+							al_map_rgb(234, 178, 138));
 }
 
 

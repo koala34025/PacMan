@@ -146,7 +146,7 @@ static void checkItem(void) {
 	case 'X':
 		basic_map->map[Grid_y][Grid_x] = ' ';
 		//something to do with item 1
-		pman->speed = 4;
+		//pman->speed = 4;
 		al_start_timer(item1_timer);
 		pacman_eatItem(pman, 'X');
 		break;

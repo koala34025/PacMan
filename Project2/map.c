@@ -24,6 +24,8 @@ static void draw_power_bean(Map* M, const int row, const int col);
 static void draw_block_index_nthu(Map* M, int row, int col);
 static void draw_item1(Map* M, const int row, const int col);
 static void draw_item2(Map* M, const int row, const int col);
+ALLEGRO_BITMAP* pic_item1;
+ALLEGRO_BITMAP* pic_item2;
 
 const char* only_nthu[] = {
 "                                    ",
@@ -127,6 +129,8 @@ const char* default_map[] = {
 
 
 Map* create_map(const char* filepath) {
+	pic_item1 = load_bitmap("Assets/strawberry.png");
+	pic_item2 = load_bitmap("Assets/grape.png");
 	if (strcmp(filepath, "Assets/map_nthu.txt") == 0 || MAKETRUE) {//if its map_nthu,txt
 		isNTHU = true;
 	}
@@ -254,6 +258,8 @@ void delete_map(Map* M) {
 		free(...)
 		...
 	*/
+	free(pic_item1);
+	free(pic_item2);
 	if (M->map) {
 		for (int i = 0;i < M->row_num;i++) {
 			free(M->map[i]);
@@ -443,11 +449,21 @@ static void draw_power_bean(Map* M, const int row, const int col) {
 }
 
 static void draw_item1(Map* M, const int row, const int col) {
-	al_draw_filled_circle(map_offset_x + col * block_width + block_width / 2.0, map_offset_y + row * block_height + block_height / 2.0, block_width / 3.0, al_map_rgb(234, 178, 138));
+	/*al_draw_scaled_bitmap(ghost->move_sprite, 0, 0, 16, 16,
+		drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+		draw_region, draw_region, 0
+	);*/
+	al_draw_scaled_bitmap(pic_item1, 0, 0, 21, 21,
+		col * block_width + block_width / 2.0, row * block_height + block_height / 2.0,
+		21, 21, 0
+	);
 }
 
 static void draw_item2(Map* M, const int row, const int col) {
-	al_draw_filled_circle(map_offset_x + col * block_width + block_width / 2.0, map_offset_y + row * block_height + block_height / 2.0, block_width / 3.0, al_map_rgb(234, 178, 238));
+	al_draw_scaled_bitmap(pic_item2, 0, 0, 21, 21,
+		col * block_width + block_width / 2.0, row * block_height + block_height / 2.0,
+		21, 21, 0
+	);
 }
 
 

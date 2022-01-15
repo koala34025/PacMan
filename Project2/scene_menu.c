@@ -46,10 +46,10 @@ static void init() {
 	//btnSettings = button_create(730, 20, 50, 50, "...", "...");
 	
 	btnSettings = button_create(730, 20, 50, 50, "Assets/settings.png", "Assets/settings2.png");
-	chooseYellow = button_create(SCREEN_W / 2 - 100, SCREEN_H / 2 - 100, 50, 50, "Assets/o.png", "Assets/o.png");
-	chooseBrown = button_create(SCREEN_W / 2 + 100, SCREEN_H / 2 - 100, 50, 50, "Assets/o.png", "Assets/o.png");
-	chosenYellow = button_create(SCREEN_W / 2 - 100, SCREEN_H / 2 - 100, 50, 50, "Assets/dot.png", "Assets/dot.png");
-	chosenBrown = button_create(SCREEN_W / 2 + 100, SCREEN_H / 2 - 100, 50, 50, "Assets/dot.png", "Assets/dot.png");
+	chooseYellow = button_create(SCREEN_W / 2 - 160, SCREEN_H / 2 + 100, 24, 24, "Assets/o.png", "Assets/o.png");
+	chooseBrown = button_create(SCREEN_W / 2 + 40, SCREEN_H / 2 + 100, 24, 24, "Assets/o.png", "Assets/o.png");
+	chosenYellow = button_create(SCREEN_W / 2 - 160, SCREEN_H / 2 + 100, 24, 24, "Assets/dot.png", "Assets/dot.png");
+	chosenBrown = button_create(SCREEN_W / 2 + 40, SCREEN_H / 2 + 100, 24, 24, "Assets/dot.png", "Assets/dot.png");
 
 	gameTitle = load_bitmap("Assets/title.png");
 	gameTitleW = al_get_bitmap_width(gameTitle);
@@ -84,6 +84,22 @@ static void draw() {
 		SCREEN_H - 150,
 		ALLEGRO_ALIGN_CENTER,
 		"PRESS \"ENTER\""
+	);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(185, 122, 86),
+		SCREEN_W / 2 + 115,
+		SCREEN_H / 2 + 100,
+		ALLEGRO_ALIGN_CENTER,
+		"Brown"
+	);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 0),
+		SCREEN_W / 2 - 85,
+		SCREEN_H / 2 + 100,
+		ALLEGRO_ALIGN_CENTER,
+		"Yellow"
 	);
 
 		// [HACKATHON 3-3]

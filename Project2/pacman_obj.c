@@ -105,11 +105,16 @@ Pacman* pacman_create() {
 	pman->death_anim_counter = al_create_timer(1.0f / 64);
 	pman->powerUp = false;
 	/* load sprites */
-	if (isYellow) pman->move_sprite = load_bitmap("Assets/pacman_move.png");
-	else pman->move_sprite = load_bitmap("Assets/pacman_move2.png");
-	pman->die_sprite = load_bitmap("Assets/pacman_die.png");
-	return pman;
+	if (isYellow) {
+		pman->move_sprite = load_bitmap("Assets/pacman_move.png");
+		pman->die_sprite = load_bitmap("Assets/pacman_die.png");
+	}
+	else {
+		pman->move_sprite = load_bitmap("Assets/pacman_move2.png");
+		pman->die_sprite = load_bitmap("Assets/pacman_die2.png");
+	}
 
+	return pman;
 }
 
 void pacman_destroy(Pacman* pman) {

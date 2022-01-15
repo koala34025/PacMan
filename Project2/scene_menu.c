@@ -14,6 +14,8 @@
 #include "utility.h"
 #include "shared.h"
 
+bool isYellow = true;
+
 /* Internal Variables*/
 static ALLEGRO_BITMAP* gameTitle = NULL;
 static ALLEGRO_SAMPLE_ID menuBGM;
@@ -31,6 +33,8 @@ static int gameTitleH ;
 // static ... btnSettings;
 
 static Button btnSettings;
+static Button chooseYellow;
+static Button chooseBrown;
 
 static void init() {
 
@@ -40,6 +44,9 @@ static void init() {
 	//btnSettings = button_create(730, 20, 50, 50, "...", "...");
 	
 	btnSettings = button_create(730, 20, 50, 50, "Assets/settings.png", "Assets/settings2.png");
+	chooseYellow = button_create(SCREEN_W / 2 - 100, SCREEN_H / 2 - 100, 50, 50, "Assets/strawberry.png", "Assets/grape.png");
+	chooseBrown = button_create(SCREEN_W / 2 + 100, SCREEN_H / 2 - 100, 50, 50, "Assets/grape.png", "Assets/strawberry.png");
+	
 	gameTitle = load_bitmap("Assets/title.png");
 	gameTitleW = al_get_bitmap_width(gameTitle);
 	gameTitleH = al_get_bitmap_height(gameTitle);
@@ -80,6 +87,8 @@ static void draw() {
 		// Uncomment and fill the code below
 		// drawButton(...);
 	drawButton(btnSettings);
+	drawButton(chooseYellow);
+	drawButton(chooseBrown);
 }
 
 static void on_mouse_move(int a, int mouse_x, int mouse_y, int f) {
@@ -88,6 +97,8 @@ static void on_mouse_move(int a, int mouse_x, int mouse_y, int f) {
 	//	Uncomment and fill the code below
 	//	 btnSettings.hovered = ???(btnSettings, mouse_x, mouse_y);
 	btnSettings.hovered = buttonHover(btnSettings, mouse_x, mouse_y);
+	chooseYellow.hovered = buttonHover(chooseYellow, mouse_x, mouse_y);
+	chooseBrown.hovered = buttonHover(chooseBrown, mouse_x, mouse_y);
 }
 
 
@@ -110,20 +121,26 @@ static void on_mouse_down() {
 static void on_mouse_down() {
 	if (btnSettings.hovered)
 		game_change_scene(scene_settings_create());
+	if (chooseYellow.hovered) {
+		isYellow = true;
+		game_log("choose red pacman");
+	}
+	if (chooseBrown.hovered) {
+		isYellow = false;
+		game_log("choose brown pacman");
+	}
 }
 
 static void destroy() {
 	stop_bgm(menuBGM);
 	al_destroy_bitmap(gameTitle);
-	//	[HACKATHON 3-10]
-	//	TODO: Destroy button images
-	//	Uncomment and fill the code below
-	/*
-	al_destroy_bitmap(...);
-	al_destroy_bitmap(...);
-	*/
+
 	al_destroy_bitmap(btnSettings.default_img);
 	al_destroy_bitmap(btnSettings.hovered_img);
+	al_destroy_bitmap(chooseYellow.default_img);
+	al_destroy_bitmap(chooseYellow.hovered_img);
+	al_destroy_bitmap(chooseBrown.default_img);
+	al_destroy_bitmap(chooseBrown.hovered_img);
 }
 
 static void on_key_down(int keycode) {

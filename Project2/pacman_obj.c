@@ -20,11 +20,11 @@ extern ALLEGRO_SAMPLE* PACMAN_MOVESOUND;
 extern ALLEGRO_SAMPLE* PACMAN_DEATH_SOUND;
 extern ALLEGRO_SAMPLE* PACMAN_FRUIT_SOUND;
 
-
 extern uint32_t GAME_TICK;
 extern uint32_t GAME_TICK_CD;
 extern bool game_over;
 extern float effect_volume;
+extern bool isYellow;
 
 /* Declare static function */
 static bool pacman_movable(Pacman* pacman, Map* M, Directions targetDirec) {
@@ -105,7 +105,8 @@ Pacman* pacman_create() {
 	pman->death_anim_counter = al_create_timer(1.0f / 64);
 	pman->powerUp = false;
 	/* load sprites */
-	pman->move_sprite = load_bitmap("Assets/pacman_move.png");
+	if (isYellow) pman->move_sprite = load_bitmap("Assets/pacman_move.png");
+	else pman->move_sprite = load_bitmap("Assets/pacman_move2.png");
 	pman->die_sprite = load_bitmap("Assets/pacman_die.png");
 	return pman;
 

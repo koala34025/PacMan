@@ -25,6 +25,7 @@ static void draw(void) {
 	char score[100];
 
 	sprintf_s(score, sizeof(score), "Your score is:%4d", game_main_Score);
+
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),

@@ -119,14 +119,16 @@ static void checkItem(void) {
 		return;
 	// [HACKATHON 1-3]
 	// TODO: check which item you are going to eat and use `pacman_eatItem` to deal with it.
-	
+
 	switch (basic_map->map[Grid_y][Grid_x])
 	{
 	case '.':
+		basic_map->map[Grid_y][Grid_x] = ' ';
 		basic_map->beansCount--;
 		pacman_eatItem(pman, '.');
 		break;
 	case 'P':
+		basic_map->map[Grid_y][Grid_x] = ' ';
 		for (int i = 0;i < GHOST_NUM; i++) {
 			ghost_toggle_FLEE(ghosts[i], true);
 		}
@@ -136,32 +138,8 @@ static void checkItem(void) {
 	default:
 		break;
 	}
-	
-	// [HACKATHON 1-4]
-	// erase the item you eat from map
-	// be careful no erasing the wall block.
-	/*
-		basic_map->map...;
-	*/
-	basic_map->map[Grid_y][Grid_x]=' ';
 }
-// [TODO]
-		// use `getDrawArea(..., GAME_TICK_CD)` and `RecAreaOverlap(..., GAME_TICK_CD)` functions to detect
-		// if pacman and ghosts collide with each other.
-		// And perform corresponding operations.
-		// [NOTE]
-		// You should have some branch here if you want to implement power bean mode.
-		// Uncomment Following Code
-		/*
-		if(!cheat_mode and collision of pacman and ghost)
-		{
-			game_log("collide with ghost\n");
-			al_rest(1.0);
-			pacman_die();
-			game_over = true;
-			break;
-		}
-		*/
+	
 static void status_update(void) {
 	if (al_get_timer_count(power_up_timer) >= power_up_duration - 2 && al_get_timer_count(power_up_timer) < power_up_duration) {
 		for (int i = 0;i < GHOST_NUM;i++) {
@@ -182,13 +160,6 @@ static void status_update(void) {
 	for (int i = 0; i < GHOST_NUM; i++) {		
 		if (ghosts[i]->status == GO_IN)
 			continue;
-
-		if (basic_map->beansCount == 0) {
-			game_log("no beans left\n");
-			al_rest(1.0);
-			game_win = true;
-			break;
-		}
 		
 		RecArea RA = getDrawArea(pman->objData, GAME_TICK_CD);
 		RecArea RB = getDrawArea(ghosts[i]->objData, GAME_TICK_CD);
@@ -210,6 +181,7 @@ static void status_update(void) {
 			}
 		}
 	}
+
 }
 
 static void update(void) {
@@ -245,25 +217,28 @@ static void update(void) {
 	for (int i = 0; i < GHOST_NUM; i++) {
 		ghosts[i]->move_script(ghosts[i], basic_map, pman);
 	}
+
 }
 
 static void draw(void) {
 
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-
 	
 	//	[TODO]
 	//	Draw scoreboard, something your may need is sprinf();
 	/*
 		al_draw_text(...);
 	*/
+
+	draw_map(basic_map);
+
 	char score[100];
 
 	game_bean_Score = (basic_map->beansNum) - (basic_map->beansCount);
-	
+
 	game_main_Score = game_bean_Score + game_ghost_Score;
 	sprintf_s(score, sizeof(score), "SCORE:%4d", game_main_Score);//GAME_MAIN_SCORE is availible
-	
+
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
@@ -273,11 +248,15 @@ static void draw(void) {
 		score
 	);
 
-	draw_map(basic_map);
-
 	pacman_draw(pman);
 	if (game_win) return;
 	if (game_over) return;
+	if (basic_map->beansCount == 0) {
+		game_log("no beans left\n");
+		al_rest(1.0);
+		game_win = true;
+	}
+
 	// no drawing below when game over
 	for (int i = 0; i < GHOST_NUM; i++)
 		ghost_draw(ghosts[i]);

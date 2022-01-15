@@ -241,7 +241,7 @@ static void draw(void) {
 
 	draw_map(basic_map);
 
-	char score[100];
+	char score[30];
 
 	game_bean_Score = (basic_map->beansNum) - (basic_map->beansCount);
 

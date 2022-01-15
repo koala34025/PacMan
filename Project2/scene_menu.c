@@ -15,6 +15,8 @@
 #include "shared.h"
 
 bool isYellow = true;
+extern int game_main_Score;
+int leader_board[3];
 
 /* Internal Variables*/
 static ALLEGRO_BITMAP* gameTitle = NULL;
@@ -39,6 +41,15 @@ static Button chosenYellow;
 static Button chosenBrown;
 
 static void init() {
+	int current = game_main_Score, tmp;
+	for (int i = 0;i < 3;i++) {
+		if (current > leader_board[i]) {
+			tmp = leader_board[i];
+			leader_board[i] = current;
+			current = tmp;
+		}
+	}
+	game_main_Score = 0;
 
 	// [HACKATHON 3-2]
 	// TODO: Create button to settings
@@ -101,6 +112,45 @@ static void draw() {
 		ALLEGRO_ALIGN_CENTER,
 		"Yellow"
 	);
+	
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		0,
+		0,
+		ALLEGRO_ALIGN_LEFT,
+		"Leader Board"
+	);
+	char score[30];
+	sprintf_s(score, sizeof(score), "Gold:%4d", leader_board[0]);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 215, 0),
+		0,
+		0+35,
+		ALLEGRO_ALIGN_LEFT,
+		score
+	);
+
+	sprintf_s(score, sizeof(score), "Silver:%4d", leader_board[1]);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(192, 192, 192),
+		0,
+		0+70,
+		ALLEGRO_ALIGN_LEFT,
+		score
+	);
+
+	sprintf_s(score, sizeof(score), "Bronze:%4d", leader_board[2]);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(205, 127, 50),
+		0,
+		0+105,
+		ALLEGRO_ALIGN_LEFT,
+		score
+	);
 
 		// [HACKATHON 3-3]
 		// TODO: Draw button
@@ -147,7 +197,7 @@ static void on_mouse_down() {
 		game_change_scene(scene_settings_create());
 	if (chooseYellow.hovered) {
 		isYellow = true;
-		game_log("choose red pacman");
+		game_log("choose yellow pacman");
 	}
 	if (chooseBrown.hovered) {
 		isYellow = false;

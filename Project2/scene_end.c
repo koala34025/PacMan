@@ -22,7 +22,7 @@ extern bool game_win;
 static void draw(void) {
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
-	char score[100];
+	char score[30];
 
 	sprintf_s(score, sizeof(score), "Your score is:%4d", game_main_Score);
 

@@ -37,6 +37,10 @@ static Ghost** ghosts;
 bool debug_mode = false;
 bool cheat_mode = false;
 static ALLEGRO_SAMPLE_ID PACMAN_EATGHOST_SOUND_ID;
+static ALLEGRO_TIMER* item1_timer;
+static const int item1_duration = 10;
+static ALLEGRO_TIMER* item2_timer;
+static const int item2_duration = 10;
 
 /* Declare static function prototypes */
 static void init(void);
@@ -98,7 +102,13 @@ static void init(void) {
 	render_init_screen();
 	power_up_timer = al_create_timer(1.0f); // 1 tick / sec
 	if (!power_up_timer)
-		game_abort("Error on create timer\n");
+		game_abort("Error on create timer of power\n");
+	item1_timer = al_create_timer(1.0f); // 1 tick / sec
+	if (!item1_timer)
+		game_abort("Error on create timer of item1\n");
+	item2_timer = al_create_timer(1.0f); // 1 tick / sec
+	if (!item2_timer)
+		game_abort("Error on create timer of item2\n");
 	return ;
 }
 
@@ -133,6 +143,22 @@ static void checkItem(void) {
 		al_start_timer(power_up_timer);
 		pacman_eatItem(pman, 'P');
 		break;
+	case 'X':
+		basic_map->map[Grid_y][Grid_x] = ' ';
+		//something to do with item 1
+		pman->speed = 4;
+		al_start_timer(item1_timer);
+		pacman_eatItem(pman, 'X');
+		break;
+	case 'Y':
+		basic_map->map[Grid_y][Grid_x] = ' ';
+		//something to do with item 2
+		for (int i = 0;i < GHOST_NUM; i++) {
+			ghost_toggle_CRAZE(ghosts[i], true);
+		}
+		al_start_timer(item2_timer);
+		pacman_eatItem(pman, 'Y');
+		break;
 	default:
 		break;
 	}
@@ -155,6 +181,21 @@ static void status_update(void) {
 		al_set_timer_count(power_up_timer, 0);
 	}
 
+	if (al_get_timer_count(item1_timer) >= item1_duration) {
+		//something to end with item 1
+		pman->speed = 2;
+		al_stop_timer(item1_timer);
+		al_set_timer_count(item1_timer, 0);
+	}
+
+	if (al_get_timer_count(item2_timer) >= item2_duration) {
+		//something to end with item 2
+		for (int i = 0;i < GHOST_NUM; i++) {
+			ghost_toggle_CRAZE(ghosts[i], false);
+		}
+		al_stop_timer(item2_timer);
+		al_set_timer_count(item2_timer, 0);
+	}
 	for (int i = 0; i < GHOST_NUM; i++) {		
 		if (ghosts[i]->status == GO_IN)
 			continue;
@@ -163,7 +204,7 @@ static void status_update(void) {
 		RecArea RB = getDrawArea(ghosts[i]->objData, GAME_TICK_CD);
 		
 		if (!cheat_mode && RecAreaOverlap(RA, RB)){
-			if (ghosts[i]->status == FREEDOM) {
+			if (ghosts[i]->status == FREEDOM || ghosts[i]->status == CRAZE) {
 				game_log("collide with ghost %d and die\n",i);
 				al_rest(1.0);
 				pacman_die();
@@ -256,6 +297,7 @@ static void draw(void) {
 	);
 
 	pacman_draw(pman);
+
 	if (game_win) return;
 	if (game_over) return;
 	if (basic_map->beansCount == 0) {

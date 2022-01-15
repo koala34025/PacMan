@@ -256,6 +256,8 @@ void ghost_red_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		case FLEE: case preFREEDOM:
 			ghost_red_move_script_FLEE(ghost, M, pacman);
 			break;
+		case CRAZE:
+			ghost_red_move_script_CRAZE(ghost, M, pacman);
 		default:
 			break;
 		}
@@ -317,6 +319,9 @@ void ghost_pink_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		case FLEE: case preFREEDOM:
 			ghost_pink_move_script_FLEE(ghost, M, pacman);
 			break;
+		case CRAZE:
+			ghost_pink_move_script_CRAZE(ghost, M, pacman);
+			break;
 		default:
 			break;
 		}
@@ -376,6 +381,9 @@ void ghost_blue_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		break;
 	case FLEE: case preFREEDOM:
 		ghost_blue_move_script_FLEE(ghost, M, pacman);
+		break;
+	case CRAZE:
+		ghost_blue_move_script_CRAZE(ghost, M, pacman);
 		break;
 	default:
 		break;
@@ -437,6 +445,9 @@ void ghost_orange_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		break;
 	case FLEE: case preFREEDOM:
 		ghost_orange_move_script_FLEE(ghost, M, pacman);
+		break;
+	case CRAZE:
+		ghost_orange_move_script_CRAZE(ghost, M, pacman);
 		break;
 	default:
 		break;

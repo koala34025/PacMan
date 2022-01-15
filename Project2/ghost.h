@@ -20,7 +20,8 @@ typedef enum {
 	FREEDOM,					     // free at the map
 	GO_IN,							 // going back to the ghost room 
 	FLEE,							 // pacman powered up
-	preFREEDOM						 // shrink
+	preFREEDOM,						 // shrink
+	CRAZE							 // chase pacman down
 } GhostStatus;
 
 typedef enum {
@@ -57,11 +58,17 @@ void ghost_toggle_FLEE(Ghost* ghosts, bool setFLEE);
 void ghost_collided(Ghost* ghost);
 void ghost_move_script_GO_IN(Ghost* ghost, Map* M);
 void ghost_move_script_GO_OUT(Ghost* ghost, Map* M);
+void ghost_toggle_CRAZE(Ghost* ghosts, bool setCRAZE);
 
 void ghost_red_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman);
 void ghost_pink_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman);
 void ghost_blue_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman);
 void ghost_orange_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman);
+
+void ghost_red_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman);
+void ghost_pink_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman);
+void ghost_blue_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman);
+void ghost_orange_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman);
 
 void ghost_red_move_script(Ghost* ghost, Map* M, Pacman* pacman);
 void ghost_pink_move_script(Ghost* ghost, Map* M, Pacman* pacman);

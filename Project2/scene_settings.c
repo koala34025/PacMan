@@ -35,6 +35,22 @@ static Button music_up;
 static Button music_down;
 static Button effect_up;
 static Button effect_down;
+static ALLEGRO_SAMPLE_ID settingsBGM;
+
+static void init() {
+	btn2 = button_create(730, 20, 50, 50, "Assets/x.png", "Assets/x2.png");
+	music_up = button_create(SCREEN_W / 2 + 125, SCREEN_H / 2 - 65, 50, 50, "Assets/plus.png", "Assets/plus2.png");
+	music_down = button_create(SCREEN_W / 2 - 180, SCREEN_H / 2 - 65, 50, 50, "Assets/minus.png", "Assets/minus2.png");
+	effect_up = button_create(SCREEN_W / 2 + 125, SCREEN_H / 2 + 35, 50, 50, "Assets/plus.png", "Assets/plus2.png");
+	effect_down = button_create(SCREEN_W / 2 - 180, SCREEN_H / 2 + 35, 50, 50, "Assets/minus.png", "Assets/minus2.png");
+	stop_bgm(settingsBGM);
+	settingsBGM = play_bgm(settingsMusic, music_volume);
+}
+
+static void play_BGM(void) {
+	stop_bgm(settingsBGM);
+	settingsBGM = play_bgm(settingsMusic, music_volume);
+}
 
 static void draw(void){
 	al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -46,7 +62,7 @@ static void draw(void){
 	drawButton(effect_down);
 
 	char m_volume[100];
-	sprintf_s(m_volume, sizeof(m_volume), "Music:%7.f%%", music_volume < 0.025 ? (double)0 : music_volume * 100 / 0.5);
+	sprintf_s(m_volume, sizeof(m_volume), "Music:%7.f%%", music_volume < 0.02 ? (double)0 : music_volume * 100 / 0.5);
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
@@ -57,7 +73,7 @@ static void draw(void){
 	);
 
 	char e_volume[100];
-	sprintf_s(e_volume, sizeof(e_volume), "Effect:%5.f%%", effect_volume < 0.025 ? (double)0 : effect_volume * 100 / 0.5);
+	sprintf_s(e_volume, sizeof(e_volume), "Effect:%5.f%%", effect_volume < 0.02 ? (double)0 : effect_volume * 100 / 0.5);
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
@@ -79,17 +95,30 @@ static void on_mouse_move(int a, int mouse_x, int mouse_y, int f) {
 static void on_mouse_down() {
 	if (btn2.hovered)
 		game_change_scene(scene_menu_create());
-	if (music_up.hovered && music_volume < 0.5)
+	if (music_up.hovered && music_volume < 0.5) {
 		music_volume += 0.025;
-	if (music_down.hovered && music_volume > 0)
+		play_BGM();
+		printf("%f\n", music_volume);
+	}
+	if (music_down.hovered && music_volume > 0) {
 		music_volume -= 0.025;
-	if (effect_up.hovered && effect_volume < 0.5)
+		play_BGM();
+		printf("%f\n", music_volume);
+	}
+	if (effect_up.hovered && effect_volume < 0.5) {
 		effect_volume += 0.025;
-	if (effect_down.hovered && effect_volume > 0)
+		play_BGM();
+		printf("%f\n", effect_volume);
+	}
+	if (effect_down.hovered && effect_volume > 0) {
 		effect_volume -= 0.025;
+		play_BGM();
+		printf("%f\n", effect_volume);
+	}
 }
 
 static void destroy() {
+	stop_bgm(settingsBGM);
 	al_destroy_bitmap(btn2.default_img);
 	al_destroy_bitmap(btn2.hovered_img);
 	al_destroy_bitmap(music_up.default_img);
@@ -103,29 +132,17 @@ static void destroy() {
 }
 
 static void on_key_down(int keycode) {
-	//no use
-	/*
-	switch (keycode) {
-	case ALLEGRO_KEY_ENTER:
-		game_change_scene(scene_main_create());
-		break;
-	default:
-		break;
-	}
-	*/
+
 }
+
 
 // The only function that is shared across files.
 Scene scene_settings_create(void) {
 	Scene scene;
 	memset(&scene, 0, sizeof(Scene));
-	btn2 = button_create(730, 20, 50, 50, "Assets/x.png", "Assets/x2.png");
-	music_up = button_create(SCREEN_W / 2 + 125, SCREEN_H / 2 - 65, 50, 50, "Assets/plus.png", "Assets/plus2.png");
-	music_down = button_create(SCREEN_W / 2 - 180, SCREEN_H / 2 - 65, 50, 50, "Assets/minus.png", "Assets/minus2.png");
-	effect_up = button_create(SCREEN_W / 2 + 125, SCREEN_H / 2 + 35, 50, 50, "Assets/plus.png", "Assets/plus2.png");
-	effect_down = button_create(SCREEN_W / 2 - 180, SCREEN_H / 2 + 35, 50, 50, "Assets/minus.png", "Assets/minus2.png");
 
 	scene.name = "Settings";
+	scene.initialize = &init;
 	scene.draw = &draw;
 	scene.destroy = &destroy;
 	scene.on_key_down = &on_key_down;

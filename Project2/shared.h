@@ -18,6 +18,7 @@ extern ALLEGRO_SAMPLE* PACMAN_MOVESOUND;
 extern ALLEGRO_SAMPLE* PACMAN_DEATH_SOUND;
 extern ALLEGRO_SAMPLE* PACMAN_FRUIT_SOUND;
 extern ALLEGRO_SAMPLE* PACMAN_EATGHOST_SOUND;
+extern ALLEGRO_SAMPLE* settingsMusic;
 extern ALLEGRO_FONT* menuFont;
 extern int fontSize;
 extern float music_volume;

@@ -42,6 +42,7 @@ Ghost* ghost_create(int flag) {
 	ghost->speed = basic_speed;
 	ghost->status = BLOCKED;
 
+	ghost->craze_sprite = load_bitmap("Assets/ghost_craze.png");
 	ghost->flee_sprite = load_bitmap("Assets/ghost_flee.png");
 	ghost->dead_sprite = load_bitmap("Assets/ghost_dead.png");
 
@@ -87,6 +88,7 @@ void ghost_destroy(Ghost* ghost) {
 	al_destroy_bitmap(ghost->dead_sprite);
 	al_destroy_bitmap(ghost->flee_sprite);
 	al_destroy_bitmap(ghost->move_sprite);
+	al_destroy_bitmap(ghost->craze_sprite);
 	free(ghost);
 	game_log("ghost_destroy");
 }
@@ -131,6 +133,44 @@ void ghost_draw(Ghost* ghost) {
 		}
 		else {
 			al_draw_scaled_bitmap(ghost->flee_sprite, 16, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+	}
+	else if (ghost->status == CRAZE) {
+		if (ghost->objData.moveCD > 53) {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 0, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if (ghost->objData.moveCD > 43) {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 16, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if (ghost->objData.moveCD > 32) {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 32, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if (ghost->objData.moveCD > 21) {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 48, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if (ghost->objData.moveCD > 11) {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 32, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 16, 0, 16, 16,
 				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
 				draw_region, draw_region, 0
 			);

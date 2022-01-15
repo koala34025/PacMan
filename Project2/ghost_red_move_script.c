@@ -249,8 +249,13 @@ void ghost_red_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		case GO_IN:
 			ghost_move_script_GO_IN(ghost, M);
 			if (M->map[ghost->objData.Coord.y][ghost->objData.Coord.x] == 'B') {
-				ghost->status = BLOCKED;
 				ghost->speed = 2;
+				al_start_timer(red_go_out_timer);
+				if (al_get_timer_count(red_go_out_timer) > GO_OUT_TIME * 2) {
+					al_stop_timer(red_go_out_timer);
+					al_set_timer_count(red_go_out_timer, 0);
+					ghost->status = GO_OUT;
+				}
 			}
 			break;
 		case FLEE: case preFREEDOM:
@@ -310,8 +315,13 @@ void ghost_pink_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 		case GO_IN:
 			ghost_move_script_GO_IN(ghost, M);
 			if (M->map[ghost->objData.Coord.y][ghost->objData.Coord.x] == 'B') {
-				ghost->status = BLOCKED;
 				ghost->speed = 2;
+				al_start_timer(pink_go_out_timer);
+				if (al_get_timer_count(pink_go_out_timer) > GO_OUT_TIME * 2) {
+					al_stop_timer(pink_go_out_timer);
+					al_set_timer_count(pink_go_out_timer, 0);
+					ghost->status = GO_OUT;
+				}
 			}
 			break;
 		case FLEE: case preFREEDOM:
@@ -370,8 +380,13 @@ void ghost_blue_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 	case GO_IN:
 		ghost_move_script_GO_IN(ghost, M);
 		if (M->map[ghost->objData.Coord.y][ghost->objData.Coord.x] == 'B') {
-			ghost->status = BLOCKED;
 			ghost->speed = 2;
+			al_start_timer(blue_go_out_timer);
+			if (al_get_timer_count(blue_go_out_timer) > GO_OUT_TIME * 2) {
+				al_stop_timer(blue_go_out_timer);
+				al_set_timer_count(blue_go_out_timer, 0);
+				ghost->status = GO_OUT;
+			}
 		}
 		break;
 	case FLEE: case preFREEDOM:
@@ -431,8 +446,13 @@ void ghost_orange_move_script(Ghost* ghost, Map* M, Pacman* pacman) {
 	case GO_IN:
 		ghost_move_script_GO_IN(ghost, M);
 		if (M->map[ghost->objData.Coord.y][ghost->objData.Coord.x] == 'B') {
-			ghost->status = BLOCKED;
 			ghost->speed = 2;
+			al_start_timer(orange_go_out_timer);
+			if (al_get_timer_count(orange_go_out_timer) > GO_OUT_TIME * 2) {
+				al_stop_timer(orange_go_out_timer);
+				al_set_timer_count(orange_go_out_timer, 0);
+				ghost->status = GO_OUT;
+			}
 		}
 		break;
 	case FLEE: case preFREEDOM:

@@ -13,6 +13,7 @@
 #include "ghost.h"
 #include "map.h"
 #define BONUS 2
+#define TIME_UP_TIME 5
 
 // [HACKATHON 2-0]
 // Just modify the GHOST_NUM to 1
@@ -26,9 +27,14 @@ int game_bean_Score = 0;
 int game_ghost_Score = 0;
 extern bool game_over = false;
 extern bool game_win = false;
+extern bool time_up = false;
+extern bool endless_win = false;
 extern ALLEGRO_SAMPLE* PACMAN_EATGHOST_SOUND;
 extern ALLEGRO_BITMAP* pic_item1;
 extern ALLEGRO_BITMAP* pic_item2;
+extern bool isTimeUpMode;
+extern bool isEndlessMode;
+
 
 /* Internal variables*/
 static ALLEGRO_TIMER* power_up_timer;
@@ -61,11 +67,13 @@ static void draw_hitboxes(void);
 static void init(void) {
 	game_over = false;
 	game_win = false;
+	time_up = false;
+	endless_win = false;
 	game_main_Score = 0;
 	game_bean_Score = 0;
 	game_ghost_Score = 0;
 	// create map
-	basic_map = create_map("Assets/map_nthu.txt");//hightlight nthu;
+	basic_map = create_map("Assets/test.txt");//hightlight nthu;
 
 	if (!basic_map) {
 		game_abort("error on creating map");
@@ -249,6 +257,17 @@ static void status_update(void) {
 }
 
 static void update(void) {
+	
+	if (time_up && isTimeUpMode) {
+		game_change_scene(scene_end_create());
+		return;
+	}
+	
+	if (endless_win) {
+		//game_change_scene(scene_end_create());
+		//rewind
+	}
+
 	if (game_win) {
 		game_change_scene(scene_end_create());
 		//game_change_scene(scene_menu_create());	
@@ -333,12 +352,39 @@ static void draw(void) {
 		);
 	}
 
+	if (isTimeUpMode) {
+		char time[30];
+		sprintf_s(time, sizeof(time), "%d", TIME_UP_TIME - al_get_timer_count(game_tick_timer) / 128);//GAME_MAIN_SCORE is availible
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			0,
+			0,
+			ALLEGRO_ALIGN_LEFT,
+			time
+		);
+	}
+	
 	if (game_win) return;
 	if (game_over) return;
-	if (basic_map->beansCount == 0) {
-		game_log("no beans left\n");
+	if (time_up && isTimeUpMode) return;
+	if (endless_win) return;
+	
+	if (TIME_UP_TIME - al_get_timer_count(game_tick_timer) / 128 < 0 && isTimeUpMode) {
+		game_log("time_up\n");
 		al_rest(1.0);
-		game_win = true;
+		time_up = true;
+	}
+
+	if (basic_map->beansCount == 0) {
+		if (!isEndlessMode) {
+			game_log("no beans left\n");
+			al_rest(1.0);
+			game_win = true;
+		}
+		else {
+			endless_win = true;
+		}
 	}
 
 	// no drawing below when game over
@@ -407,7 +453,11 @@ static void on_key_down(int key_code) {
 		// [HACKATHON 1-1]	
 		// TODO: Use allegro pre-defined enum ALLEGRO_KEY_<KEYNAME> to controll pacman movement
 		// we provided you a function `pacman_NextMove` to set the pacman's next move direction.
-		
+		case ALLEGRO_KEY_ESCAPE:
+			if (isEndlessMode) {
+				game_change_scene(scene_end_create());
+			}
+			break;
 		case ALLEGRO_KEY_W:
 			pacman_NextMove(pman, UP);
 			break;

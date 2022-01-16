@@ -20,6 +20,8 @@ static Button okbtn;
 extern int game_main_Score;
 extern bool game_over;
 extern bool game_win;
+extern bool time_up;
+extern bool endless_win;
 char score[30];
 FILE* pFile = NULL;
 int current;
@@ -78,7 +80,7 @@ static void draw(void) {
 			"YOU WIN!"
 		);
 	}
-	else {
+	else if (game_over) {
 		al_draw_text(
 			menuFont,
 			al_map_rgb(255, 255, 255),
@@ -86,6 +88,16 @@ static void draw(void) {
 			SCREEN_H / 2 - 50,
 			ALLEGRO_ALIGN_CENTER,
 			"YOU LOSE!"
+		);
+	}
+	else if (time_up) {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W / 2,
+			SCREEN_H / 2 - 50,
+			ALLEGRO_ALIGN_CENTER,
+			"TIME'S UP!"
 		);
 	}
 

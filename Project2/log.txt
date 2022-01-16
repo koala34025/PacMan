@@ -31,7 +31,7 @@ Change scene from Menu to Start
 stop audio (bgm)
 loaded image: Assets/pic_item1.png
 loaded image: Assets/pic_item2.png
-Assets/map_nthu.txt
+Assets/test.txt
 
 loaded image: Assets/pacman_move.png
 loaded image: Assets/pacman_die.png
@@ -59,28 +59,134 @@ loaded image: Assets/ghost_craze.png
 loaded image: Assets/ghost_flee.png
 loaded image: Assets/ghost_dead.png
 loaded image: Assets/ghost_move_orange.png
-stop audio (bgm)
+Key with keycode 157 down
+Key with keycode 157 down
 Key with keycode 157 down
 Key with keycode 157 down
 Key with keycode 157 down
 Key with keycode 157 down
 Key with keycode 215 down
+Key with keycode 4 down
+Key with keycode 4 down
+Key with keycode 4 down
+Key with keycode 19 down
+Key with keycode 19 down
+Key with keycode 19 down
+Key with keycode 19 down
+Key with keycode 19 down
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
 Key with keycode 1 down
 stop audio (bgm)
 stop audio (bgm)
 stop audio (bgm)
 stop audio (bgm)
 stop audio (bgm)
+no beans left
+
+loaded image: Assets/strawberry.png
+loaded image: Assets/grape.png
+End scene created
+Change scene from Start to End
 stop audio (bgm)
+pacman_destroy
+ghost_destroy
+ghost_destroy
+ghost_destroy
+ghost_destroy
 stop audio (bgm)
+Menu scene created
+Change scene from End to Menu
+loaded image: Assets/settings.png
+loaded image: Assets/settings2.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/title.png
 stop audio (bgm)
-ghost_toggle_flee is true
-ghost_toggle_flee is true
+played audio (bgm)
+Key with keycode 67 down
+Start scene created
+Change scene from Menu to Start
 stop audio (bgm)
+loaded image: Assets/pic_item1.png
+loaded image: Assets/pic_item2.png
+Assets/test.txt
+
+loaded image: Assets/pacman_move.png
+loaded image: Assets/pacman_die.png
+creating ghost 0
+
+loaded image: Assets/ghost_craze.png
+loaded image: Assets/ghost_flee.png
+loaded image: Assets/ghost_dead.png
+loaded image: Assets/ghost_move_red.png
+creating ghost 1
+
+loaded image: Assets/ghost_craze.png
+loaded image: Assets/ghost_flee.png
+loaded image: Assets/ghost_dead.png
+loaded image: Assets/ghost_move_pink.png
+creating ghost 2
+
+loaded image: Assets/ghost_craze.png
+loaded image: Assets/ghost_flee.png
+loaded image: Assets/ghost_dead.png
+loaded image: Assets/ghost_move_blue.png
+creating ghost 3
+
+loaded image: Assets/ghost_craze.png
+loaded image: Assets/ghost_flee.png
+loaded image: Assets/ghost_dead.png
+loaded image: Assets/ghost_move_orange.png
+Key with keycode 4 down
+Key with keycode 4 down
+Key with keycode 4 down
+Key with keycode 4 down
+Key with keycode 4 down
+Key with keycode 4 down
+Key with keycode 4 down
+Key with keycode 4 down
+Key with keycode 23 down
+Key with keycode 23 down
+Key with keycode 23 down
+Key with keycode 1 down
+Key with keycode 23 down
+Key with keycode 23 down
+Key with keycode 23 down
+Key with keycode 23 down
+Key with keycode 23 down
+Key with keycode 23 down
+Key with keycode 23 down
+Key with keycode 4 down
+Key with keycode 23 down
+Key with keycode 4 down
+Key with keycode 4 down
+Key with keycode 1 down
+collide with ghost 1 and die
+
 stop audio (bgm)
+loaded image: Assets/strawberry.png
+loaded image: Assets/grape.png
+End scene created
+Change scene from Start to End
 stop audio (bgm)
+pacman_destroy
+ghost_destroy
+ghost_destroy
+ghost_destroy
+ghost_destroy
 stop audio (bgm)
-stop audio (bgm)
-stop audio (bgm)
-ghost_toggle_flee is false
-ghost_toggle_flee is false
+Window close button clicked
+Game end

@@ -13,8 +13,11 @@
 #include "scene_menu.h"
 #include "utility.h"
 #include "shared.h"
+#include "scene_rpg.h"
 
 bool isYellow = true;
+bool isTimeUpMode = false;
+bool isEndlessMode = false;
 extern int game_main_Score;
 extern int leader_board[3];
 
@@ -108,6 +111,22 @@ static void draw() {
 	);
 	al_draw_text(
 		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2,
+		SCREEN_H - 180,
+		ALLEGRO_ALIGN_CENTER,
+		"PRESS \"T\" FOR SPEED MODE"
+	);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2,
+		SCREEN_H - 120,
+		ALLEGRO_ALIGN_CENTER,
+		"PRESS \"E\" FOR ENDLESS MODE"
+	);
+	al_draw_text(
+		menuFont,
 		al_map_rgb(185, 122, 86),
 		SCREEN_W / 2 + 115,
 		SCREEN_H / 2 + 100,
@@ -172,6 +191,7 @@ static void draw() {
 	else drawButton(chosenBrown);
 	drawButton(chooseYellow);
 	drawButton(chooseBrown);
+
 }
 
 static void on_mouse_move(int a, int mouse_x, int mouse_y, int f) {
@@ -236,6 +256,20 @@ static void on_key_down(int keycode) {
 
 	switch (keycode) {
 		case ALLEGRO_KEY_ENTER:
+			isTimeUpMode = false;
+			isEndlessMode = false;
+			game_change_scene(scene_main_create());
+			break;
+		case ALLEGRO_KEY_T:
+			isTimeUpMode = true;
+			isEndlessMode = false;
+			game_log("enter time_up_mode");
+			game_change_scene(scene_main_create());
+			break;
+		case ALLEGRO_KEY_E:
+			isTimeUpMode = false;
+			isEndlessMode = true;
+			game_log("enter endless_mode");
 			game_change_scene(scene_main_create());
 			break;
 		default:

@@ -24,6 +24,7 @@ static ALLEGRO_SAMPLE_ID menuBGM;
 static int gameTitleW ;
 static int gameTitleH ;
 
+
 // [HACKATHON 3]
 // TARGET : use a clickable button to enter setting scene.
 // For `Button` struct(object) is defined in `scene_menu_object.h` and `scene_menu_object.c`
@@ -65,6 +66,8 @@ static void init() {
 	gameTitle = load_bitmap("Assets/title.png");
 	gameTitleW = al_get_bitmap_width(gameTitle);
 	gameTitleH = al_get_bitmap_height(gameTitle);
+
+
 	stop_bgm(menuBGM);
 	menuBGM = play_bgm(themeMusic, music_volume);
 	

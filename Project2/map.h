@@ -11,6 +11,7 @@ typedef struct Map{
 	int wallnum;
 	int beansNum;
 	int beansCount;
+	int score;
 	char** map;
 } Map;
 

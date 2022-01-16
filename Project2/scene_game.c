@@ -12,7 +12,7 @@
 #include "pacman_obj.h"
 #include "ghost.h"
 #include "map.h"
-
+#define BONUS 2
 
 // [HACKATHON 2-0]
 // Just modify the GHOST_NUM to 1
@@ -132,7 +132,10 @@ static void checkItem(void) {
 	{
 	case '.':
 		basic_map->map[Grid_y][Grid_x] = ' ';
+
 		basic_map->beansCount--;
+		if (pman->powerUp) basic_map->score += 1 * BONUS;
+		else basic_map->score += 1;
 		pacman_eatItem(pman, '.');
 		break;
 	case 'P':
@@ -140,13 +143,15 @@ static void checkItem(void) {
 		for (int i = 0;i < GHOST_NUM; i++) {
 			ghost_toggle_FLEE(ghosts[i], true);
 		}
+		al_set_timer_count(power_up_timer, 0);
 		al_start_timer(power_up_timer);
 		pacman_eatItem(pman, 'P');
 		break;
 	case 'X':
 		basic_map->map[Grid_y][Grid_x] = ' ';
 		//something to do with item 1
-		//pman->speed = 4;
+		pman->powerUp = true;
+		al_set_timer_count(item1_timer, 0);
 		al_start_timer(item1_timer);
 		pacman_eatItem(pman, 'X');
 		break;
@@ -156,6 +161,7 @@ static void checkItem(void) {
 		for (int i = 0;i < GHOST_NUM; i++) {
 			ghost_toggle_CRAZE(ghosts[i], true);
 		}
+		al_set_timer_count(item2_timer, 0);
 		al_start_timer(item2_timer);
 		pacman_eatItem(pman, 'Y');
 		break;
@@ -183,7 +189,7 @@ static void status_update(void) {
 
 	if (al_get_timer_count(item1_timer) >= item1_duration) {
 		//something to end with item 1
-		pman->speed = 2;
+		pman->powerUp = false;
 		al_stop_timer(item1_timer);
 		al_set_timer_count(item1_timer, 0);
 	}
@@ -215,7 +221,8 @@ static void status_update(void) {
 				game_log("collide with ghost %d and eat it\n", i);
 				stop_bgm(PACMAN_EATGHOST_SOUND_ID);
 				PACMAN_EATGHOST_SOUND_ID = play_audio(PACMAN_EATGHOST_SOUND, effect_volume);
-				game_ghost_Score += 3;
+				if (pman->powerUp) game_ghost_Score += 3 * BONUS;
+				else game_ghost_Score += 3;
 				ghost_collided(ghosts[i]);
 			}
 		}
@@ -225,8 +232,15 @@ static void status_update(void) {
 		for (int i = 0;i < GHOST_NUM; i++) {
 			ghost_toggle_FLEE(ghosts[i], true);
 		}
+		al_set_timer_count(power_up_timer, 0);
 		al_start_timer(power_up_timer);
 		pacman_eatItem(pman, 'P');
+
+		/*
+		al_set_timer_count(item1_timer, 0);
+		al_start_timer(item1_timer);
+		pacman_eatItem(pman, 'X');
+		*/
 		cheat_mode = false;
 	}
 
@@ -282,7 +296,7 @@ static void draw(void) {
 
 	char score[30];
 
-	game_bean_Score = (basic_map->beansNum) - (basic_map->beansCount);
+	game_bean_Score = basic_map->score;
 
 	game_main_Score = game_bean_Score + game_ghost_Score;
 	sprintf_s(score, sizeof(score), "SCORE:%4d", game_main_Score);//GAME_MAIN_SCORE is availible
@@ -290,13 +304,32 @@ static void draw(void) {
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
-		SCREEN_W / 2 - 75,
+		SCREEN_W / 2 - 80,
 		SCREEN_H - 100,
 		ALLEGRO_ALIGN_LEFT,
 		score
 	);
 
 	pacman_draw(pman);
+
+	if (pman->powerUp) {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 215, 0),
+			SCREEN_W - 200,
+			SCREEN_H - 100,
+			ALLEGRO_ALIGN_CENTER,
+			"!! DOUBLE !!"
+		);
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 215, 0),
+			200,
+			SCREEN_H - 100,
+			ALLEGRO_ALIGN_CENTER,
+			"!! DOUBLE !!"
+		);
+	}
 
 	if (game_win) return;
 	if (game_over) return;
@@ -355,7 +388,7 @@ static void destroy(void) {
 	for (int i = 0; i < GHOST_NUM; i++) {
 		ghost_destroy(ghosts[i]);
 	}
-	
+	//delete_map(basic_map);
 	free(basic_map);
 	free(ghosts);
 }

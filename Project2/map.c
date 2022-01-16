@@ -24,8 +24,12 @@ static void draw_power_bean(Map* M, const int row, const int col);
 static void draw_block_index_nthu(Map* M, int row, int col);
 static void draw_item1(Map* M, const int row, const int col);
 static void draw_item2(Map* M, const int row, const int col);
-ALLEGRO_BITMAP* pic_item1;
-ALLEGRO_BITMAP* pic_item2;
+static ALLEGRO_BITMAP* pic_item1;
+static ALLEGRO_BITMAP* pic_item2;
+static int pic_item1W;
+static int pic_item1H;
+static int pic_item2W;
+static int pic_item2H;
 
 const char* only_nthu[] = {
 "                                    ",
@@ -129,8 +133,11 @@ const char* default_map[] = {
 
 
 Map* create_map(const char* filepath) {
-	pic_item1 = load_bitmap("Assets/strawberry.png");
-	pic_item2 = load_bitmap("Assets/grape.png");
+	pic_item1 = load_bitmap("Assets/pic_item1.png");
+	//pic_item2 = load_bitmap("Assets/pic_item2.png");
+	pic_item1W = al_get_bitmap_width(pic_item1);
+	pic_item1H = al_get_bitmap_height(pic_item1);
+
 	if (strcmp(filepath, "Assets/map_nthu.txt") == 0 || MAKETRUE) {//if its map_nthu,txt
 		isNTHU = true;
 	}
@@ -213,7 +220,7 @@ Map* create_map(const char* filepath) {
 		'Y' -> item 2
 	*/
 
-	M->wallnum = M->beansCount = 0;
+	M->wallnum = M->beansCount = M->score = 0;
 	for (int i = 0; i < M->row_num; i++) {
 		for (int j = 0; j < M->col_num; j++) {
 			if (filepath == NULL)
@@ -258,8 +265,8 @@ void delete_map(Map* M) {
 		free(...)
 		...
 	*/
-	free(pic_item1);
-	free(pic_item2);
+	al_destroy_bitmap(pic_item1);
+	//al_destroy_bitmap(pic_item2);
 	if (M->map) {
 		for (int i = 0;i < M->row_num;i++) {
 			free(M->map[i]);
@@ -449,7 +456,15 @@ static void draw_power_bean(Map* M, const int row, const int col) {
 }
 
 static void draw_item1(Map* M, const int row, const int col) {
-	al_draw_circle(map_offset_x + col * block_width + block_width / 2.0, map_offset_y + row * block_height + block_height / 2.0, 6.5, al_map_rgb(234, 178, 238), 2.0);
+	//al_draw_circle(map_offset_x + col * block_width + block_width / 2.0, map_offset_y + row * block_height + block_height / 2.0, 6.5, al_map_rgb(234, 178, 238), 2.0);
+	al_draw_scaled_bitmap(
+		pic_item1,
+		0, 0,
+		pic_item1W, pic_item1H,
+		map_offset_x + col * block_width, map_offset_y + row * block_height,
+		block_width, block_height,
+		0
+	);
 }
 
 static void draw_item2(Map* M, const int row, const int col) {

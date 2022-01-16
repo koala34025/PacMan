@@ -511,7 +511,7 @@ static void render_init_screen(void) {
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
-		SCREEN_W / 2 - 75,
+		SCREEN_W / 2 - 80,
 		SCREEN_H - 100,
 		ALLEGRO_ALIGN_LEFT,
 		"SCORE: "

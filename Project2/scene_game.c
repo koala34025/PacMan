@@ -27,6 +27,8 @@ int game_ghost_Score = 0;
 extern bool game_over = false;
 extern bool game_win = false;
 extern ALLEGRO_SAMPLE* PACMAN_EATGHOST_SOUND;
+extern ALLEGRO_BITMAP* pic_item1;
+extern ALLEGRO_BITMAP* pic_item2;
 
 /* Internal variables*/
 static ALLEGRO_TIMER* power_up_timer;
@@ -395,6 +397,8 @@ static void destroy(void) {
 	al_destroy_timer(item1_timer);
 	al_destroy_timer(item2_timer);
 	stop_bgm(PACMAN_EATGHOST_SOUND_ID);
+	al_destroy_bitmap(pic_item1);
+	al_destroy_bitmap(pic_item2);
 }
 
 static void on_key_down(int key_code) {

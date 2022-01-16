@@ -269,11 +269,11 @@ static void game_destroy(void) {
 	al_destroy_timer(game_update_timer);
 	al_destroy_event_queue(game_event_queue);
 	al_destroy_display(game_display);
-	free(mouse_state);
 	al_destroy_timer(red_go_out_timer);
 	al_destroy_timer(pink_go_out_timer);
 	al_destroy_timer(blue_go_out_timer);
 	al_destroy_timer(orange_go_out_timer);
+	free(mouse_state);
 }
 
 void game_change_scene(Scene next_scene) {

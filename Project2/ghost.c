@@ -392,7 +392,7 @@ void ghost_toggle_FLEE(Ghost* ghost, bool setFLEE) {
 		}
 	*/
 	if (setFLEE) {
-		if (ghost->status == FREEDOM || ghost->status == preFREEDOM) {
+		if (ghost->status == FREEDOM || ghost->status == preFREEDOM || ghost->status == CRAZE) {
 			ghost->status = FLEE;
 			ghost->speed = 1;
 			game_log("ghost_toggle_flee is true");
@@ -409,13 +409,15 @@ void ghost_toggle_FLEE(Ghost* ghost, bool setFLEE) {
 
 void ghost_toggle_CRAZE(Ghost* ghost, bool setCRAZE) {
 	if (setCRAZE) {
-		if (ghost->status == FREEDOM) {
+		if (ghost->status == FREEDOM || ghost->status == preFREEDOM || ghost->status == FLEE) {
+			ghost->speed = 2;
 			ghost->status = CRAZE;
 			game_log("ghost_toggle_craze is true");
 		}
 	}
 	else {
 		if (ghost->status == CRAZE) {
+			ghost->speed = 2;
 			ghost->status = FREEDOM;
 			game_log("ghost_toggle_craze is false");
 		}

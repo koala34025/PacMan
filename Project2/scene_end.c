@@ -26,6 +26,8 @@ char score[30];
 FILE* pFile = NULL;
 int current;
 int leader_board[3] = { -1,-1,-1 };
+extern int total;
+extern bool isEndlessMode;
 
 void find(void) {
 	pFile = fopen("score_board.txt", "r");
@@ -49,7 +51,7 @@ void find(void) {
 }
 
 static void init(void) {
-	sprintf_s(score, sizeof(score), "%d", game_main_Score);
+	sprintf_s(score, sizeof(score), "%d", isEndlessMode ? total : game_main_Score);
 	game_log_score(score);
 	find();
 }
@@ -59,7 +61,7 @@ static void draw(void) {
 
 	//char score[30];
 
-	sprintf_s(score, sizeof(score), "Your score is:%4d", game_main_Score);
+	sprintf_s(score, sizeof(score), "Your score is:%4d", isEndlessMode ? total : game_main_Score);
 
 	al_draw_text(
 		menuFont,

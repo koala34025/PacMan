@@ -20,6 +20,7 @@ bool isTimeUpMode = false;
 bool isEndlessMode = false;
 extern int game_main_Score;
 extern int leader_board[3];
+bool from_menu;
 
 /* Internal Variables*/
 static ALLEGRO_BITMAP* gameTitle = NULL;
@@ -267,6 +268,7 @@ static void on_key_down(int keycode) {
 			game_change_scene(scene_main_create());
 			break;
 		case ALLEGRO_KEY_E:
+			from_menu = true;
 			isTimeUpMode = false;
 			isEndlessMode = true;
 			game_log("enter endless_mode");

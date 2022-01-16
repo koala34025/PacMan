@@ -34,7 +34,8 @@ extern ALLEGRO_BITMAP* pic_item1;
 extern ALLEGRO_BITMAP* pic_item2;
 extern bool isTimeUpMode;
 extern bool isEndlessMode;
-
+int total;
+extern bool from_menu;
 
 /* Internal variables*/
 static ALLEGRO_TIMER* power_up_timer;
@@ -49,6 +50,7 @@ static ALLEGRO_TIMER* item1_timer;
 static const int item1_duration = 10;
 static ALLEGRO_TIMER* item2_timer;
 static const int item2_duration = 10;
+static int endless_Score;
 
 /* Declare static function prototypes */
 static void init(void);
@@ -72,6 +74,9 @@ static void init(void) {
 	game_main_Score = 0;
 	game_bean_Score = 0;
 	game_ghost_Score = 0;
+	if (from_menu) {
+		endless_Score = 0;
+	}
 	// create map
 	basic_map = create_map("Assets/test.txt");//hightlight nthu;
 
@@ -264,8 +269,10 @@ static void update(void) {
 	}
 	
 	if (endless_win) {
-		//game_change_scene(scene_end_create());
+		from_menu = false;
+		game_change_scene(scene_main_create());
 		//rewind
+		return;
 	}
 
 	if (game_win) {
@@ -304,7 +311,7 @@ static void update(void) {
 }
 
 static void draw(void) {
-
+	
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	
 	//	[TODO]
@@ -320,7 +327,10 @@ static void draw(void) {
 	game_bean_Score = basic_map->score;
 
 	game_main_Score = game_bean_Score + game_ghost_Score;
-	sprintf_s(score, sizeof(score), "SCORE:%4d", game_main_Score);//GAME_MAIN_SCORE is availible
+
+	total = endless_Score + game_main_Score;
+
+	sprintf_s(score, sizeof(score), "SCORE:%4d", isEndlessMode ? total : game_main_Score);//GAME_MAIN_SCORE is availible
 
 	al_draw_text(
 		menuFont,
@@ -354,14 +364,40 @@ static void draw(void) {
 
 	if (isTimeUpMode) {
 		char time[30];
-		sprintf_s(time, sizeof(time), "%d", TIME_UP_TIME - al_get_timer_count(game_tick_timer) / 128);//GAME_MAIN_SCORE is availible
+		sprintf_s(time, sizeof(time), "Time Left:%4d", TIME_UP_TIME - al_get_timer_count(game_tick_timer) / 128);//GAME_MAIN_SCORE is availible
 		al_draw_text(
 			menuFont,
 			al_map_rgb(255, 255, 255),
-			0,
-			0,
+			10,
+			15,
 			ALLEGRO_ALIGN_LEFT,
 			time
+		);
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[TIMER MODE]"
+		);
+	}
+	if (isEndlessMode) {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			10,
+			15,
+			ALLEGRO_ALIGN_LEFT,
+			"PRESS \"ESC\" TO LEAVE"
+		);
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[ENDLESS MODE]"
 		);
 	}
 	
@@ -384,6 +420,7 @@ static void draw(void) {
 		}
 		else {
 			endless_win = true;
+			endless_Score += game_main_Score;
 		}
 	}
 

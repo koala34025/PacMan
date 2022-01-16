@@ -104,6 +104,7 @@ static void on_mouse_down() {
 static void destroy() {
 	al_destroy_bitmap(okbtn.default_img);
 	al_destroy_bitmap(okbtn.hovered_img);
+	free(pFile);
 }
 
 static void on_key_down(int keycode) {

@@ -391,6 +391,10 @@ static void destroy(void) {
 	delete_map(basic_map);
 	//free(basic_map);
 	free(ghosts);
+	al_destroy_timer(power_up_timer);
+	al_destroy_timer(item1_timer);
+	al_destroy_timer(item2_timer);
+	stop_bgm(PACMAN_EATGHOST_SOUND_ID);
 }
 
 static void on_key_down(int key_code) {

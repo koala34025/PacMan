@@ -92,9 +92,26 @@ static void on_mouse_move(int a, int mouse_x, int mouse_y, int f) {
 	effect_down.hovered = buttonHover(effect_down, mouse_x, mouse_y);
 }
 
+
+
+static void destroy() {
+	stop_bgm(settingsBGM);
+	al_destroy_bitmap(btn2.default_img);
+	al_destroy_bitmap(btn2.hovered_img);
+	al_destroy_bitmap(music_up.default_img);
+	al_destroy_bitmap(music_up.hovered_img);
+	al_destroy_bitmap(music_down.default_img);
+	al_destroy_bitmap(music_down.hovered_img);
+	al_destroy_bitmap(effect_up.default_img);
+	al_destroy_bitmap(effect_up.hovered_img);
+	al_destroy_bitmap(effect_down.default_img);
+	al_destroy_bitmap(effect_down.hovered_img);
+}
+
 static void on_mouse_down() {
-	if (btn2.hovered)
+	if (btn2.hovered) {
 		game_change_scene(scene_menu_create());
+	}
 	if (music_up.hovered && music_volume < 0.5) {
 		music_volume += 0.025;
 		play_BGM();
@@ -115,20 +132,6 @@ static void on_mouse_down() {
 		play_BGM();
 		printf("%f\n", effect_volume);
 	}
-}
-
-static void destroy() {
-	stop_bgm(settingsBGM);
-	al_destroy_bitmap(btn2.default_img);
-	al_destroy_bitmap(btn2.hovered_img);
-	al_destroy_bitmap(music_up.default_img);
-	al_destroy_bitmap(music_up.hovered_img);
-	al_destroy_bitmap(music_down.default_img);
-	al_destroy_bitmap(music_down.hovered_img);
-	al_destroy_bitmap(effect_up.default_img);
-	al_destroy_bitmap(effect_up.hovered_img);
-	al_destroy_bitmap(effect_down.default_img);
-	al_destroy_bitmap(effect_down.hovered_img);
 }
 
 static void on_key_down(int keycode) {

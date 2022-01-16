@@ -14,6 +14,7 @@
 #include "map.h"
 #define BONUS 2
 #define TIME_UP_TIME 100
+#define MAPNAME "Assets/map_nthu.txt"
 
 // [HACKATHON 2-0]
 // Just modify the GHOST_NUM to 1
@@ -78,7 +79,7 @@ static void init(void) {
 		endless_Score = 0;
 	}
 	// create map
-	basic_map = create_map("Assets/map_nthu.txt");//hightlight nthu;
+	basic_map = create_map(MAPNAME);//hightlight nthu;
 
 	if (!basic_map) {
 		game_abort("error on creating map");

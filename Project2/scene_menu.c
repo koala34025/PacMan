@@ -146,10 +146,10 @@ static void draw() {
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
-		0,
-		0,
-		ALLEGRO_ALIGN_LEFT,
-		"Leader Board"
+		SCREEN_W / 2,
+		100,
+		ALLEGRO_ALIGN_CENTER,
+		"=Leader Board="
 	);
 	
 	char score[30];
@@ -157,9 +157,9 @@ static void draw() {
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 215, 0),
-		0,
-		0 + 35,
-		ALLEGRO_ALIGN_LEFT,
+		SCREEN_W / 2,
+		100 + 40,
+		ALLEGRO_ALIGN_CENTER,
 		score
 	);
 
@@ -167,9 +167,9 @@ static void draw() {
 	al_draw_text(
 		menuFont,
 		al_map_rgb(192, 192, 192),
-		0,
-		0 + 70,
-		ALLEGRO_ALIGN_LEFT,
+		SCREEN_W / 2,
+		100 + 80,
+		ALLEGRO_ALIGN_CENTER,
 		score
 	);
 
@@ -177,9 +177,9 @@ static void draw() {
 	al_draw_text(
 		menuFont,
 		al_map_rgb(205, 127, 50),
-		0,
-		0 + 105,
-		ALLEGRO_ALIGN_LEFT,
+		SCREEN_W / 2,
+		100 + 120,
+		ALLEGRO_ALIGN_CENTER,
 		score
 	);
 

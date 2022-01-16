@@ -78,7 +78,7 @@ static void init(void) {
 		endless_Score = 0;
 	}
 	// create map
-	basic_map = create_map("Assets/test.txt");//hightlight nthu;
+	basic_map = create_map("Assets/map_nthu.txt");//hightlight nthu;
 
 	if (!basic_map) {
 		game_abort("error on creating map");
@@ -382,7 +382,7 @@ static void draw(void) {
 			"[TIMER MODE]"
 		);
 	}
-	if (isEndlessMode) {
+	else if (isEndlessMode) {
 		al_draw_text(
 			menuFont,
 			al_map_rgb(255, 255, 255),
@@ -398,6 +398,16 @@ static void draw(void) {
 			15,
 			ALLEGRO_ALIGN_RIGHT,
 			"[ENDLESS MODE]"
+		);
+	}
+	else {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[NORMAL MODE]"
 		);
 	}
 	
@@ -592,7 +602,7 @@ static void render_init_screen(void) {
 			"[TIMER MODE]"
 		);
 	}
-	if (isEndlessMode) {
+	else if (isEndlessMode) {
 		al_draw_text(
 			menuFont,
 			al_map_rgb(255, 255, 255),
@@ -608,6 +618,16 @@ static void render_init_screen(void) {
 			15,
 			ALLEGRO_ALIGN_RIGHT,
 			"[ENDLESS MODE]"
+		);
+	}
+	else {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[NORMAL MODE]"
 		);
 	}
 	al_flip_display();

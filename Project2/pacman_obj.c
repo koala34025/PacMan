@@ -145,19 +145,18 @@ void pacman_draw(Pacman* pman) {
 	int offset = 0;
 
 	//Draw default image
-	if (pman->objData.moveCD > GAME_TICK_CD) {
-		al_draw_scaled_bitmap(pman->move_sprite, 0, 0,
-			16, 16,
-			drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
-			draw_region, draw_region, 0
-		);
-	}
-
-	else if (game_over) {
+	if (game_over) {
 		/*
 			hint: instead of using pman->objData.moveCD, use Pacman's death_anim_counter to create animation
 		*/
 		al_draw_scaled_bitmap(pman->die_sprite, 0+al_get_timer_count(pman->death_anim_counter)/16*16, 0, 16, 16,
+			drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+			draw_region, draw_region, 0
+		);
+	}
+	else if (pman->objData.moveCD > GAME_TICK_CD) {
+		al_draw_scaled_bitmap(pman->move_sprite, 0, 0,
+			16, 16,
 			drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
 			draw_region, draw_region, 0
 		);

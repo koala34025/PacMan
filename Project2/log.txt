@@ -61,48 +61,569 @@ loaded image: Assets/ghost_dead.png
 loaded image: Assets/ghost_move_orange.png
 stop audio (bgm)
 Key with keycode 157 down
-Key with keycode 157 down
 Key with keycode 215 down
-Key with keycode 3 down
-ghost_toggle_flee is true
-ghost_toggle_flee is true
-ghost_toggle_flee is true
-ghost_toggle_flee is true
+Key with keycode 4 down
 stop audio (bgm)
-Key with keycode 3 down
-ghost_toggle_flee is true
-ghost_toggle_flee is true
-ghost_toggle_flee is true
-ghost_toggle_flee is true
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
 stop audio (bgm)
 Key with keycode 1 down
-Key with keycode 3 down
+stop audio (bgm)
+Key with keycode 19 down
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+Key with keycode 1 down
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 4 down
+Key with keycode 19 down
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+Key with keycode 1 down
+Key with keycode 4 down
+Key with keycode 23 down
 ghost_toggle_flee is true
 ghost_toggle_flee is true
 ghost_toggle_flee is true
 ghost_toggle_flee is true
 stop audio (bgm)
+Key with keycode 19 down
+Key with keycode 1 down
+Key with keycode 23 down
+Key with keycode 23 down
+Key with keycode 1 down
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+Key with keycode 23 down
 stop audio (bgm)
 stop audio (bgm)
 stop audio (bgm)
 stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+collide with ghost 3 and eat it
+
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+Key with keycode 19 down
+Key with keycode 1 down
+Key with keycode 23 down
+Key with keycode 1 down
+stop audio (bgm)
+ghost_toggle_flee is false
+ghost_toggle_flee is false
+ghost_toggle_flee is false
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 1 down
 stop audio (bgm)
 Key with keycode 4 down
 Key with keycode 23 down
 stop audio (bgm)
 Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+Key with keycode 1 down
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
 Key with keycode 4 down
 stop audio (bgm)
 stop audio (bgm)
 stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+ghost_toggle_flee is true
+ghost_toggle_flee is true
+ghost_toggle_flee is true
+ghost_toggle_flee is true
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+Key with keycode 1 down
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+Key with keycode 23 down
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+collide with ghost 2 and eat it
+
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
 ghost_toggle_flee is false
 ghost_toggle_flee is false
 ghost_toggle_flee is false
+stop audio (bgm)
+stop audio (bgm)
+ghost_toggle_flee is true
+ghost_toggle_flee is true
+ghost_toggle_flee is true
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+collide with ghost 0 and eat it
+
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+collide with ghost 3 and eat it
+
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+Key with keycode 19 down
+Key with keycode 1 down
+Key with keycode 19 down
+Key with keycode 1 down
 ghost_toggle_flee is false
-Window close button clicked
-Game end
+Key with keycode 1 down
+Key with keycode 19 down
+Key with keycode 1 down
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+Key with keycode 1 down
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 19 down
+Key with keycode 19 down
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+Key with keycode 4 down
+Key with keycode 4 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+Key with keycode 23 down
+stop audio (bgm)
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+Key with keycode 23 down
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 4 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 1 down
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 4 down
+Key with keycode 19 down
+Key with keycode 23 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+Key with keycode 1 down
+Key with keycode 1 down
+Key with keycode 1 down
+Key with keycode 1 down
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 1 down
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 19 down
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+Key with keycode 1 down
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+stop audio (bgm)
+Key with keycode 23 down
+Key with keycode 1 down
+Key with keycode 19 down
+Key with keycode 4 down
+Key with keycode 23 down
+Key with keycode 19 down
+Key with keycode 23 down
+collide with ghost 3 and die
+
+stop audio (bgm)
+loaded image: Assets/strawberry.png
+loaded image: Assets/grape.png
+End scene created
+Change scene from Start to End
 pacman_destroy
 ghost_destroy
 ghost_destroy
 ghost_destroy
 ghost_destroy
+Menu scene created
+Change scene from End to Menu
+loaded image: Assets/settings.png
+loaded image: Assets/settings2.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/title.png
+stop audio (bgm)
+played audio (bgm)
+Settings scene created
+Change scene from Menu to Settings
+stop audio (bgm)
+loaded image: Assets/x.png
+loaded image: Assets/x2.png
+loaded image: Assets/plus.png
+loaded image: Assets/plus2.png
+loaded image: Assets/minus.png
+loaded image: Assets/minus2.png
+loaded image: Assets/plus.png
+loaded image: Assets/plus2.png
+loaded image: Assets/minus.png
+loaded image: Assets/minus2.png
+stop audio (bgm)
+played audio (bgm)
+Menu scene created
+Change scene from Settings to Menu
+stop audio (bgm)
+loaded image: Assets/settings.png
+loaded image: Assets/settings2.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/o.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/dot.png
+loaded image: Assets/title.png
+stop audio (bgm)
+played audio (bgm)

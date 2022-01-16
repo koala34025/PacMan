@@ -353,7 +353,7 @@ static void game_vlog_score(const char* format, va_list arg) {
 	vprintf(format, arg);
 	printf("\n");
 	// Write log to file for later debugging.
-	FILE* pFile = fopen("score_board.txt", clear_file ? "a" : "a");
+	FILE* pFile = fopen("score_board.txt", clear_file ? "w" : "w");
 	if (pFile) {
 		vfprintf(pFile, format, arg);
 		fprintf(pFile, "\n");

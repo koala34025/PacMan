@@ -25,34 +25,37 @@ extern bool endless_win;
 char score[30];
 FILE* pFile = NULL;
 int current;
-int leader_board[3] = { -1,-1,-1 };
+int leader_board[3];
 extern int total;
 extern bool isEndlessMode;
 
 void find(void) {
+	int now = isEndlessMode ? total : game_main_Score;
+
 	pFile = fopen("score_board.txt", "r");
 
-	leader_board[0] = -1;
-	leader_board[1] = -1;
-	leader_board[2] = -1;
+	int i = 0;
 
 	while (fscanf(pFile, "%d", &current) != EOF) {
-		getc(pFile);
-		//printf("%d\n", current);
-		int tmp;
-		for (int i = 0;i < 3;i++) {
-			if (current > leader_board[i]) {
-				tmp = leader_board[i];
-				leader_board[i] = current;
-				current = tmp;
-			}
+		leader_board[i++] = current;
+	}
+
+	int tmp;
+	for (int i = 0;i < 3;i++) {
+		if (now > leader_board[i]) {
+			tmp = leader_board[i];
+			leader_board[i] = now;
+			now = tmp;
 		}
 	}
+
+	sprintf_s(score, sizeof(score), "%d %d %d", leader_board[0], leader_board[1], leader_board[2]);
+	game_log_score(score);
 }
 
 static void init(void) {
-	sprintf_s(score, sizeof(score), "%d", isEndlessMode ? total : game_main_Score);
-	game_log_score(score);
+	//sprintf_s(score, sizeof(score), "%d", isEndlessMode ? total : game_main_Score);
+	//game_log_score(score);
 	find();
 }
 

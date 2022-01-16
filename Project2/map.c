@@ -267,8 +267,6 @@ void delete_map(Map* M) {
 		free(...)
 		...
 	*/
-	al_destroy_bitmap(pic_item1);
-	al_destroy_bitmap(pic_item2);
 	if (M->map) {
 		for (int i = 0;i < M->row_num;i++) {
 			free(M->map[i]);

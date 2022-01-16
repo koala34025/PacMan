@@ -16,14 +16,13 @@
 
 bool isYellow = true;
 extern int game_main_Score;
-int leader_board[3];
+extern int leader_board[3];
 
 /* Internal Variables*/
 static ALLEGRO_BITMAP* gameTitle = NULL;
 static ALLEGRO_SAMPLE_ID menuBGM;
 static int gameTitleW ;
 static int gameTitleH ;
-
 
 // [HACKATHON 3]
 // TARGET : use a clickable button to enter setting scene.
@@ -42,6 +41,12 @@ static Button chosenYellow;
 static Button chosenBrown;
 
 static void init() {
+	static int first_time = true;
+	if (first_time) {
+		find();
+		first_time = false;
+	}
+	/*
 	int current = game_main_Score, tmp;
 	for (int i = 0;i < 3;i++) {
 		if (current > leader_board[i]) {
@@ -51,6 +56,8 @@ static void init() {
 		}
 	}
 	game_main_Score = 0;
+	*/
+
 
 	// [HACKATHON 3-2]
 	// TODO: Create button to settings
@@ -124,13 +131,14 @@ static void draw() {
 		ALLEGRO_ALIGN_LEFT,
 		"Leader Board"
 	);
+	
 	char score[30];
 	sprintf_s(score, sizeof(score), "Gold:%4d", leader_board[0]);
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 215, 0),
 		0,
-		0+35,
+		0 + 35,
 		ALLEGRO_ALIGN_LEFT,
 		score
 	);
@@ -140,7 +148,7 @@ static void draw() {
 		menuFont,
 		al_map_rgb(192, 192, 192),
 		0,
-		0+70,
+		0 + 70,
 		ALLEGRO_ALIGN_LEFT,
 		score
 	);
@@ -150,7 +158,7 @@ static void draw() {
 		menuFont,
 		al_map_rgb(205, 127, 50),
 		0,
-		0+105,
+		0 + 105,
 		ALLEGRO_ALIGN_LEFT,
 		score
 	);

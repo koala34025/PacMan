@@ -59,6 +59,7 @@ static void game_draw(void);
 static void game_destroy(void);
 // Log using va_list.
 static void game_vlog(const char* format, va_list arg);
+static void game_vlog_score(const char* format, va_list arg);
 
 void game_create() {
 	// Set random seed for better random outcome.
@@ -324,6 +325,31 @@ static void game_vlog(const char* format, va_list arg) {
 	printf("\n");
 	// Write log to file for later debugging.
 	FILE* pFile = fopen("log.txt", clear_file ? "w" : "a");
+	if (pFile) {
+		vfprintf(pFile, format, arg);
+		fprintf(pFile, "\n");
+		fclose(pFile);
+	}
+	clear_file = false;
+#endif
+}
+
+void game_log_score(const char* format, ...) {
+#ifdef LOG_ENABLED
+	va_list arg;
+	va_start(arg, format);
+	game_vlog_score(format, arg);
+	va_end(arg);
+#endif
+}
+
+static void game_vlog_score(const char* format, va_list arg) {
+#ifdef LOG_ENABLED
+	static bool clear_file = true;
+	vprintf(format, arg);
+	printf("\n");
+	// Write log to file for later debugging.
+	FILE* pFile = fopen("score_board.txt", clear_file ? "a" : "a");
 	if (pFile) {
 		vfprintf(pFile, format, arg);
 		fprintf(pFile, "\n");

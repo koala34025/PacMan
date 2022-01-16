@@ -388,8 +388,8 @@ static void destroy(void) {
 	for (int i = 0; i < GHOST_NUM; i++) {
 		ghost_destroy(ghosts[i]);
 	}
-	//delete_map(basic_map);
-	free(basic_map);
+	delete_map(basic_map);
+	//free(basic_map);
 	free(ghosts);
 }
 

@@ -134,9 +134,11 @@ const char* default_map[] = {
 
 Map* create_map(const char* filepath) {
 	pic_item1 = load_bitmap("Assets/pic_item1.png");
-	//pic_item2 = load_bitmap("Assets/pic_item2.png");
+	pic_item2 = load_bitmap("Assets/pic_item2.png");
 	pic_item1W = al_get_bitmap_width(pic_item1);
 	pic_item1H = al_get_bitmap_height(pic_item1);
+	pic_item2W = al_get_bitmap_width(pic_item2);
+	pic_item2H = al_get_bitmap_height(pic_item2);
 
 	if (strcmp(filepath, "Assets/map_nthu.txt") == 0 || MAKETRUE) {//if its map_nthu,txt
 		isNTHU = true;
@@ -266,7 +268,7 @@ void delete_map(Map* M) {
 		...
 	*/
 	al_destroy_bitmap(pic_item1);
-	//al_destroy_bitmap(pic_item2);
+	al_destroy_bitmap(pic_item2);
 	if (M->map) {
 		for (int i = 0;i < M->row_num;i++) {
 			free(M->map[i]);
@@ -468,10 +470,14 @@ static void draw_item1(Map* M, const int row, const int col) {
 }
 
 static void draw_item2(Map* M, const int row, const int col) {
-	al_draw_filled_triangle(map_offset_x + col * block_width + block_width / 2.0, map_offset_y + row * block_height + block_height / 2.0 - 7.0,
-							map_offset_x + col * block_width + block_width / 2.0 - 6.1, map_offset_y + row * block_height + block_height / 2.0 + 3.5,
-							map_offset_x + col * block_width + block_width / 2.0 + 6.1, map_offset_y + row * block_height + block_height / 2.0 + 3.5,
-							al_map_rgb(234, 178, 138));
+	al_draw_scaled_bitmap(
+		pic_item2,
+		0, 0,
+		pic_item2W, pic_item2H,
+		map_offset_x + col * block_width, map_offset_y + row * block_height,
+		block_width, block_height,
+		0
+	);
 }
 
 

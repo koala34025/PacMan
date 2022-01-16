@@ -79,7 +79,7 @@ static void draw(void) {
 			SCREEN_W / 2 ,
 			SCREEN_H / 2 - 50,
 			ALLEGRO_ALIGN_CENTER,
-			"YOU WIN!"
+			"YOU WON !"
 		);
 	}
 	else if (game_over) {
@@ -89,7 +89,7 @@ static void draw(void) {
 			SCREEN_W / 2 ,
 			SCREEN_H / 2 - 50,
 			ALLEGRO_ALIGN_CENTER,
-			"YOU LOSE!"
+			"YOU LOST !"
 		);
 	}
 	else if (time_up) {
@@ -100,6 +100,16 @@ static void draw(void) {
 			SCREEN_H / 2 - 50,
 			ALLEGRO_ALIGN_CENTER,
 			"TIME'S UP!"
+		);
+	}
+	else if (isEndlessMode) {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W / 2,
+			SCREEN_H / 2 - 50,
+			ALLEGRO_ALIGN_CENTER,
+			"YOU LEFT !"
 		);
 	}
 

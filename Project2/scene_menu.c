@@ -105,26 +105,26 @@ static void draw() {
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
-		SCREEN_W/2,
+		SCREEN_W / 2,
 		SCREEN_H - 150,
 		ALLEGRO_ALIGN_CENTER,
-		"PRESS \"ENTER\""
+		"[ENTER]: NORMAL MODE"
 	);
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
 		SCREEN_W / 2,
-		SCREEN_H - 180,
+		SCREEN_H - 200,
 		ALLEGRO_ALIGN_CENTER,
-		"PRESS \"T\" FOR SPEED MODE"
+		"[T]: TIMER MODE"
 	);
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
 		SCREEN_W / 2,
-		SCREEN_H - 120,
+		SCREEN_H - 100,
 		ALLEGRO_ALIGN_CENTER,
-		"PRESS \"E\" FOR ENDLESS MODE"
+		"[E]: ENDLESS MODE"
 	);
 	al_draw_text(
 		menuFont,

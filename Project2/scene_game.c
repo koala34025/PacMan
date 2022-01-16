@@ -13,7 +13,7 @@
 #include "ghost.h"
 #include "map.h"
 #define BONUS 2
-#define TIME_UP_TIME 5
+#define TIME_UP_TIME 100
 
 // [HACKATHON 2-0]
 // Just modify the GHOST_NUM to 1
@@ -545,15 +545,71 @@ static void render_init_screen(void) {
 		ALLEGRO_ALIGN_CENTER,
 		"READY!"
 	);
-	al_draw_text(
+	/*al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
 		SCREEN_W / 2 - 80,
 		SCREEN_H - 100,
 		ALLEGRO_ALIGN_LEFT,
 		"SCORE: "
+	);*/
+	char score[30];
+
+	game_bean_Score = basic_map->score;
+
+	game_main_Score = game_bean_Score + game_ghost_Score;
+
+	total = endless_Score + game_main_Score;
+
+	sprintf_s(score, sizeof(score), "SCORE:%4d", isEndlessMode ? total : game_main_Score);//GAME_MAIN_SCORE is availible
+
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2 - 80,
+		SCREEN_H - 100,
+		ALLEGRO_ALIGN_LEFT,
+		score
 	);
 
+	if (isTimeUpMode) {
+		char time[30];
+		sprintf_s(time, sizeof(time), "Time Left:%4d", TIME_UP_TIME);//GAME_MAIN_SCORE is availible
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			10,
+			15,
+			ALLEGRO_ALIGN_LEFT,
+			time
+		);
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[TIMER MODE]"
+		);
+	}
+	if (isEndlessMode) {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			10,
+			15,
+			ALLEGRO_ALIGN_LEFT,
+			"PRESS \"ESC\" TO LEAVE"
+		);
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[ENDLESS MODE]"
+		);
+	}
 	al_flip_display();
 	al_rest(2.0);
 

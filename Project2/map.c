@@ -7,7 +7,7 @@
 #include "map.h"
 #define QUEUE_SIZE 3000
 #define NTHUCOLER al_map_rgb(160,191,124)
-#define MAKETRUE true
+#define MAKETRUE false
 
 /*global variables*/
 // [ NOTE ]

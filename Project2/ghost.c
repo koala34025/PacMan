@@ -392,7 +392,7 @@ void ghost_toggle_FLEE(Ghost* ghost, bool setFLEE) {
 		}
 	*/
 	if (setFLEE) {
-		if (ghost->status == FREEDOM) {
+		if (ghost->status == FREEDOM || ghost->status == preFREEDOM) {
 			ghost->status = FLEE;
 			ghost->speed = 1;
 			game_log("ghost_toggle_flee is true");

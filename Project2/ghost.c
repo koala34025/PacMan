@@ -16,6 +16,7 @@ const int cage_grid_x=22, cage_grid_y=11;
 extern uint32_t GAME_TICK;
 extern uint32_t GAME_TICK_CD;
 extern const int block_width,  block_height;
+
 /* Internal variables */
 static const int fix_draw_pixel_offset_x = -3;
 static const int fix_draw_pixel_offset_y = -3;

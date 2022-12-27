@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <string.h>
@@ -6,20 +8,35 @@
 #include "utility.h"
 #include "scene_game.h"
 #include "scene_menu.h"
+#include "scene_end.h"
 #include "pacman_obj.h"
 #include "ghost.h"
 #include "map.h"
-
+#define BONUS 2
+#define TIME_UP_TIME 100
+#define MAPNAME "Assets/map_nthu.txt"
 
 // [HACKATHON 2-0]
 // Just modify the GHOST_NUM to 1
-#define GHOST_NUM 1 
+#define GHOST_NUM 4
 /* global variables*/
 extern const uint32_t GAME_TICK_CD;
 extern uint32_t GAME_TICK;
 extern ALLEGRO_TIMER* game_tick_timer;
-int game_main_Score = 0;
-bool game_over = false;
+extern int game_main_Score = 0;
+int game_bean_Score = 0;
+int game_ghost_Score = 0;
+extern bool game_over = false;
+extern bool game_win = false;
+extern bool time_up = false;
+extern bool endless_win = false;
+extern ALLEGRO_SAMPLE* PACMAN_EATGHOST_SOUND;
+extern ALLEGRO_BITMAP* pic_item1;
+extern ALLEGRO_BITMAP* pic_item2;
+extern bool isTimeUpMode;
+extern bool isEndlessMode;
+int total;
+extern bool from_menu;
 
 /* Internal variables*/
 static ALLEGRO_TIMER* power_up_timer;
@@ -29,6 +46,12 @@ static Map* basic_map;
 static Ghost** ghosts;
 bool debug_mode = false;
 bool cheat_mode = false;
+static ALLEGRO_SAMPLE_ID PACMAN_EATGHOST_SOUND_ID;
+static ALLEGRO_TIMER* item1_timer;
+static const int item1_duration = 10;
+static ALLEGRO_TIMER* item2_timer;
+static const int item2_duration = 10;
+static int endless_Score;
 
 /* Declare static function prototypes */
 static void init(void);
@@ -46,12 +69,18 @@ static void draw_hitboxes(void);
 
 static void init(void) {
 	game_over = false;
+	game_win = false;
+	time_up = false;
+	endless_win = false;
 	game_main_Score = 0;
+	game_bean_Score = 0;
+	game_ghost_Score = 0;
+	if (from_menu) {
+		endless_Score = 0;
+	}
 	// create map
-	basic_map = create_map("Assets/map_nthu.txt");
-	// [TODO]
-	// Create map from .txt file and design your own map !!
-	// basic_map = create_map("Assets/map_nthu.txt");
+	basic_map = create_map(MAPNAME);//hightlight nthu;
+
 	if (!basic_map) {
 		game_abort("error on creating map");
 	}	
@@ -89,7 +118,13 @@ static void init(void) {
 	render_init_screen();
 	power_up_timer = al_create_timer(1.0f); // 1 tick / sec
 	if (!power_up_timer)
-		game_abort("Error on create timer\n");
+		game_abort("Error on create timer of power\n");
+	item1_timer = al_create_timer(1.0f); // 1 tick / sec
+	if (!item1_timer)
+		game_abort("Error on create timer of item1\n");
+	item2_timer = al_create_timer(1.0f); // 1 tick / sec
+	if (!item2_timer)
+		game_abort("Error on create timer of item2\n");
 	return ;
 }
 
@@ -108,49 +143,144 @@ static void checkItem(void) {
 		return;
 	// [HACKATHON 1-3]
 	// TODO: check which item you are going to eat and use `pacman_eatItem` to deal with it.
-	
+
 	switch (basic_map->map[Grid_y][Grid_x])
 	{
 	case '.':
+		basic_map->map[Grid_y][Grid_x] = ' ';
+
+		basic_map->beansCount--;
+		if (pman->powerUp) basic_map->score += 1 * BONUS;
+		else basic_map->score += 1;
 		pacman_eatItem(pman, '.');
+		break;
+	case 'P':
+		basic_map->map[Grid_y][Grid_x] = ' ';
+		for (int i = 0;i < GHOST_NUM; i++) {
+			ghost_toggle_FLEE(ghosts[i], true);
+		}
+		al_set_timer_count(power_up_timer, 0);
+		al_start_timer(power_up_timer);
+		pacman_eatItem(pman, 'P');
+		break;
+	case 'X':
+		basic_map->map[Grid_y][Grid_x] = ' ';
+		//something to do with item 1
+		pman->powerUp = true;
+		al_set_timer_count(item1_timer, 0);
+		al_start_timer(item1_timer);
+		pacman_eatItem(pman, 'X');
+		break;
+	case 'Y':
+		basic_map->map[Grid_y][Grid_x] = ' ';
+		//something to do with item 2
+		for (int i = 0;i < GHOST_NUM; i++) {
+			ghost_toggle_CRAZE(ghosts[i], true);
+		}
+		al_set_timer_count(item2_timer, 0);
+		al_start_timer(item2_timer);
+		pacman_eatItem(pman, 'Y');
 		break;
 	default:
 		break;
 	}
-	
-	// [HACKATHON 1-4]
-	// erase the item you eat from map
-	// be careful no erasing the wall block.
-	/*
-		basic_map->map...;
-	*/
-	basic_map->map[Grid_y][Grid_x]=' ';
 }
+	
 static void status_update(void) {
-	for (int i = 0; i < GHOST_NUM; i++) {
+	if (al_get_timer_count(power_up_timer) >= power_up_duration - 2 && al_get_timer_count(power_up_timer) < power_up_duration) {
+		for (int i = 0;i < GHOST_NUM;i++) {
+			if (ghosts[i]->status == FLEE) {
+				ghosts[i]->status = preFREEDOM;
+			}
+		}
+	}
+
+	if (al_get_timer_count(power_up_timer) >= power_up_duration ) {
+		for (int i = 0;i < GHOST_NUM;i++) {
+			ghost_toggle_FLEE(ghosts[i], false);
+		}
+		al_stop_timer(power_up_timer);
+		al_set_timer_count(power_up_timer, 0);
+	}
+
+	if (al_get_timer_count(item1_timer) >= item1_duration) {
+		//something to end with item 1
+		pman->powerUp = false;
+		al_stop_timer(item1_timer);
+		al_set_timer_count(item1_timer, 0);
+	}
+
+	if (al_get_timer_count(item2_timer) >= item2_duration) {
+		//something to end with item 2
+		for (int i = 0;i < GHOST_NUM; i++) {
+			ghost_toggle_CRAZE(ghosts[i], false);
+		}
+		al_stop_timer(item2_timer);
+		al_set_timer_count(item2_timer, 0);
+	}
+	for (int i = 0; i < GHOST_NUM; i++) {		
 		if (ghosts[i]->status == GO_IN)
 			continue;
-		// [TODO]
-		// use `getDrawArea(..., GAME_TICK_CD)` and `RecAreaOverlap(..., GAME_TICK_CD)` functions to detect
-		// if pacman and ghosts collide with each other.
-		// And perform corresponding operations.
-		// [NOTE]
-		// You should have some branch here if you want to implement power bean mode.
-		// Uncomment Following Code
-		/*
-		if(!cheat_mode and collision of pacman and ghost)
-		{
-			game_log("collide with ghost\n");
-			al_rest(1.0);
-			pacman_die();
-			game_over = true;
-			break;
+		
+		RecArea RA = getDrawArea(pman->objData, GAME_TICK_CD);
+		RecArea RB = getDrawArea(ghosts[i]->objData, GAME_TICK_CD);
+		
+		if (!cheat_mode && RecAreaOverlap(RA, RB)){
+			if (ghosts[i]->status == FREEDOM || ghosts[i]->status == CRAZE) {
+				game_log("collide with ghost %d and die\n",i);
+				al_rest(1.0);
+				pacman_die();
+				game_over = true;
+				break;
+			}
+			else if (ghosts[i]->status == FLEE || ghosts[i]->status == preFREEDOM) {
+				game_log("collide with ghost %d and eat it\n", i);
+				stop_bgm(PACMAN_EATGHOST_SOUND_ID);
+				PACMAN_EATGHOST_SOUND_ID = play_audio(PACMAN_EATGHOST_SOUND, effect_volume);
+				if (pman->powerUp) game_ghost_Score += 3 * BONUS;
+				else game_ghost_Score += 3;
+				ghost_collided(ghosts[i]);
+			}
 		}
-		*/
 	}
+
+	if (cheat_mode) {
+		for (int i = 0;i < GHOST_NUM; i++) {
+			ghost_toggle_FLEE(ghosts[i], true);
+		}
+		al_set_timer_count(power_up_timer, 0);
+		al_start_timer(power_up_timer);
+		pacman_eatItem(pman, 'P');
+
+		/*
+		al_set_timer_count(item1_timer, 0);
+		al_start_timer(item1_timer);
+		pacman_eatItem(pman, 'X');
+		*/
+		cheat_mode = false;
+	}
+
 }
 
 static void update(void) {
+	
+	if (time_up && isTimeUpMode) {
+		game_change_scene(scene_end_create());
+		return;
+	}
+	
+	if (endless_win) {
+		from_menu = false;
+		game_change_scene(scene_main_create());
+		//rewind
+		return;
+	}
+
+	if (game_win) {
+		game_change_scene(scene_end_create());
+		//game_change_scene(scene_menu_create());	
+		return;
+	}
 
 	if (game_over) {
 		/*
@@ -158,6 +288,16 @@ static void update(void) {
 			start pman->death_anim_counter and schedule a game-over event (e.g change scene to menu) after Pacman's death animation finished
 			game_change_scene(...);
 		*/
+		al_start_timer(pman->death_anim_counter);
+
+		//write a thorough game_over_event() functiono;
+
+		if (al_get_timer_count(pman->death_anim_counter) > 192) {
+			al_stop_timer(pman->death_anim_counter);
+			al_set_timer_count(pman->death_anim_counter, 0);
+			game_change_scene(scene_end_create());
+			//game_change_scene(scene_menu_create());
+		}
 		return;
 	}
 
@@ -165,14 +305,15 @@ static void update(void) {
 	checkItem();
 	status_update();
 	pacman_move(pman, basic_map);
-	for (int i = 0; i < GHOST_NUM; i++) 
+	for (int i = 0; i < GHOST_NUM; i++) {
 		ghosts[i]->move_script(ghosts[i], basic_map, pman);
+	}
+
 }
 
 static void draw(void) {
-
+	
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-
 	
 	//	[TODO]
 	//	Draw scoreboard, something your may need is sprinf();
@@ -182,9 +323,118 @@ static void draw(void) {
 
 	draw_map(basic_map);
 
+	char score[30];
+
+	game_bean_Score = basic_map->score;
+
+	game_main_Score = game_bean_Score + game_ghost_Score;
+
+	total = endless_Score + game_main_Score;
+
+	sprintf_s(score, sizeof(score), "SCORE:%4d", isEndlessMode ? total : game_main_Score);//GAME_MAIN_SCORE is availible
+
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2 - 80,
+		SCREEN_H - 100,
+		ALLEGRO_ALIGN_LEFT,
+		score
+	);
+
 	pacman_draw(pman);
-	if (game_over)
-		return;
+
+	if (pman->powerUp) {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 215, 0),
+			SCREEN_W - 200,
+			SCREEN_H - 100,
+			ALLEGRO_ALIGN_CENTER,
+			"!! DOUBLE !!"
+		);
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 215, 0),
+			200,
+			SCREEN_H - 100,
+			ALLEGRO_ALIGN_CENTER,
+			"!! DOUBLE !!"
+		);
+	}
+
+	if (isTimeUpMode) {
+		char time[30];
+		sprintf_s(time, sizeof(time), "Time Left:%4d", TIME_UP_TIME - al_get_timer_count(game_tick_timer) / 128);//GAME_MAIN_SCORE is availible
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			10,
+			15,
+			ALLEGRO_ALIGN_LEFT,
+			time
+		);
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[TIMER MODE]"
+		);
+	}
+	else if (isEndlessMode) {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			10,
+			15,
+			ALLEGRO_ALIGN_LEFT,
+			"PRESS \"ESC\" TO LEAVE"
+		);
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[ENDLESS MODE]"
+		);
+	}
+	else {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[NORMAL MODE]"
+		);
+	}
+	
+	if (game_win) return;
+	if (game_over) return;
+	if (time_up && isTimeUpMode) return;
+	if (endless_win) return;
+	
+	if (TIME_UP_TIME - al_get_timer_count(game_tick_timer) / 128 < 0 && isTimeUpMode) {
+		game_log("time_up\n");
+		al_rest(1.0);
+		time_up = true;
+	}
+
+	if (basic_map->beansCount == 0) {
+		if (!isEndlessMode) {
+			game_log("no beans left\n");
+			al_rest(1.0);
+			game_win = true;
+		}
+		else {
+			endless_win = true;
+			endless_Score += game_main_Score;
+		}
+	}
+
 	// no drawing below when game over
 	for (int i = 0; i < GHOST_NUM; i++)
 		ghost_draw(ghosts[i]);
@@ -229,6 +479,20 @@ static void destroy(void) {
 		[TODO]
 		free map array, Pacman and ghosts
 	*/
+	
+	pacman_destroy(pman);
+	for (int i = 0; i < GHOST_NUM; i++) {
+		ghost_destroy(ghosts[i]);
+	}
+	delete_map(basic_map);
+	//free(basic_map);
+	free(ghosts);
+	al_destroy_timer(power_up_timer);
+	al_destroy_timer(item1_timer);
+	al_destroy_timer(item2_timer);
+	stop_bgm(PACMAN_EATGHOST_SOUND_ID);
+	al_destroy_bitmap(pic_item1);
+	al_destroy_bitmap(pic_item2);
 }
 
 static void on_key_down(int key_code) {
@@ -237,7 +501,11 @@ static void on_key_down(int key_code) {
 		// [HACKATHON 1-1]	
 		// TODO: Use allegro pre-defined enum ALLEGRO_KEY_<KEYNAME> to controll pacman movement
 		// we provided you a function `pacman_NextMove` to set the pacman's next move direction.
-		
+		case ALLEGRO_KEY_ESCAPE:
+			if (isEndlessMode) {
+				game_change_scene(scene_end_create());
+			}
+			break;
 		case ALLEGRO_KEY_W:
 			pacman_NextMove(pman, UP);
 			break;
@@ -288,7 +556,81 @@ static void render_init_screen(void) {
 		ALLEGRO_ALIGN_CENTER,
 		"READY!"
 	);
+	/*al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2 - 80,
+		SCREEN_H - 100,
+		ALLEGRO_ALIGN_LEFT,
+		"SCORE: "
+	);*/
+	char score[30];
 
+	game_bean_Score = basic_map->score;
+
+	game_main_Score = game_bean_Score + game_ghost_Score;
+
+	total = endless_Score + game_main_Score;
+
+	sprintf_s(score, sizeof(score), "SCORE:%4d", isEndlessMode ? total : game_main_Score);//GAME_MAIN_SCORE is availible
+
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2 - 80,
+		SCREEN_H - 100,
+		ALLEGRO_ALIGN_LEFT,
+		score
+	);
+
+	if (isTimeUpMode) {
+		char time[30];
+		sprintf_s(time, sizeof(time), "Time Left:%4d", TIME_UP_TIME);//GAME_MAIN_SCORE is availible
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			10,
+			15,
+			ALLEGRO_ALIGN_LEFT,
+			time
+		);
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[TIMER MODE]"
+		);
+	}
+	else if (isEndlessMode) {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			10,
+			15,
+			ALLEGRO_ALIGN_LEFT,
+			"PRESS \"ESC\" TO LEAVE"
+		);
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[ENDLESS MODE]"
+		);
+	}
+	else {
+		al_draw_text(
+			menuFont,
+			al_map_rgb(255, 255, 255),
+			SCREEN_W - 10,
+			15,
+			ALLEGRO_ALIGN_RIGHT,
+			"[NORMAL MODE]"
+		);
+	}
 	al_flip_display();
 	al_rest(2.0);
 

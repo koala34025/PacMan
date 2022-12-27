@@ -16,6 +16,7 @@ const int cage_grid_x=22, cage_grid_y=11;
 extern uint32_t GAME_TICK;
 extern uint32_t GAME_TICK_CD;
 extern const int block_width,  block_height;
+
 /* Internal variables */
 static const int fix_draw_pixel_offset_x = -3;
 static const int fix_draw_pixel_offset_y = -3;
@@ -42,6 +43,7 @@ Ghost* ghost_create(int flag) {
 	ghost->speed = basic_speed;
 	ghost->status = BLOCKED;
 
+	ghost->craze_sprite = load_bitmap("Assets/ghost_craze.png");
 	ghost->flee_sprite = load_bitmap("Assets/ghost_flee.png");
 	ghost->dead_sprite = load_bitmap("Assets/ghost_dead.png");
 
@@ -52,76 +54,244 @@ Ghost* ghost_create(int flag) {
 		ghost->move_sprite = load_bitmap("Assets/ghost_move_red.png");
 		ghost->move_script = &ghost_red_move_script;
 		break;
-	default:
+	case Pinky:
 		ghost->objData.Coord.x = cage_grid_x;
-		ghost->objData.Coord.y = cage_grid_y;
-		ghost->move_sprite = load_bitmap("Assets/ghost_move_red.png");
-		ghost->move_script = &ghost_red_move_script;
+		ghost->objData.Coord.y = cage_grid_y+1;
+		ghost->move_sprite = load_bitmap("Assets/ghost_move_pink.png");
+		ghost->move_script = &ghost_pink_move_script;
+		break;
+	case Inky:
+		ghost->objData.Coord.x = cage_grid_x-1;
+		ghost->objData.Coord.y = cage_grid_y+1;
+		ghost->move_sprite = load_bitmap("Assets/ghost_move_blue.png");
+		ghost->move_script = &ghost_blue_move_script;
+		break;
+	case Clyde:
+		ghost->objData.Coord.x = cage_grid_x+1;
+		ghost->objData.Coord.y = cage_grid_y+1;
+		ghost->move_sprite = load_bitmap("Assets/ghost_move_orange.png");
+		ghost->move_script = &ghost_orange_move_script;
+		break;
+	default:
 		break;
 	}
 	return ghost;
 }
-void ghost_destory(Ghost* ghost) {
+void ghost_destroy(Ghost* ghost) {
 	/*
 		[TODO]
 		free ghost resource
 
-		al_destory_bitmap(...);
+		al_destroy_bitmap(...);
 		...
 		free(ghost);
 	*/
+	al_destroy_bitmap(ghost->dead_sprite);
+	al_destroy_bitmap(ghost->flee_sprite);
+	al_destroy_bitmap(ghost->move_sprite);
+	al_destroy_bitmap(ghost->craze_sprite);
+	free(ghost);
+	game_log("ghost_destroy");
 }
+/*
+	[TODO]
+	Draw ghost according to its status
+	hint : use ghost->objData.moveCD value to determine which frame of the animation to draw.
+
+		A not so good way is:
+
+		if(ghost->objData.moveCD % 16 == 0){
+			al_draw_scaled_bitmap(...);
+		}
+		else if(ghost->objData.moveCD % 16 == 1){
+			al_draw_scaled_bitmap(...);
+		}...
+
+		since modulo operation is expensive, better avoid using it.
+*/
+//printf("%u%c", ghost->objData.moveCD, ghost->objData.moveCD%16==0 ? '\n': ' ');
+
 void ghost_draw(Ghost* ghost) {
 	// getDrawArea return the drawing RecArea defined by objData and GAME_TICK_CD
 	RecArea drawArea = getDrawArea(ghost->objData, GAME_TICK_CD);
-
-	//Draw default image
-	al_draw_scaled_bitmap(ghost->move_sprite, 0, 0,
-		16, 16,
-		drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
-		draw_region, draw_region, 0
-	);
-
-	/*
-		[TODO]
-		Draw ghost according to its status
-		hint : use ghost->objData.moveCD value to determine which frame of the animation to draw.
-
-			A not so good way is:
-
-			if(ghost->objData.moveCD % 16 == 0){
-				al_draw_scaled_bitmap(...);
-			}
-			else if(ghost->objData.moveCD % 16 == 1){
-				al_draw_scaled_bitmap(...);
-			}...
-
-			since modulo operation is expensive, better avoid using it.
-	*/
-
+	
 	int bitmap_x_offset = 0;
-	// [TODO] below is for animation usage, change the sprite you want to use.
-	if (ghost->status == FLEE) {
-		/*
-			al_draw_scaled_bitmap(...)
-		*/
+	//Draw default image
+	if (ghost->objData.moveCD > GAME_TICK_CD) {
+		al_draw_scaled_bitmap(ghost->move_sprite, 0, 0, 16, 16,
+			drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+			draw_region, draw_region, 0
+		);
 	}
-	else if (ghost->status == GO_IN) {
-		/*
+	
+	// [TODO] below is for animation usage, change the sprite you want to use.
+	else if (ghost->status == FLEE) {//ghost->status == FLEE
+		if (ghost->objData.moveCD > 32) {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 0, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 16, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+	}
+	else if (ghost->status == CRAZE) {
+		if (ghost->objData.moveCD > 53) {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 0, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if (ghost->objData.moveCD > 43) {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 16, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if (ghost->objData.moveCD > 32) {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 32, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if (ghost->objData.moveCD > 21) {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 48, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if (ghost->objData.moveCD > 11) {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 32, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else {
+			al_draw_scaled_bitmap(ghost->craze_sprite, 16, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+	}
+	else if (ghost->status == preFREEDOM) {
+		if (ghost->objData.moveCD > 48) {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 0, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if(ghost->objData.moveCD > 32) {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 48, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else if (ghost->objData.moveCD > 16) {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 16, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+		else {
+			al_draw_scaled_bitmap(ghost->flee_sprite, 32, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+		}
+	}
+	else if (ghost->status == GO_IN) {//ghost->status == GO_IN
 		switch (ghost->objData.facing)
 		{
+		case UP:
+			al_draw_scaled_bitmap(ghost->dead_sprite, 32, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+			break;
 		case LEFT:
-			...
-		*/
+			al_draw_scaled_bitmap(ghost->dead_sprite, 16, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+			break;
+		case DOWN:
+			al_draw_scaled_bitmap(ghost->dead_sprite, 48, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+			break;
+		case RIGHT:
+			al_draw_scaled_bitmap(ghost->dead_sprite, 0, 0, 16, 16,
+				drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+				draw_region, draw_region, 0
+			);
+			break;
+		}
 	}
 	else {
-		/*
 		switch (ghost->objData.facing)
 		{
+		case UP:
+			if (ghost->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(ghost->move_sprite, 64, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(ghost->move_sprite, 80, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
 		case LEFT:
-			...
+			if (ghost->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(ghost->move_sprite, 32, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(ghost->move_sprite, 48, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case DOWN:
+			if (ghost->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(ghost->move_sprite, 96, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(ghost->move_sprite, 112, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case RIGHT:
+			if (ghost->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(ghost->move_sprite, 0, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(ghost->move_sprite, 16, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
 		}
-		*/
 	}
 
 }
@@ -146,6 +316,12 @@ void printGhostStatus(GhostStatus S) {
 		break;
 	case FLEE:
 		game_log("FLEE");
+		break;
+	case preFREEDOM:
+		game_log("preFREEDOM");
+		break;
+	case CRAZE:
+		game_log("CRAZE");
 		break;
 	default:
 		game_log("status error");
@@ -216,10 +392,41 @@ void ghost_toggle_FLEE(Ghost* ghost, bool setFLEE) {
 				..
 		}
 	*/
+	if (setFLEE) {
+		if (ghost->status == FREEDOM || ghost->status == preFREEDOM || ghost->status == CRAZE) {
+			ghost->status = FLEE;
+			ghost->speed = 1;
+			game_log("ghost_toggle_flee is true");
+		}
+	}
+	else {
+		if (ghost->status == FLEE || ghost->status == preFREEDOM) {
+			ghost->status = FREEDOM;
+			ghost->speed = basic_speed;
+			game_log("ghost_toggle_flee is false");
+		}
+	}
+}
+
+void ghost_toggle_CRAZE(Ghost* ghost, bool setCRAZE) {
+	if (setCRAZE) {
+		if (ghost->status == FREEDOM || ghost->status == preFREEDOM || ghost->status == FLEE) {
+			ghost->speed = 2;
+			ghost->status = CRAZE;
+			game_log("ghost_toggle_craze is true");
+		}
+	}
+	else {
+		if (ghost->status == CRAZE) {
+			ghost->speed = 2;
+			ghost->status = FREEDOM;
+			game_log("ghost_toggle_craze is false");
+		}
+	}
 }
 
 void ghost_collided(Ghost* ghost) {
-	if (ghost->status == FLEE) {
+	if (ghost->status == FLEE || ghost->status == preFREEDOM ) {
 		ghost->status = GO_IN;
 		ghost->speed = 4;
 	}
@@ -242,7 +449,7 @@ void ghost_move_script_GO_OUT(Ghost* ghost, Map* M) {
 	else
 		ghost->status = FREEDOM;
 }
-void ghost_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman) {
+void ghost_red_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman) {
 	// [TODO]
 	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
 	// Description:
@@ -251,5 +458,194 @@ void ghost_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman) {
 	// Then we choose other available direction rather than direction K.
 	// In this way, ghost will escape from pacman.
 
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+	/*UP = 1,
+	LEFT = 2,
+	RIGHT = 3,
+	DOWN = 4,*/
+
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i != shortestDirection) {
+				if ((chosen_direction == 1 && i != 4) ||
+					(chosen_direction == 2 && i != 3) ||
+					(chosen_direction == 3 && i != 2) ||
+					(chosen_direction == 4 && i != 1)) {
+					for (int j = 0; j < 100; j++) {
+						proba[cnt++] = i;
+					}
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}
+void ghost_pink_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman) {
+	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i != shortestDirection) {
+				if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
+					(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
+					for (int j = 0; j < 100; j++) {
+						proba[cnt++] = i;
+					}
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}
+void ghost_blue_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman) {
+	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i != shortestDirection) {
+				if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
+					(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
+					for (int j = 0; j < 100; j++) {
+						proba[cnt++] = i;
+					}
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}
+void ghost_orange_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman) {
+	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i != shortestDirection) {
+				if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
+					(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
+					for (int j = 0; j < 100; j++) {
+						proba[cnt++] = i;
+					}
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
 }
 
+void ghost_red_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman) {
+	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i == shortestDirection) {
+				for (int j = 0; j < 100; j++) {
+					proba[cnt++] = i;
+				}
+			}
+			if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
+				(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
+				for (int j = 0; j < 50; j++) {
+					proba[cnt++] = i;
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}
+void ghost_pink_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman) {
+	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+	
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i == shortestDirection) {
+				for (int j = 0; j < 100; j++) {
+					proba[cnt++] = i;
+				}
+			}
+			if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
+				(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
+				for (int j = 0; j < 50; j++) {
+					proba[cnt++] = i;
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}
+void ghost_blue_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman) {
+	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i == shortestDirection) {
+				for (int j = 0; j < 100; j++) {
+					proba[cnt++] = i;
+				}
+			}
+			if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
+				(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
+				for (int j = 0; j < 50; j++) {
+					proba[cnt++] = i;
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}
+void ghost_orange_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman) {
+	Directions shortestDirection = shortest_path_direc(M, ghost->objData.Coord.x, ghost->objData.Coord.y, pacman->objData.Coord.x, pacman->objData.Coord.y);
+	static Directions proba[400]; // possible movement
+	int cnt = 0;
+	static Directions chosen_direction = 0;
+
+	for (Directions i = 1; i <= 4; i++) {
+		if (ghost_movable(ghost, M, i, true)) {
+			if (i == shortestDirection) {
+				for (int j = 0; j < 100; j++) {
+					proba[cnt++] = i;
+				}
+			}
+			if ((chosen_direction == 1 && i != 4) || (chosen_direction == 2 && i != 3) ||
+				(chosen_direction == 3 && i != 2) || (chosen_direction == 4 && i != 1)) {
+				for (int j = 0; j < 50; j++) {
+					proba[cnt++] = i;
+				}
+			}
+			proba[cnt++] = i;
+		}
+	}
+	chosen_direction = proba[generateRandomNumber(0, cnt - 1)];
+	ghost_NextMove(ghost, chosen_direction);
+}

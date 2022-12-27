@@ -4,13 +4,17 @@
 #include "shared.h"
 #include "utility.h"
 #include "game.h"
-// #include "scene_menu.h"
+#include "scene_menu.h"
+#include "scene_end.h"
 
 ALLEGRO_FONT* font_pirulen_32;
 ALLEGRO_FONT* font_pirulen_24;
 ALLEGRO_SAMPLE* themeMusic = NULL;
 ALLEGRO_SAMPLE* PACMAN_MOVESOUND = NULL;
 ALLEGRO_SAMPLE* PACMAN_DEATH_SOUND = NULL;
+ALLEGRO_SAMPLE* PACMAN_FRUIT_SOUND = NULL;
+ALLEGRO_SAMPLE* PACMAN_EATGHOST_SOUND = NULL;
+ALLEGRO_SAMPLE* settingsMusic = NULL;
 ALLEGRO_FONT* menuFont = NULL;
 int fontSize = 30;
 float music_volume = 0.5;
@@ -29,6 +33,9 @@ void shared_init(void) {
 	themeMusic = load_audio("Assets/Music/original_theme.ogg");
 	PACMAN_MOVESOUND = load_audio("Assets/Music/pacman-chomp.ogg");
 	PACMAN_DEATH_SOUND = load_audio("Assets/Music/pacman_death.ogg");
+	PACMAN_FRUIT_SOUND = load_audio("Assets/Music/pacman_eatfruit.ogg");
+	PACMAN_EATGHOST_SOUND = load_audio("Assets/Music/pacman_eatghost.ogg");
+	settingsMusic = load_audio("Assets/Music/pacman_intermission.ogg");
 }
 
 void shared_destroy(void) {
@@ -37,4 +44,7 @@ void shared_destroy(void) {
 	al_destroy_sample(themeMusic);
 	al_destroy_sample(PACMAN_MOVESOUND);
 	al_destroy_sample(PACMAN_DEATH_SOUND);
+	al_destroy_sample(PACMAN_FRUIT_SOUND);
+	al_destroy_sample(PACMAN_EATGHOST_SOUND);
+	al_destroy_sample(settingsMusic);
 }

@@ -19,7 +19,9 @@ typedef enum {
 	GO_OUT,							 // going out the ghost room
 	FREEDOM,					     // free at the map
 	GO_IN,							 // going back to the ghost room 
-	FLEE							 // pacman powered up
+	FLEE,							 // pacman powered up
+	preFREEDOM,						 // shrink
+	CRAZE							 // chase pacman down
 } GhostStatus;
 
 typedef enum {
@@ -41,10 +43,11 @@ typedef struct Ghost{
 	ALLEGRO_BITMAP* move_sprite;
 	ALLEGRO_BITMAP* flee_sprite;
 	ALLEGRO_BITMAP* dead_sprite;
+	ALLEGRO_BITMAP* craze_sprite;
 } Ghost;
 
 Ghost* ghost_create(int flag);
-void ghost_destory(Ghost* ghost);
+void ghost_destroy(Ghost* ghost);
 void ghost_draw(Ghost* ghost);
 void ghost_NextMove(Ghost* ghost, Directions next);
 void printGhostStatus(GhostStatus);
@@ -56,7 +59,20 @@ void ghost_toggle_FLEE(Ghost* ghosts, bool setFLEE);
 void ghost_collided(Ghost* ghost);
 void ghost_move_script_GO_IN(Ghost* ghost, Map* M);
 void ghost_move_script_GO_OUT(Ghost* ghost, Map* M);
-void ghost_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman);
+void ghost_toggle_CRAZE(Ghost* ghosts, bool setCRAZE);
+
+void ghost_red_move_script_FLEE(Ghost* ghost, Map* M, const Pacman * const pacman);
+void ghost_pink_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman);
+void ghost_blue_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman);
+void ghost_orange_move_script_FLEE(Ghost* ghost, Map* M, const Pacman* const pacman);
+
+void ghost_red_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman);
+void ghost_pink_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman);
+void ghost_blue_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman);
+void ghost_orange_move_script_CRAZE(Ghost* ghost, Map* M, const Pacman* const pacman);
 
 void ghost_red_move_script(Ghost* ghost, Map* M, Pacman* pacman);
+void ghost_pink_move_script(Ghost* ghost, Map* M, Pacman* pacman);
+void ghost_blue_move_script(Ghost* ghost, Map* M, Pacman* pacman);
+void ghost_orange_move_script(Ghost* ghost, Map* M, Pacman* pacman);
 #endif

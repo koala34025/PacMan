@@ -8,10 +8,19 @@
 #include <math.h>
 #include "scene_menu_object.h"
 #include "scene_settings.h"
+#include "scene_end.h"
 #include "scene_game.h"
 #include "scene_menu.h"
 #include "utility.h"
 #include "shared.h"
+#include "scene_rpg.h"
+
+bool isYellow = true;
+bool isTimeUpMode = false;
+bool isEndlessMode = false;
+extern int game_main_Score;
+extern int leader_board[3];
+bool from_menu;
 
 /* Internal Variables*/
 static ALLEGRO_BITMAP* gameTitle = NULL;
@@ -30,20 +39,49 @@ static int gameTitleH ;
 // static ... btnSettings;
 
 static Button btnSettings;
+static Button chooseYellow;
+static Button chooseBrown;
+static Button chosenYellow;
+static Button chosenBrown;
 
 static void init() {
+	static int first_time = true;
+	if (first_time) {
+		find();
+		first_time = false;
+	}
+	/*
+	int current = game_main_Score, tmp;
+	for (int i = 0;i < 3;i++) {
+		if (current > leader_board[i]) {
+			tmp = leader_board[i];
+			leader_board[i] = current;
+			current = tmp;
+		}
+	}
+	game_main_Score = 0;
+	*/
+
 
 	// [HACKATHON 3-2]
 	// TODO: Create button to settings
 	//	Uncomment and fill the code below
 	//btnSettings = button_create(730, 20, 50, 50, "...", "...");
+	
 	btnSettings = button_create(730, 20, 50, 50, "Assets/settings.png", "Assets/settings2.png");
+	chooseYellow = button_create(SCREEN_W / 2 - 160, SCREEN_H / 2 + 100, 24, 24, "Assets/o.png", "Assets/o.png");
+	chooseBrown = button_create(SCREEN_W / 2 + 40, SCREEN_H / 2 + 100, 24, 24, "Assets/o.png", "Assets/o.png");
+	chosenYellow = button_create(SCREEN_W / 2 - 160, SCREEN_H / 2 + 100, 24, 24, "Assets/dot.png", "Assets/dot.png");
+	chosenBrown = button_create(SCREEN_W / 2 + 40, SCREEN_H / 2 + 100, 24, 24, "Assets/dot.png", "Assets/dot.png");
+
 	gameTitle = load_bitmap("Assets/title.png");
 	gameTitleW = al_get_bitmap_width(gameTitle);
 	gameTitleH = al_get_bitmap_height(gameTitle);
+
+
 	stop_bgm(menuBGM);
 	menuBGM = play_bgm(themeMusic, music_volume);
-
+	
 }
 
 
@@ -67,10 +105,82 @@ static void draw() {
 	al_draw_text(
 		menuFont,
 		al_map_rgb(255, 255, 255),
-		SCREEN_W/2,
+		SCREEN_W / 2,
 		SCREEN_H - 150,
 		ALLEGRO_ALIGN_CENTER,
-		"PRESS \"ENTER\""
+		"[ENTER]: NORMAL MODE"
+	);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2,
+		SCREEN_H - 200,
+		ALLEGRO_ALIGN_CENTER,
+		"[T]: TIMER MODE"
+	);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2,
+		SCREEN_H - 100,
+		ALLEGRO_ALIGN_CENTER,
+		"[E]: ENDLESS MODE"
+	);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(185, 122, 86),
+		SCREEN_W / 2 + 115,
+		SCREEN_H / 2 + 100,
+		ALLEGRO_ALIGN_CENTER,
+		"Brown"
+	);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 0),
+		SCREEN_W / 2 - 85,
+		SCREEN_H / 2 + 100,
+		ALLEGRO_ALIGN_CENTER,
+		"Yellow"
+	);
+	
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 255, 255),
+		SCREEN_W / 2,
+		100,
+		ALLEGRO_ALIGN_CENTER,
+		"=Leader Board="
+	);
+	
+	char score[30];
+	sprintf_s(score, sizeof(score), "Gold:%4d", leader_board[0]);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(255, 215, 0),
+		SCREEN_W / 2,
+		100 + 40,
+		ALLEGRO_ALIGN_CENTER,
+		score
+	);
+
+	sprintf_s(score, sizeof(score), "Silver:%4d", leader_board[1]);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(192, 192, 192),
+		SCREEN_W / 2,
+		100 + 80,
+		ALLEGRO_ALIGN_CENTER,
+		score
+	);
+
+	sprintf_s(score, sizeof(score), "Bronze:%4d", leader_board[2]);
+	al_draw_text(
+		menuFont,
+		al_map_rgb(205, 127, 50),
+		SCREEN_W / 2,
+		100 + 120,
+		ALLEGRO_ALIGN_CENTER,
+		score
 	);
 
 		// [HACKATHON 3-3]
@@ -78,6 +188,11 @@ static void draw() {
 		// Uncomment and fill the code below
 		// drawButton(...);
 	drawButton(btnSettings);
+	if(isYellow) drawButton(chosenYellow);
+	else drawButton(chosenBrown);
+	drawButton(chooseYellow);
+	drawButton(chooseBrown);
+
 }
 
 static void on_mouse_move(int a, int mouse_x, int mouse_y, int f) {
@@ -86,6 +201,10 @@ static void on_mouse_move(int a, int mouse_x, int mouse_y, int f) {
 	//	Uncomment and fill the code below
 	//	 btnSettings.hovered = ???(btnSettings, mouse_x, mouse_y);
 	btnSettings.hovered = buttonHover(btnSettings, mouse_x, mouse_y);
+	chooseYellow.hovered = buttonHover(chooseYellow, mouse_x, mouse_y);
+	chooseBrown.hovered = buttonHover(chooseBrown, mouse_x, mouse_y);
+	chosenYellow.hovered = buttonHover(chosenYellow, mouse_x, mouse_y);
+	chosenBrown.hovered = buttonHover(chosenBrown, mouse_x, mouse_y);
 }
 
 
@@ -108,26 +227,51 @@ static void on_mouse_down() {
 static void on_mouse_down() {
 	if (btnSettings.hovered)
 		game_change_scene(scene_settings_create());
+	if (chooseYellow.hovered) {
+		isYellow = true;
+		game_log("choose yellow pacman");
+	}
+	if (chooseBrown.hovered) {
+		isYellow = false;
+		game_log("choose brown pacman");
+	}
 }
 
 static void destroy() {
 	stop_bgm(menuBGM);
 	al_destroy_bitmap(gameTitle);
-	//	[HACKATHON 3-10]
-	//	TODO: Destroy button images
-	//	Uncomment and fill the code below
-	/*
-	al_destroy_bitmap(...);
-	al_destroy_bitmap(...);
-	*/
+
 	al_destroy_bitmap(btnSettings.default_img);
 	al_destroy_bitmap(btnSettings.hovered_img);
+	al_destroy_bitmap(chooseYellow.default_img);
+	al_destroy_bitmap(chooseYellow.hovered_img);
+	al_destroy_bitmap(chooseBrown.default_img);
+	al_destroy_bitmap(chooseBrown.hovered_img);
+	al_destroy_bitmap(chosenYellow.default_img);
+	al_destroy_bitmap(chosenYellow.hovered_img);
+	al_destroy_bitmap(chosenBrown.default_img);
+	al_destroy_bitmap(chosenBrown.hovered_img);
 }
 
 static void on_key_down(int keycode) {
 
 	switch (keycode) {
 		case ALLEGRO_KEY_ENTER:
+			isTimeUpMode = false;
+			isEndlessMode = false;
+			game_change_scene(scene_main_create());
+			break;
+		case ALLEGRO_KEY_T:
+			isTimeUpMode = true;
+			isEndlessMode = false;
+			game_log("enter time_up_mode");
+			game_change_scene(scene_main_create());
+			break;
+		case ALLEGRO_KEY_E:
+			from_menu = true;
+			isTimeUpMode = false;
+			isEndlessMode = true;
+			game_log("enter endless_mode");
 			game_change_scene(scene_main_create());
 			break;
 		default:

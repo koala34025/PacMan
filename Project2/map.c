@@ -6,6 +6,8 @@
 #include "game.h"
 #include "map.h"
 #define QUEUE_SIZE 3000
+#define NTHUCOLER al_map_rgb(160,191,124)
+#define MAKETRUE false
 
 /*global variables*/
 // [ NOTE ]
@@ -13,10 +15,55 @@ const int block_width = 21, block_height = 21;			// the pixel size of a "block"
 const int map_offset_x = 25, map_offset_y = 50;			// pixel offset of where to start draw map
 const int four_probe[4][2] = { { 1, 0 }, { 0, 1 }, { -1,0 }, { 0, -1 } };
 
+bool isNTHU = false;
+
 /* Declare static function prototypes. */
 static void draw_block_index(Map* M, int row, int col);
 static void draw_bean(Map* M, const int row, const int col);
 static void draw_power_bean(Map* M, const int row, const int col);
+static void draw_block_index_nthu(Map* M, int row, int col);
+static void draw_item1(Map* M, const int row, const int col);
+static void draw_item2(Map* M, const int row, const int col);
+ALLEGRO_BITMAP* pic_item1;
+ALLEGRO_BITMAP* pic_item2;
+static int pic_item1W;
+static int pic_item1H;
+static int pic_item2W;
+static int pic_item2H;
+
+const char* only_nthu[] = {
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"  ###  ## ######## ##   ## ##   ##  ",
+"  ###  ## ######## ##   ## ##   ##  ",
+"  #### ##    ##    ##   ## ##   ##  ",
+"  ## ####    ##    ####### ##   ##  ",
+"  ##  ###    ##    ####### ##   ##  ",
+"  ##   ##    ##    ##   ## #######  ",
+"  ##   ##    ##    ##   ## #######  ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    ",
+"                                    "
+};
 
 const char* nthu_map[] = {
 	"#####################################",
@@ -86,7 +133,16 @@ const char* default_map[] = {
 
 
 Map* create_map(const char* filepath) {
+	pic_item1 = load_bitmap("Assets/pic_item1.png");
+	pic_item2 = load_bitmap("Assets/pic_item2.png");
+	pic_item1W = al_get_bitmap_width(pic_item1);
+	pic_item1H = al_get_bitmap_height(pic_item1);
+	pic_item2W = al_get_bitmap_width(pic_item2);
+	pic_item2H = al_get_bitmap_height(pic_item2);
 
+	if (strcmp(filepath, "Assets/map_nthu.txt") == 0 || MAKETRUE) {//if its map_nthu,txt
+		isNTHU = true;
+	}
 	// [HACKATHON 0]
 	// TODO: Read the map from "Assets/map_nthu.txt"
 	// ~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!!~~~~~~~~~
@@ -162,9 +218,11 @@ Map* create_map(const char* filepath) {
 		'.' -> beans
 		'B' -> room of ghost
 		'P' -> Power Pellets
+		'X' -> item 1
+		'Y' -> item 2
 	*/
 
-	M->wallnum = M->beansCount = 0;
+	M->wallnum = M->beansCount = M->score = 0;
 	for (int i = 0; i < M->row_num; i++) {
 		for (int j = 0; j < M->col_num; j++) {
 			if (filepath == NULL)
@@ -209,7 +267,13 @@ void delete_map(Map* M) {
 		free(...)
 		...
 	*/
-	if (M->map)	free(M);
+	if (M->map) {
+		for (int i = 0;i < M->row_num;i++) {
+			free(M->map[i]);
+		}
+		free(M->map);
+		free(M);
+	}
 	else game_abort("failed to delete map\n");
 }
 
@@ -228,7 +292,8 @@ void draw_map(Map const* M) {
 			switch (M->map[row][col])
 			{
 			case '#':
-				draw_block_index(M, row, col);
+				if (only_nthu[row][col] == '#' && isNTHU) draw_block_index_nthu(M, row, col);
+				else draw_block_index(M, row, col);
 				break;
 				// [ TODO ]
 				// draw the power bean
@@ -242,6 +307,12 @@ void draw_map(Map const* M) {
 				break;
 			case '.':
 				draw_bean(M, row, col);
+				break;
+			case 'X':
+				draw_item1(M, row, col);
+				break;
+			case 'Y':
+				draw_item2(M, row, col);
 				break;
 			default:
 				break;
@@ -264,6 +335,62 @@ void draw_map(Map const* M) {
 	*/
 }
 
+static void draw_block_index_nthu(Map* M, const int row, const int col) {
+	bool U = is_wall_block(M, col, row - 1);
+	bool UR = is_wall_block(M, col + 1, row - 1);
+	bool UL = is_wall_block(M, col - 1, row - 1);
+	bool B = is_wall_block(M, col, row + 1);
+	bool BR = is_wall_block(M, col + 1, row + 1);
+	bool BL = is_wall_block(M, col - 1, row + 1);
+	bool R = is_wall_block(M, col + 1, row);
+	bool L = is_wall_block(M, col - 1, row);
+	if (!(U && UR && UL && B && BR && BL && R && L)) {
+		int s_x, s_y, e_x, e_y, dw;
+		int block_x = map_offset_x + block_width * col;
+		int block_y = map_offset_y + block_height * row;
+		dw = block_width / 3;
+		s_x = block_x + dw;
+		s_y = block_y + dw;
+		e_x = s_x + dw;
+		e_y = s_y + dw;
+
+		al_draw_filled_rectangle(s_x, s_y,
+			e_x, e_y, NTHUCOLER);
+		if (row < M->row_num - 1 && B && !(BL && BR && R && L)) {
+			s_x = block_x + dw;
+			s_y = block_y + dw;
+			e_x = s_x + dw;
+			e_y = block_y + block_height;
+			al_draw_filled_rectangle(s_x, s_y,
+				e_x, e_y, NTHUCOLER);
+		}
+		if (row > 0 && U && !(UL && UR && R && L)) {
+			s_x = block_x + dw;
+			s_y = block_y + (dw << 1);
+			e_x = s_x + dw;
+			e_y = block_y;
+			al_draw_filled_rectangle(s_x, s_y,
+				e_x, e_y, NTHUCOLER);
+		}
+		if (col < M->col_num - 1 && R && !(UR && BR && U && B)) {
+			s_x = block_x + dw;
+			s_y = block_y + dw;
+			e_x = block_x + block_width;
+			e_y = s_y + dw;
+			al_draw_filled_rectangle(s_x, s_y,
+				e_x, e_y, NTHUCOLER);
+
+		}
+		if (col > 0 && L && !(UL && BL && U && B)) {
+			s_x = block_x;
+			s_y = block_y + dw;
+			e_x = s_x + (dw << 1);
+			e_y = s_y + dw;
+			al_draw_filled_rectangle(s_x, s_y,
+				e_x, e_y, NTHUCOLER);
+		}
+	}
+}
 static void draw_block_index(Map* M, const int row, const int col) {
 	bool U = is_wall_block(M, col, row - 1);
 	bool UR = is_wall_block(M, col + 1, row - 1);
@@ -320,13 +447,35 @@ static void draw_block_index(Map* M, const int row, const int col) {
 		}
 	}
 }
-
 static void draw_bean(Map* M, const int row, const int col) {
 	al_draw_filled_circle(map_offset_x + col * block_width + block_width / 2.0, map_offset_y + row * block_height + block_height / 2.0, block_width / 6.0, al_map_rgb(234, 38, 38));
 }
 
 static void draw_power_bean(Map* M, const int row, const int col) {
 	al_draw_filled_circle(map_offset_x + col * block_width + block_width / 2.0, map_offset_y + row * block_height + block_height / 2.0, block_width / 3.0, al_map_rgb(234, 178, 38));
+}
+
+static void draw_item1(Map* M, const int row, const int col) {
+	//al_draw_circle(map_offset_x + col * block_width + block_width / 2.0, map_offset_y + row * block_height + block_height / 2.0, 6.5, al_map_rgb(234, 178, 238), 2.0);
+	al_draw_scaled_bitmap(
+		pic_item1,
+		0, 0,
+		pic_item1W, pic_item1H,
+		map_offset_x + col * block_width, map_offset_y + row * block_height,
+		block_width, block_height,
+		0
+	);
+}
+
+static void draw_item2(Map* M, const int row, const int col) {
+	al_draw_scaled_bitmap(
+		pic_item2,
+		0, 0,
+		pic_item2W, pic_item2H,
+		map_offset_x + col * block_width, map_offset_y + row * block_height,
+		block_width, block_height,
+		0
+	);
 }
 
 

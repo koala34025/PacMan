@@ -16,6 +16,7 @@
 #include "game.h"
 #include "scene_game.h" 
 #include "scene_menu.h"
+#include "scene_end.h"
 /* global variables*/
 const int FPS = 60;
 const int SCREEN_W = 800;
@@ -29,6 +30,10 @@ int mouse_x, mouse_y;
 uint32_t GAME_TICK = 0;
 const uint32_t GAME_TICK_CD = 64;
 ALLEGRO_TIMER* game_tick_timer;
+ALLEGRO_TIMER* red_go_out_timer;
+ALLEGRO_TIMER* pink_go_out_timer;
+ALLEGRO_TIMER* blue_go_out_timer;
+ALLEGRO_TIMER* orange_go_out_timer;
 extern bool gameDone;
 
 /* Internal variables. */
@@ -54,6 +59,7 @@ static void game_draw(void);
 static void game_destroy(void);
 // Log using va_list.
 static void game_vlog(const char* format, va_list arg);
+static void game_vlog_score(const char* format, va_list arg);
 
 void game_create() {
 	// Set random seed for better random outcome.
@@ -118,6 +124,10 @@ static void allegro5_init(void) {
 		game_abort("failed to create timer");
 
 	game_tick_timer = al_create_timer(1.0f / GAME_TICK_CD / 2);
+	red_go_out_timer = al_create_timer(1.0f / GAME_TICK_CD / 2);
+	pink_go_out_timer = al_create_timer(1.0f / GAME_TICK_CD / 2);
+	blue_go_out_timer = al_create_timer(1.0f / GAME_TICK_CD / 2);
+	orange_go_out_timer = al_create_timer(1.0f / GAME_TICK_CD / 2);
 	if (!game_tick_timer)
 		game_abort("faild to create tick timer");
 
@@ -141,6 +151,7 @@ static void allegro5_init(void) {
 	al_register_event_source(game_event_queue, al_get_timer_event_source(game_update_timer));
 	al_register_event_source(game_event_queue, al_get_keyboard_event_source());
 	al_register_event_source(game_event_queue, al_get_mouse_event_source());
+
 	// TODO: Register other event sources such as timer, video, ...
 
 	// Start the timer to update and draw the game.
@@ -258,6 +269,10 @@ static void game_destroy(void) {
 	al_destroy_timer(game_update_timer);
 	al_destroy_event_queue(game_event_queue);
 	al_destroy_display(game_display);
+	al_destroy_timer(red_go_out_timer);
+	al_destroy_timer(pink_go_out_timer);
+	al_destroy_timer(blue_go_out_timer);
+	al_destroy_timer(orange_go_out_timer);
 	free(mouse_state);
 }
 
@@ -314,6 +329,31 @@ static void game_vlog(const char* format, va_list arg) {
 	printf("\n");
 	// Write log to file for later debugging.
 	FILE* pFile = fopen("log.txt", clear_file ? "w" : "a");
+	if (pFile) {
+		vfprintf(pFile, format, arg);
+		fprintf(pFile, "\n");
+		fclose(pFile);
+	}
+	clear_file = false;
+#endif
+}
+
+void game_log_score(const char* format, ...) {
+#ifdef LOG_ENABLED
+	va_list arg;
+	va_start(arg, format);
+	game_vlog_score(format, arg);
+	va_end(arg);
+#endif
+}
+
+static void game_vlog_score(const char* format, va_list arg) {
+#ifdef LOG_ENABLED
+	static bool clear_file = true;
+	vprintf(format, arg);
+	printf("\n");
+	// Write log to file for later debugging.
+	FILE* pFile = fopen("score_board.txt", clear_file ? "w" : "w");
 	if (pFile) {
 		vfprintf(pFile, format, arg);
 		fprintf(pFile, "\n");

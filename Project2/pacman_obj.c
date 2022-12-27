@@ -18,10 +18,13 @@ static const int basic_speed = 2;
 /* Shared variables */
 extern ALLEGRO_SAMPLE* PACMAN_MOVESOUND;
 extern ALLEGRO_SAMPLE* PACMAN_DEATH_SOUND;
+extern ALLEGRO_SAMPLE* PACMAN_FRUIT_SOUND;
+
 extern uint32_t GAME_TICK;
 extern uint32_t GAME_TICK_CD;
 extern bool game_over;
 extern float effect_volume;
+extern bool isYellow;
 
 /* Declare static function */
 static bool pacman_movable(Pacman* pacman, Map* M, Directions targetDirec) {
@@ -102,21 +105,34 @@ Pacman* pacman_create() {
 	pman->death_anim_counter = al_create_timer(1.0f / 64);
 	pman->powerUp = false;
 	/* load sprites */
-	pman->move_sprite = load_bitmap("Assets/pacman_move.png");
-	pman->die_sprite = load_bitmap("Assets/pacman_die.png");
-	return pman;
+	if (isYellow) {
+		pman->move_sprite = load_bitmap("Assets/pacman_move.png");
+		pman->die_sprite = load_bitmap("Assets/pacman_die.png");
+	}
+	else {
+		pman->move_sprite = load_bitmap("Assets/pacman_move2.png");
+		pman->die_sprite = load_bitmap("Assets/pacman_die2.png");
+	}
 
+	return pman;
 }
 
-void pacman_destory(Pacman* pman) {
+void pacman_destroy(Pacman* pman) {
 	/*
 		[TODO]
 		free pacman resource
-		al_destory_bitmap(pman->...);
-		al_destro_timer(pman->...);
+		al_destroy_bitmap(pman->...);
+		al_destroy_timer(pman->...);
 		...
 		free(pman);
 	*/
+	stop_bgm(PACMAN_MOVESOUND_ID);
+
+	al_destroy_bitmap(pman->move_sprite);
+	al_destroy_bitmap(pman->die_sprite);
+	al_destroy_timer(pman->death_anim_counter);
+	free(pman);
+	game_log("pacman_destroy");
 }
 
 
@@ -128,18 +144,24 @@ void pacman_draw(Pacman* pman) {
 	*/
 	RecArea drawArea = getDrawArea(pman->objData, GAME_TICK_CD);
 
-	//Draw default image
-	al_draw_scaled_bitmap(pman->move_sprite, 0, 0,
-		16, 16,
-		drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
-		draw_region, draw_region, 0
-	);
-	
 	int offset = 0;
+
+	//Draw default image
 	if (game_over) {
 		/*
 			hint: instead of using pman->objData.moveCD, use Pacman's death_anim_counter to create animation
 		*/
+		al_draw_scaled_bitmap(pman->die_sprite, 0+al_get_timer_count(pman->death_anim_counter)/16*16, 0, 16, 16,
+			drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+			draw_region, draw_region, 0
+		);
+	}
+	else if (pman->objData.moveCD > GAME_TICK_CD) {
+		al_draw_scaled_bitmap(pman->move_sprite, 0, 0,
+			16, 16,
+			drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+			draw_region, draw_region, 0
+		);
 	}
 	else {
 		/*
@@ -149,6 +171,65 @@ void pacman_draw(Pacman* pman) {
 				...
 			}
 		*/
+		switch (pman->objData.facing)
+		{
+		case UP:
+			if (pman->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(pman->move_sprite, 64, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(pman->move_sprite, 80, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case LEFT:
+			if (pman->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(pman->move_sprite, 32, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(pman->move_sprite, 48, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case DOWN:
+			if (pman->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(pman->move_sprite, 96, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(pman->move_sprite, 112, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		case RIGHT:
+			if (pman->objData.moveCD > 32) {
+				al_draw_scaled_bitmap(pman->move_sprite, 0, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			else {
+				al_draw_scaled_bitmap(pman->move_sprite, 16, 0, 16, 16,
+					drawArea.x + fix_draw_pixel_offset_x, drawArea.y + fix_draw_pixel_offset_y,
+					draw_region, draw_region, 0
+				);
+			}
+			break;
+		}
 	}
 }
 void pacman_move(Pacman* pacman, Map* M) {
@@ -193,6 +274,10 @@ void pacman_eatItem(Pacman* pacman, const char Item) {
 	case '.':
 		stop_bgm(PACMAN_MOVESOUND_ID);
 		PACMAN_MOVESOUND_ID = play_audio(PACMAN_MOVESOUND, effect_volume);
+		break;
+	case 'P': case 'X': case 'Y':
+		stop_bgm(PACMAN_MOVESOUND_ID);
+		PACMAN_MOVESOUND_ID = play_audio(PACMAN_FRUIT_SOUND, effect_volume);
 		break;
 	default:
 		break;

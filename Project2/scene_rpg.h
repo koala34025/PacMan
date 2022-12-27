@@ -4,10 +4,10 @@
 // function, they can be accessed by other files using 'extern'.
 // Define your normal function prototypes below.
 
-#ifndef SCENE_GAME_H
-#define SCENE_GAME_H
+#ifndef SCENE_RPG_H
+#define SCENE_RPG_H
 #include "game.h"
 
-Scene scene_main_create(void);
+Scene scene_rpg_create(void);
 
 #endif

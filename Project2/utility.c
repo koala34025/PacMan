@@ -35,13 +35,13 @@ ALLEGRO_SAMPLE_ID play_bgm(ALLEGRO_SAMPLE* sample, float volume) {
 	if (!al_play_sample(sample, volume, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &id))
 		game_abort("failed to play audio (bgm)");
 
-		//game_log("played audio (bgm)");
+		game_log("played audio (bgm)");
 		return id;
 }
 
 void stop_bgm(ALLEGRO_SAMPLE_ID sample) {
 	al_stop_sample(&sample);
-	//game_log("stop audio (bgm)");
+	game_log("stop audio (bgm)");
 }
 
 ALLEGRO_FONT* load_font(const char* filename, int size) {
